@@ -94,8 +94,9 @@ Vercel: proyecto `clubtennisagramunt` creado en el equipo
 `ClubTennisAgramunt`, desde el repositorio indicado y la rama `main`.
 La URL publica y la clave publishable de Supabase estan guardadas para
 Production y Preview. La integracion nativa de Marketplace es opcional y
-su instalacion aun no se ha confirmado. El despliegue tampoco se ha
-verificado todavia.
+su instalacion aun no se ha confirmado. El primer despliegue se ha
+verificado correctamente: https://clubtennisagramunt.vercel.app devuelve
+HTTP 200 y el estado Vercel del commit es success.
 
 Stripe sigue pendiente. Si falta alguna credencial, indica solo su nombre.
 No compartas sus valores secretos.
