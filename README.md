@@ -1,7 +1,11 @@
 # Club Tennis Agramunt
 
-Base de Next.js 15 (App Router, TypeScript) con clientes Supabase SSR y
-middleware para validar y refrescar sesiones mediante `auth.getClaims()`.
+Web de Next.js 15 (App Router, TypeScript) amb portada pública CA/ES/EN,
+Tailwind, components shadcn/ui i il·lustracions de pistes animades amb Motion.
+Clients Supabase SSR i middleware per validar i renovar les sessions.
+
+Pla d'entregues i dependències: [DEVELOPMENT_PLAN.md](./DEVELOPMENT_PLAN.md).
+Fonts del contingut i de les imatges: [docs/content-sources.md](./docs/content-sources.md).
 
 ## Desarrollo
 
@@ -11,6 +15,9 @@ middleware para validar y refrescar sesiones mediante `auth.getClaims()`.
 4. Ejecuta `npm run dev`.
 
 Comprobaciones: `npm run typecheck` y `npm run build`.
+Proves E2E: `npx playwright install chromium` i `npm run test:e2e`, després
+de compilar. Es proven Chromium d'escriptori i mòbil contra el servidor
+de producció local. `PLAYWRIGHT_BASE_URL` permet verificar un desplegament.
 Las versiones estan fijadas en package.json y package-lock.json. Se fija
 PostCSS 8.5.32 mediante overrides para corregir los avisos de seguridad de
 la version transitiva incluida por Next.js 15.
@@ -48,5 +55,11 @@ local, usa `http://localhost:3000` y conserva `.env.local` fuera de Git.
 
 ## Alcance actual
 
-Pagina inicial provisional y base de integracion. Reservas, autenticacion UI,
-pagos, migraciones, i18n y PWA quedan para las siguientes fases de la mision.
+Primera entrega pública: identitat del club, pistes, història, arxiu,
+contacte, consultes per correu, navegació mòbil i idiomes CA/ES/EN.
+`/` redirigeix a `/ca`; `/es` i `/en` tenen contingut i metadades propis.
+El middleware combina l'idioma amb la renovació de cookies de Supabase.
+
+Les reserves digitals, autenticació de socis, pagaments, migracions,
+estadístiques, integracions físiques i PWA es desenvoluparan per fases.
+La portada informa que la reserva en línia encara no està disponible.

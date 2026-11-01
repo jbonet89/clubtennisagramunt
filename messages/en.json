@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Club Tennis Agramunt · Tennis brings us together since 1974",
+    "description": "Discover Club Tennis Agramunt: clay, Quick hard court and a shared history since 1974. Tennis and community in Urgell, Catalonia."
+  },
+  "nav": {
+    "skip": "Skip to content",
+    "courts": "The courts",
+    "club": "The club",
+    "history": "Our story",
+    "contact": "Contact",
+    "join": "Become a member",
+    "language": "Language",
+    "open": "Open menu",
+    "close": "Close menu",
+    "home": "Club Tennis Agramunt, home"
+  },
+  "hero": {
+    "eyebrow": "AGRAMUNT · URGELL · SINCE 1974",
+    "title1": "Tennis brings",
+    "title2": "us together.",
+    "intro": "The first serve. A good rally. The conversation after the match. Some things are better experienced on court.",
+    "primary": "Explore the courts",
+    "secondary": "Become a member",
+    "caption": "Two surfaces. One shared passion.",
+    "diagram": "Illustration of the courts",
+    "bottom": "TIMELESS TENNIS. NEW STORIES."
+  },
+  "courts": {
+    "eyebrow": "FIND YOUR WAY TO PLAY",
+    "title": "Your court.\nYour rhythm.",
+    "intro": "The precision of clay or the pace of the blue court. Two ways to find your game.",
+    "selector": "Select the court surface",
+    "clay": "Clay court",
+    "quick": "Blue Court · Quick",
+    "clayTag": "COURT 3 · CLAY",
+    "quickTag": "COURT 4 · QUICK",
+    "clayTitle": "Every point has a story.",
+    "quickTitle": "Let your game find its rhythm.",
+    "clayBody": "Build the point, vary your spin and enjoy the rallies on clay.",
+    "quickBody": "A fast surface for taking the initiative and keeping your matches moving.",
+    "duration": "60 or 90-minute matches",
+    "member": "Free bookings for members",
+    "ask": "Ask about playing",
+    "notice": "Online booking is coming soon. In the meantime, contact the club to check availability.",
+    "illustration": "Illustrative court diagram; it does not show real-time availability."
+  },
+  "club": {
+    "eyebrow": "BEYOND THE BASELINE",
+    "title": "A local club.\nA place to come together.",
+    "body": "Club Tennis Agramunt was founded to establish tennis in Agramunt and bring its members together. Since 1974, sport and social life have shared the same court.",
+    "location": "Agramunt, Urgell",
+    "surface": "Clay and Quick courts",
+    "community": "Tennis and community",
+    "photo": "Photograph from the club website archive"
+  },
+  "history": {
+    "eyebrow": "A STORY STILL BEING WRITTEN",
+    "title": "Since 1974.\nSo much more to play.",
+    "firstTitle": "The first serve",
+    "firstBody": "Club Tennis Agramunt is founded to grow tennis and social connections in the town.",
+    "secondTitle": "The club's memory",
+    "secondBody": "The historic website records the return to activity and improvements to the facilities.",
+    "thirdYear": "Today",
+    "thirdTitle": "A new digital home",
+    "thirdBody": "A new chapter bringing the club closer to its members and everyone discovering tennis in Agramunt.",
+    "archive": "Explore the historic website",
+    "archiveLabel": "FROM THE ARCHIVE · 1 APRIL 2018",
+    "article": "Welcome to the wonderful world of tennis",
+    "articleBody": "Revisit the welcome post from the club's original blog. A small part of our shared history.",
+    "read": "Read the original post"
+  },
+  "contact": {
+    "eyebrow": "YOUR NEXT MATCH STARTS HERE",
+    "title": "There's a place\nfor you.",
+    "body": "Want to become a member, get back on court or discover the club? Write to us for membership information and how to get started.",
+    "join": "I'd like to join",
+    "subject": "Membership information for Club Tennis Agramunt",
+    "guest": "Book a court as a guest",
+    "guestSubject": "Guest court availability enquiry",
+    "guestNote": "For now, booking enquiries are handled by email.",
+    "address": "Carretera de Cervera, 10 · Agramunt",
+    "directions": "Get directions"
+  },
+  "footer": {
+    "tagline": "Tennis and community since 1974.",
+    "archive": "Historic website",
+    "copyright": "Club Tennis Agramunt",
+    "back": "Back to top"
+  }
+}

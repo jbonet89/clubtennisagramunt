@@ -1,0 +1,91 @@
+{
+  "meta": {
+    "title": "Club Tennis Agramunt · El tennis ens uneix des de 1974",
+    "description": "Coneix el Club Tennis Agramunt: terra batuda, pista Quick i una història compartida des de 1974. Tennis i comunitat a l'Urgell."
+  },
+  "nav": {
+    "skip": "Salta al contingut",
+    "courts": "Les pistes",
+    "club": "El club",
+    "history": "La nostra història",
+    "contact": "Contacte",
+    "join": "Fes-te soci",
+    "language": "Idioma",
+    "open": "Obre el menú",
+    "close": "Tanca el menú",
+    "home": "Club Tennis Agramunt, inici"
+  },
+  "hero": {
+    "eyebrow": "AGRAMUNT · URGELL · DES DE 1974",
+    "title1": "El tennis",
+    "title2": "ens uneix.",
+    "intro": "El primer servei. Un bon intercanvi. La conversa després del partit. Hi ha coses que es viuen millor a la pista.",
+    "primary": "Descobreix les pistes",
+    "secondary": "Fes-te soci",
+    "caption": "Dues superfícies. Una mateixa passió.",
+    "diagram": "Il·lustració de les pistes",
+    "bottom": "TENNIS DE SEMPRE. NOVES HISTÒRIES."
+  },
+  "courts": {
+    "eyebrow": "TRIA LA TEVA MANERA DE JUGAR",
+    "title": "La teva pista.\nEl teu ritme.",
+    "intro": "La precisió de la terra batuda o el ritme de la pista blava. Dues maneres de trobar el teu joc.",
+    "selector": "Selecciona la superfície de la pista",
+    "clay": "Terra batuda",
+    "quick": "Pista Blava · Quick",
+    "clayTag": "PISTA 3 · TERRA BATUDA",
+    "quickTag": "PISTA 4 · QUICK",
+    "clayTitle": "Cada punt té la seva història.",
+    "quickTitle": "Deixa que el joc agafi ritme.",
+    "clayBody": "Construeix el punt, varia els efectes i gaudeix dels intercanvis sobre terra batuda.",
+    "quickBody": "Una superfície ràpida per jugar amb iniciativa i donar continuïtat als teus partits.",
+    "duration": "Partits de 60 o 90 minuts",
+    "member": "Reserva gratuïta per a socis",
+    "ask": "Consulta com jugar-hi",
+    "notice": "La reserva en línia arribarà aviat. Mentrestant, contacta amb el club per consultar la disponibilitat.",
+    "illustration": "Esquema il·lustratiu de la pista; no representa la disponibilitat en temps real."
+  },
+  "club": {
+    "eyebrow": "MÉS ENLLÀ DE LA LÍNIA DE FONS",
+    "title": "Un club del poble.\nUn lloc per trobar-nos.",
+    "body": "El Club Tennis Agramunt va néixer per arrelar el tennis a Agramunt i fomentar les relacions entre els seus socis. Des de 1974, esport i vida social comparteixen pista.",
+    "location": "Agramunt, l'Urgell",
+    "surface": "Terra batuda i Quick",
+    "community": "Tennis i comunitat",
+    "photo": "Fotografia de l'arxiu del web del club"
+  },
+  "history": {
+    "eyebrow": "UNA HISTÒRIA QUE CONTINUA",
+    "title": "Des de 1974.\nAmb molt per jugar.",
+    "firstTitle": "El primer servei",
+    "firstBody": "Neix el Club Tennis Agramunt amb la voluntat de fer créixer el tennis i les relacions socials al municipi.",
+    "secondTitle": "La memòria del club",
+    "secondBody": "El web històric documenta la represa de l'activitat i les tasques de millora de les instal·lacions.",
+    "thirdYear": "Avui",
+    "thirdTitle": "Una nova casa digital",
+    "thirdBody": "Obrim una nova etapa per acostar el club als socis i a tothom que vol descobrir el tennis a Agramunt.",
+    "archive": "Consulta el web històric",
+    "archiveLabel": "DE L'ARXIU · 1 D'ABRIL DE 2018",
+    "article": "Benvinguts al meravellós món del tennis",
+    "articleBody": "Recuperem la benvinguda publicada al primer blog del club. Un petit fragment de la nostra memòria compartida.",
+    "read": "Llegeix l'entrada original"
+  },
+  "contact": {
+    "eyebrow": "EL PROPER PARTIT COMENÇA AQUÍ",
+    "title": "Hi ha lloc\nper a tu.",
+    "body": "Vols fer-te soci, tornar a jugar o conèixer el club? Escriu-nos. T'informarem de les quotes i de com començar.",
+    "join": "Vull fer-me soci",
+    "subject": "Informació per fer-me soci del Club Tennis Agramunt",
+    "guest": "Reserva pista com a no soci",
+    "guestSubject": "Consulta de disponibilitat de pista per a no soci",
+    "guestNote": "De moment, les consultes de reserva es gestionen per correu.",
+    "address": "Carretera de Cervera, 10 · Agramunt",
+    "directions": "Com arribar-hi"
+  },
+  "footer": {
+    "tagline": "Tennis i comunitat des de 1974.",
+    "archive": "Web històric",
+    "copyright": "Club Tennis Agramunt",
+    "back": "Torna a l'inici"
+  }
+}
