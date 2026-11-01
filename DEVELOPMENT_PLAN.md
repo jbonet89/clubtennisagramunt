@@ -31,7 +31,7 @@ essencial (9A), reserves de socis (3), continguts i tornejos (9B), àrea de soci
 - [x] Primera pagina publicada: https://clubtennisagramunt.vercel.app.
 - [x] Accés administratiu MCP al Supabase `qubhsueehwdngafjjmrm` verificat.
 
-## 1. Web pública i idiomes — en curs
+## 1. Web pública i idiomes — primera entrega publicada
 
 - [x] Tailwind i primitives shadcn/ui; identitat basada en el logotip original blau.
 - [x] Portada adaptable amb CA per defecte, ES i EN mitjancant next-intl.
@@ -41,12 +41,15 @@ essencial (9A), reserves de socis (3), continguts i tornejos (9B), àrea de soci
 - [x] Playwright: 18 proves en escriptori i mobil; idiomes, teclat, pistes,
       metadades, enllacos, arxiu, absencia de desbordament i moviment reduit.
 - [x] Compilacio de produccio, TypeScript i captures locals verificats.
-- [ ] Verificacio de la publicacio de la primera entrega a Vercel.
+- [x] Publicació Vercel verificada: CA/ES/EN amb HTTP 200 i 2 proves E2E
+      sobre producció (canvi d'idiomes i selector de pistes).
 - [ ] Iteracio visual posterior: Lenis, revelat progressiu del tracat SVG i
       cronologia amb animacio vinculada al desplacament (referencia ScrollCraft).
 
 Acceptacio: una persona pot coneixer el club, comparar les dues pistes,
 canviar d'idioma i contactar-hi. La reserva digital encara no es ven com a activa.
+
+Registre de l'entrega: [web pública multilingüe](docs/releases/2026-11-01-public-web.md).
 
 ## 2. Dades i accés dels socis
 
