@@ -1,0 +1,18 @@
+:root { color-scheme: light; background: #f5f2e9; color: #193f35; font-family: Arial, Helvetica, sans-serif; }
+* { box-sizing: border-box; }
+body { margin: 0; }
+a { color: inherit; }
+main { max-width: 1500px; min-height: 100svh; margin: auto; padding: 32px 6vw 24px; display: flex; flex-direction: column; }
+header { display: flex; justify-content: space-between; align-items: center; gap: 24px; }
+.brand { font-size: 38px; font-weight: 900; letter-spacing: -3px; text-decoration: none; display: flex; gap: 18px; align-items: center; }
+.brand span { font-size: 12px; letter-spacing: 0; max-width: 80px; line-height: 1.4; }
+.year, footer { font-size: 12px; letter-spacing: .04em; }
+section { flex: 1; padding: clamp(70px, 13vh, 160px) 0 70px; }
+.eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .17em; }
+h1 { font-size: clamp(70px, 12vw, 180px); line-height: .92; letter-spacing: -.065em; margin: 32px 0; }
+.intro { max-width: 410px; color: #425c52; line-height: 1.7; }
+.contact { display: inline-flex; gap: 28px; margin-top: 20px; padding: 16px 22px; border-radius: 4px; background: #193f35; color: #fff; text-decoration: none; font-size: 14px; }
+.contact:hover { background: #285d4f; }
+a:focus-visible { outline: 3px solid #ba6a3e; outline-offset: 5px; }
+footer { border-top: 1px solid #193f3529; padding-top: 20px; }
+@media (max-width: 560px) { main { padding: 24px; } .year { max-width: 100px; text-align: right; line-height: 1.5; } .brand { gap: 12px; } }
