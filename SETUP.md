@@ -1,8 +1,8 @@
 # CTA: configuracion inicial
 
-La base de Next.js y los clientes Supabase estan preparados tras recibir
-la configuracion publica y la URL del repositorio. No se ha desplegado
-ningun servicio todavia.
+Next.js está desplegado en Vercel y conectado al proyecto Supabase CTA.
+Las migraciones de socios y reservas ya están aplicadas. Estado actualizado,
+primer administrador y correo pendiente: [acceso y reservas](docs/member-access.md).
 
 ## 1. GitHub
 
@@ -25,7 +25,7 @@ claves a `.env.local`. Elige una de estas parejas, sin mezclar proyectos:
 
 Las claves secret y service_role son exclusivamente del servidor y pueden
 omitir RLS. Nunca deben llevar el prefijo NEXT_PUBLIC_. Las tablas y sus
-politicas RLS se crearan en la fase de implementacion.
+politicas RLS están definidas en `supabase/migrations/` y ya están aplicadas.
 
 Referencia: https://supabase.com/docs/guides/getting-started/api-keys
 
@@ -85,9 +85,8 @@ todavia ese servicio.
 ## Para continuar
 
 Supabase publico configurado para el proyecto `qubhsueehwdngafjjmrm`.
-Para administrar el proyecto mediante MCP, conecta una cuenta con acceso
-a ese proyecto. Las conexiones disponibles durante la preparacion no lo
-incluian. La clave publica permite acceso a las APIs de la aplicacion, pero
+El acceso administrativo MCP está verificado con la conexión del club.
+La clave publica permite acceso a las APIs de la aplicacion, pero
 no sustituye la autorizacion administrativa MCP.
 
 Vercel: proyecto `clubtennisagramunt` creado en el equipo

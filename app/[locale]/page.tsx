@@ -71,6 +71,7 @@ export default async function Home({ params }: Props) {
     open: t("nav.open"),
     close: t("nav.close"),
     home: t("nav.home"),
+    access: t("nav.access"),
   };
   const courtLabels = {
     selector: t("courts.selector"),

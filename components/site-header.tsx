@@ -18,6 +18,7 @@ type Labels = {
   open: string;
   close: string;
   home: string;
+  access: string;
 };
 
 export function SiteHeader({
@@ -61,6 +62,7 @@ export function SiteHeader({
                 {label}
               </a>
             ))}
+            <Link href="/socis">{labels.access}</Link>
           </nav>
           <div className="header-actions">
             <nav className="language-nav" aria-label={labels.language}>
@@ -113,6 +115,10 @@ export function SiteHeader({
             className="mobile-menu"
             aria-label="Club mobile"
           >
+            <Link href="/socis" onClick={() => setOpen(false)}>
+              {labels.access}
+              <ArrowUpRight size={20} aria-hidden="true" />
+            </Link>
             {links.map(([id, label]) => (
               <a key={id} href={`#${id}`} onClick={() => setOpen(false)}>
                 {label}

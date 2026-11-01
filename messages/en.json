@@ -13,7 +13,8 @@
     "language": "Language",
     "open": "Open menu",
     "close": "Close menu",
-    "home": "Club Tennis Agramunt, home"
+    "home": "Club Tennis Agramunt, home",
+    "access": "Members' area"
   },
   "hero": {
     "eyebrow": "AGRAMUNT · URGELL · SINCE 1974",
@@ -41,8 +42,8 @@
     "quickBody": "A fast surface for taking the initiative and keeping your matches moving.",
     "duration": "60 or 90-minute matches",
     "member": "Free bookings for members",
-    "ask": "Ask about playing",
-    "notice": "Online booking is coming soon. In the meantime, contact the club to check availability.",
+    "ask": "Book a court as a member",
+    "notice": "Online bookings are free for active members. Sign in to check availability and confirm your court.",
     "illustration": "Illustrative court diagram; it does not show real-time availability."
   },
   "club": {

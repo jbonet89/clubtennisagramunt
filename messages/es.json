@@ -13,7 +13,8 @@
     "language": "Idioma",
     "open": "Abrir menú",
     "close": "Cerrar menú",
-    "home": "Club Tennis Agramunt, inicio"
+    "home": "Club Tennis Agramunt, inicio",
+    "access": "Área de socios"
   },
   "hero": {
     "eyebrow": "AGRAMUNT · URGELL · DESDE 1974",
@@ -41,8 +42,8 @@
     "quickBody": "Una superficie rápida para jugar con iniciativa y dar continuidad a tus partidos.",
     "duration": "Partidos de 60 o 90 minutos",
     "member": "Reserva gratuita para socios",
-    "ask": "Consulta cómo jugar",
-    "notice": "La reserva en línea llegará pronto. Mientras tanto, contacta con el club para consultar la disponibilidad.",
+    "ask": "Reserva pista como socio",
+    "notice": "Las reservas en línea son gratuitas para socios activos. Inicia sesión para consultar horarios y confirmar tu pista.",
     "illustration": "Esquema ilustrativo de la pista; no representa la disponibilidad en tiempo real."
   },
   "club": {

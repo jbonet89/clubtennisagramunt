@@ -9,8 +9,8 @@ el tancament automàtic i la disponibilitat de Playtomic i decideixi reprendre'l
 L'àrea d'administració i la gestió de quotes domiciliades poden avançar sense
 aquestes integracions. Anàlisi: [Àrea d'administració](docs/administracio-club.md).
 
-Ordre actiu proposat: web pública (1), identitat i permisos (2), administració
-essencial (9A), reserves de socis (3), continguts i tornejos (9B), àrea de socis
+Ordre actiu: web pública (1), identitat i permisos (2), reserves de socis (3),
+administració essencial (9A), continguts i tornejos (9B), àrea de socis
 (6) i PWA (7). La integració amb Instagram (9C) té dependències pròpies.
 
 ## Forma de treball
@@ -47,30 +47,34 @@ essencial (9A), reserves de socis (3), continguts i tornejos (9B), àrea de soci
       cronologia amb animacio vinculada al desplacament (referencia ScrollCraft).
 
 Acceptacio: una persona pot coneixer el club, comparar les dues pistes,
-canviar d'idioma i contactar-hi. La reserva digital encara no es ven com a activa.
+canviar d'idioma i contactar-hi. La portada enllaça les reserves dels socis actius.
 
 Registre de l'entrega: [web pública multilingüe](docs/releases/2026-11-01-public-web.md).
 
 ## 2. Dades i accés dels socis
 
-- [ ] Migracions i llavors: profiles, courts, bookings, matches, notifications.
-- [ ] Ampliacions necessaries: membres actius, contingut historic i cua de sync.
-- [ ] RLS, indexs i exclusio de reserves solapades al PostgreSQL.
-- [ ] Inici de sessio, recuperacio i tancament de sessio.
-- [ ] Altes de socis i rols aprovats pel club; un usuari no pot autoconcedir-se
+- [x] Migracions i llavors: profiles, courts, bookings, matches, notifications.
+- [x] Membres actius i configuració horària a la base de dades.
+- [ ] Ampliacions futures: contingut historic i cua de sync.
+- [x] RLS, indexs i exclusio de reserves solapades al PostgreSQL.
+- [x] Inici i tancament de sessio; formularis d'alta i recuperació amb PKCE.
+- [ ] SMTP propi i prova real d'alta, confirmació i recuperació per correu.
+- [x] Altes de socis i rols aprovats pel club; un usuari no pot autoconcedir-se
       el rol de soci/admin ni activar la seva condicio de soci.
-- [ ] Proves amb usuaris soci/convidat/admin i auditories Supabase.
+- [x] Proves amb usuaris soci/convidat/admin i auditories Supabase.
 
 Dependencia: accés administratiu al Supabase `qubhsueehwdngafjjmrm`.
 Acceptacio: identitat i permisos comprovats al servidor i a la base de dades.
 
 ## 3. Reserves de socis i WhatsApp
 
-- [ ] Disponibilitat de les dues pistes en Europe/Madrid; franges de 60/90 minuts.
-- [ ] Reserva gratuita per a soci actiu i gestio de reserves propies.
-- [ ] Transaccions i restriccio de solapaments; cancel·lació i historial.
-- [ ] Missatge WhatsApp amb data, pista, jugadors i claus de soci.
-- [ ] `member-booking.spec.ts`: reserva, accessos, WhatsApp i dues peticions simultanies.
+- [x] Disponibilitat de les dues pistes en Europe/Madrid; franges de 60/90 minuts,
+      inici cada mitja hora, horari 07:00–23:00 aprovat pel club.
+- [x] Reserva gratuita per a soci actiu i gestio de reserves propies.
+- [x] Transaccions i restriccio de solapaments; cancel·lació i historial.
+- [x] Missatge WhatsApp amb data, pista, jugadors i claus de soci.
+- [x] `member-booking.spec.ts`: reserva, accessos, WhatsApp i dues peticions simultanies.
+- [ ] Verificació del desplegament d'aquesta entrega a producció.
 
 Acceptacio: reserva real, persistida, sense pagament i amb comparticio wa.me.
 
@@ -165,8 +169,10 @@ Guardar un mandat o generar una remesa no equival a haver cobrat una quota.
 
 ## Decisions pendents abans de les fases corresponents
 
-- Tarifa de convidats, horari d'obertura, termini i politica de cancel·lació.
-- Procediment de validacio dels socis actius i dades personals visibles.
+- Tarifa de convidats i política definitiva de termini/cancel·lació. Aquesta
+  entrega usa 14 dies vista i cancel·lació abans de l'inici de la reserva.
+- Validació manual per un administrador després de comprovar cens i quota;
+  pendent el registre administratiu de quotes de la fase 9A.
 - Proveidor de correu i credencials, pany fisic i onboarding Playtomic.
 - Confirmacio de quotes, telefon, horaris i fotografies actuals del club.
 

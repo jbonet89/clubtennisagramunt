@@ -104,7 +104,7 @@ test("navegació, consulta per correu i contingut d'arxiu", async ({
       .click();
   }
   await expect(page).toHaveURL(/#courts$/);
-  await expect(page.locator(".booking-notice")).toContainText("arribarà aviat");
+  await expect(page.locator(".booking-notice")).toContainText("socis actius");
   const guest = page.getByRole("link", { name: "Reserva pista com a no soci" });
   await expect(guest).toHaveAttribute(
     "href",

@@ -1,0 +1,455 @@
+.member-app {
+  min-height: 100svh;
+  background: #f2f5fa;
+}
+.member-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 5vw;
+  gap: 20px;
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+}
+.member-topbar-links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  font-size: 12px;
+}
+.member-main {
+  max-width: 1160px;
+  margin: auto;
+  padding: 48px 28px 80px;
+}
+.member-footer {
+  text-align: center;
+  font-size: 11px;
+  color: #526079;
+  padding: 25px;
+}
+.member-app h1 {
+  font-size: clamp(32px, 4vw, 52px);
+  line-height: 1.12;
+  letter-spacing: -0.04em;
+  margin: 12px 0 18px;
+  color: #152139;
+}
+.member-app h2 {
+  font-size: 26px;
+  line-height: 1.25;
+  letter-spacing: -0.035em;
+  margin: 0 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.auth-card {
+  max-width: 500px;
+  margin: 30px auto;
+  background: white;
+  border: 1px solid var(--border);
+  padding: 40px;
+  border-radius: 16px;
+}
+.member-form {
+  display: grid;
+  gap: 20px;
+  margin-top: 26px;
+}
+.member-form label,
+.booking-fields label {
+  display: grid;
+  gap: 9px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.member-app input,
+.member-app select,
+.member-app textarea {
+  width: 100%;
+  min-width: 0;
+  padding: 13px 14px;
+  border: 1px solid #bbc5d6;
+  border-radius: 8px;
+  background: #fff;
+  color: #152139;
+  font: inherit;
+  font-size: 15px;
+  line-height: 1.35;
+}
+.member-app input:focus,
+.member-app select:focus,
+.member-app textarea:focus {
+  outline: 2px solid #16449a;
+  outline-offset: 2px;
+}
+.member-app input:disabled,
+.member-app select:disabled {
+  background: #edf0f5;
+  color: #6a7385;
+}
+.field-help {
+  font-size: 11px;
+  font-weight: 400;
+  color: #526079;
+  line-height: 1.7;
+}
+.form-intro {
+  font-size: 14px;
+  color: #526079;
+  line-height: 1.8;
+}
+.form-error {
+  background: #fff0ef;
+  color: #922c26;
+  border: 1px solid #e8bbb8;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.form-success {
+  background: #eaf4df;
+  color: #2e4a1b;
+  padding: 15px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.7;
+}
+.form-success p + p {
+  margin-top: 12px;
+}
+.auth-links {
+  display: grid;
+  gap: 20px;
+  margin-top: 26px;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.auth-links button {
+  color: #16449a;
+  text-decoration: underline;
+  cursor: pointer;
+  text-align: left;
+}
+.member-contact-link {
+  display: block;
+  font-size: 11px;
+  word-break: break-word;
+  color: #526079;
+  margin-top: 28px;
+}
+.member-welcome {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  margin-bottom: 35px;
+}
+.member-welcome p:last-child {
+  font-size: 13px;
+  color: #526079;
+}
+.member-notice {
+  background: #fff8e4;
+  border: 1px solid #e6d9ad;
+  border-radius: 12px;
+  padding: 28px;
+  line-height: 1.8;
+  margin: 28px 0;
+}
+.member-notice h2 {
+  font-size: 24px;
+}
+.member-notice a {
+  font-size: 12px;
+  text-decoration: underline;
+  word-break: break-word;
+}
+.booking-confirmation {
+  padding: 30px;
+  background: #edf8df;
+  border: 1px solid #b7d493;
+  border-radius: 14px;
+  margin: 25px 0 35px;
+  line-height: 1.8;
+}
+.confirmation-heading {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: #345224;
+  margin-bottom: 15px;
+}
+.booking-confirmation h2 {
+  font-size: 25px;
+  margin-bottom: 10px;
+}
+.booking-confirmation p {
+  font-size: 14px;
+}
+.share-actions {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin: 22px 0;
+}
+.booking-confirmation details {
+  margin-top: 20px;
+  font-size: 12px;
+}
+.booking-confirmation summary {
+  cursor: pointer;
+}
+.booking-confirmation textarea {
+  margin-top: 15px;
+  font-size: 13px;
+  line-height: 1.7;
+  resize: vertical;
+}
+.member-booking-section,
+.member-reservations,
+.member-approval {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 32px;
+  margin-top: 30px;
+}
+.booking-section-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  align-items: center;
+  margin-bottom: 22px;
+}
+.booking-section-title .eyebrow {
+  color: #16449a;
+  margin-bottom: 10px;
+}
+.booking-section-title p:last-child {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #526079;
+}
+.booking-form fieldset {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+.booking-fields {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 22px;
+}
+.booking-fields label:first-child {
+  grid-column: span 2;
+}
+.players-field {
+  grid-column: span 2;
+}
+.booking-form-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 27px;
+}
+.member-tabs {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-bottom: 25px;
+}
+.member-tabs button {
+  font-size: 12px;
+  height: 40px;
+}
+.empty-bookings {
+  font-size: 14px;
+  color: #526079;
+  padding: 26px 0;
+  line-height: 1.8;
+}
+.booking-list {
+  display: grid;
+  gap: 16px;
+}
+.booking-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 25px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 22px;
+  line-height: 1.8;
+}
+.booking-card h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin: 10px 0;
+}
+.booking-card p {
+  font-size: 13px;
+  color: #526079;
+}
+.booking-card strong {
+  font-size: 17px;
+}
+.booking-badge {
+  font-size: 10px;
+  padding: 4px 9px;
+  border-radius: 20px;
+  background: #e5f1db;
+  color: #395522;
+}
+.booking-badge.cancelled {
+  background: #edf0f5;
+  color: #526079;
+}
+.booking-card-actions {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 18px;
+}
+.booking-card-actions .text-link {
+  font-size: 12px;
+}
+.booking-card-actions button {
+  font-size: 12px;
+  height: 40px;
+}
+.member-approval ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.member-approval li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.member-approval li:last-child {
+  border: 0;
+}
+.member-approval p {
+  font-size: 12px;
+  color: #526079;
+  margin-top: 7px;
+  word-break: break-word;
+}
+.member-approval strong {
+  font-size: 14px;
+}
+.member-approval button {
+  font-size: 12px;
+}
+@media (max-width: 700px) {
+  .member-topbar {
+    padding: 16px 20px;
+  }
+  .member-topbar .brand img {
+    width: 58px;
+  }
+  .member-topbar .brand span {
+    display: none;
+  }
+  .member-topbar-links {
+    gap: 14px;
+    font-size: 11px;
+  }
+  .member-main {
+    padding: 28px 18px 50px;
+  }
+  .member-welcome {
+    align-items: flex-start;
+  }
+  .member-welcome button {
+    padding: 0 12px;
+    font-size: 11px;
+    height: 40px;
+  }
+  .member-welcome h1 {
+    font-size: 32px;
+  }
+  .auth-card {
+    padding: 28px 24px;
+    margin: 12px auto;
+  }
+  .member-booking-section,
+  .member-reservations,
+  .member-approval {
+    padding: 24px 20px;
+  }
+  .booking-section-title {
+    display: block;
+  }
+  .booking-section-title > p {
+    margin-top: 15px;
+  }
+  .booking-fields {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 12px;
+  }
+  .booking-fields label:first-child,
+  .players-field {
+    grid-column: 1/-1;
+  }
+  .booking-fields label:nth-child(4) {
+    grid-column: 1/-1;
+  }
+  .booking-form-actions {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+  .booking-form-actions button {
+    font-size: 12px;
+    padding: 0 12px;
+    white-space: normal;
+    min-height: 48px;
+    height: auto;
+  }
+  .member-app h2 {
+    font-size: 23px;
+  }
+  .booking-card {
+    display: block;
+    padding: 20px;
+  }
+  .booking-card-actions {
+    margin-top: 20px;
+    gap: 16px;
+  }
+  .booking-card-actions .text-link {
+    font-size: 12px;
+  }
+  .booking-confirmation {
+    padding: 24px 20px;
+  }
+  .share-actions {
+    display: grid;
+    gap: 12px;
+  }
+  .share-actions a {
+    font-size: 11px;
+    padding: 0 12px;
+    white-space: normal;
+    min-height: 48px;
+    height: auto;
+  }
+  .member-approval li {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  .member-tabs button {
+    font-size: 11px;
+    padding: 0 12px;
+  }
+}

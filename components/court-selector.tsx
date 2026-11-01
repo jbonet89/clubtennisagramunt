@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ArrowUpRight, Clock3, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { CourtDrawing } from "./court-drawing";
+import { Link } from "@/i18n/navigation";
 
 type Labels = {
   selector: string;
@@ -78,10 +79,10 @@ export function CourtSelector({ labels }: { labels: Labels }) {
             {labels.member}
           </li>
         </ul>
-        <a className="text-link" href="#contact">
+        <Link className="text-link" href="/socis">
           {labels.ask}
           <ArrowUpRight size={20} aria-hidden="true" />
-        </a>
+        </Link>
         <p className="booking-notice">{labels.notice}</p>
       </div>
     </div>

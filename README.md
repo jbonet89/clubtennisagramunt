@@ -3,6 +3,7 @@
 Web de Next.js 15 (App Router, TypeScript) amb portada pública CA/ES/EN,
 Tailwind, components shadcn/ui i il·lustracions de pistes animades amb Motion.
 Clients Supabase SSR i middleware per validar i renovar les sessions.
+Àrea de socis amb aprovació administrativa, reserves reals i text WhatsApp.
 
 Pla d'entregues i dependències: [DEVELOPMENT_PLAN.md](./DEVELOPMENT_PLAN.md).
 Fonts del contingut i de les imatges: [docs/content-sources.md](./docs/content-sources.md).
@@ -18,6 +19,8 @@ Comprobaciones: `npm run typecheck` y `npm run build`.
 Proves E2E: `npx playwright install chromium` i `npm run test:e2e`, després
 de compilar. Es proven Chromium d'escriptori i mòbil contra el servidor
 de producció local. `PLAYWRIGHT_BASE_URL` permet verificar un desplegament.
+Les proves de socis necessiten comptes temporals a Supabase i neteja posterior:
+vegeu [accés i reserves](docs/member-access.md).
 Las versiones estan fijadas en package.json y package-lock.json. Se fija
 PostCSS 8.5.32 mediante overrides para corregir los avisos de seguridad de
 la version transitiva incluida por Next.js 15.
@@ -31,8 +34,8 @@ la version transitiva incluida por Next.js 15.
 Las variables requeridas son `NEXT_PUBLIC_SUPABASE_URL` y
 `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`. No se necesitan claves secretas
 para estos clientes. No se consulta ni se crea la tabla de ejemplo `todos`.
-El middleware refresca sesiones; cada futura ruta privada debe verificar
-las claims y autorizar el acceso, junto con las politicas RLS.
+El middleware refresca sesiones; las rutas privadas verifican las claims,
+el perfil actual y las políticas RLS. Las migraciones están en `supabase/migrations/`.
 
 ## Vercel
 
@@ -49,8 +52,8 @@ se conecta mediante esas variables. No es necesario crear otra base de datos.
 Primer despliegue verificado: https://clubtennisagramunt.vercel.app devuelve
 HTTP 200 con la pagina CTA en catalan y GitHub informa Vercel success.
 La conexion GitHub dispara despliegues al actualizar `main`.
-`NEXT_PUBLIC_SITE_URL` aun debe configurarse en Vercel con esa URL antes
-de implementar enlaces de retorno de autenticacion y pagos. Para desarrollo
+Los retornos de autenticación usan esa URL canónica como fallback de
+`NEXT_PUBLIC_SITE_URL`; configurar la variable al cambiar de dominio. Para desarrollo
 local, usa `http://localhost:3000` y conserva `.env.local` fuera de Git.
 
 ## Alcance actual
@@ -60,6 +63,13 @@ contacte, consultes per correu, navegació mòbil i idiomes CA/ES/EN.
 `/` redirigeix a `/ca`; `/es` i `/en` tenen contingut i metadades propis.
 El middleware combina l'idioma amb la renovació de cookies de Supabase.
 
-Les reserves digitals, autenticació de socis, pagaments, migracions,
-estadístiques, integracions físiques i PWA es desenvoluparan per fases.
-La portada informa que la reserva en línia encara no està disponible.
+Àrea privada a `/ca/socis` (també ES/EN): inici de sessió, compte pendent,
+aprovació i desactivació manual per administradors, disponibilitat de les dues
+pistes de 07:00 a 23:00, reserves gratuïtes de 60/90 minuts, cancel·lació,
+historial i text per WhatsApp. Supabase bloqueja reserves sense aprovació,
+solapaments i accés a reserves d'altres usuaris.
+
+SMTP pendent de configurar: les altes i recuperacions per correu per al públic
+general encara requereixen aquesta configuració i una prova d'entrega real.
+[Procediment del primer administrador i detalls](docs/member-access.md).
+Pagaments, estadístiques, integracions físiques i PWA continuen per fases.
