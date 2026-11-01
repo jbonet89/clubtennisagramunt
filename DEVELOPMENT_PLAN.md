@@ -74,9 +74,13 @@ Acceptacio: identitat i permisos comprovats al servidor i a la base de dades.
 - [x] Transaccions i restriccio de solapaments; cancel·lació i historial.
 - [x] Missatge WhatsApp amb data, pista, jugadors i claus de soci.
 - [x] `member-booking.spec.ts`: reserva, accessos, WhatsApp i dues peticions simultanies.
-- [ ] Verificació del desplegament d'aquesta entrega a producció.
+- [x] Verificació del desplegament a producció: 8 proves de socis en mòbil i
+      escriptori, incloses aprovació, revocació, reserva real i WhatsApp.
 
 Acceptacio: reserva real, persistida, sense pagament i amb comparticio wa.me.
+
+Entrega: [accés aprovat i reserves](docs/releases/2026-11-01-member-booking.md).
+SMTP pendent per habilitar l'alta i recuperació per correu al públic general.
 
 ## 4. Convidats i Stripe — en standby
 
