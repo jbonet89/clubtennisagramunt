@@ -29,13 +29,20 @@ las claims y autorizar el acceso, junto con las politicas RLS.
 
 ## Vercel
 
-Importa `jbonet89/clubtennisagramunt`, selecciona Next.js, directorio raiz `.`
-y Node.js 22.x. Usa `npm run build` y la instalacion basada en package-lock.json.
-Configura las dos variables publicas de Supabase antes de compilar. En cada
-entorno, establece `NEXT_PUBLIC_SITE_URL` en su URL correspondiente.
+Proyecto creado en el equipo `ClubTennisAgramunt` e importado desde
+`jbonet89/clubtennisagramunt`, rama `main`, con Next.js y directorio raiz `.`.
+Panel: https://vercel.com/club-tennis-agramunt/clubtennisagramunt
 
-No hay un proyecto Vercel vinculado hasta confirmar su creacion/importacion
-en el servicio. No se guardan identificadores de despliegue inventados.
+Las variables `NEXT_PUBLIC_SUPABASE_URL` y
+`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` se guardaron para Production y Preview.
+Se usa el proyecto Supabase existente `qubhsueehwdngafjjmrm`.
+La integracion nativa de Marketplace es opcional: el cliente de la aplicacion
+se conecta mediante esas variables. No es necesario crear otra base de datos.
+
+El primer despliegue sigue pendiente de verificacion. No se ha confirmado
+una URL publica de produccion. Cuando este disponible, configura
+`NEXT_PUBLIC_SITE_URL` con esa URL. Para desarrollo local, usa
+`http://localhost:3000` y conserva `.env.local` fuera de Git.
 
 ## Alcance actual
 

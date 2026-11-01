@@ -90,10 +90,12 @@ a ese proyecto. Las conexiones disponibles durante la preparacion no lo
 incluian. La clave publica permite acceso a las APIs de la aplicacion, pero
 no sustituye la autorizacion administrativa MCP.
 
-Conecta tambien Vercel con la cuenta del club para importar el repositorio
-y guardar las variables del proyecto. La configuracion remota debe
-comprobarse despues de realizar esos cambios; los archivos locales no
-demuestran que Vercel este configurado.
+Vercel: proyecto `clubtennisagramunt` creado en el equipo
+`ClubTennisAgramunt`, desde el repositorio indicado y la rama `main`.
+La URL publica y la clave publishable de Supabase estan guardadas para
+Production y Preview. La integracion nativa de Marketplace es opcional y
+su instalacion aun no se ha confirmado. El despliegue tampoco se ha
+verificado todavia.
 
 Stripe sigue pendiente. Si falta alguna credencial, indica solo su nombre.
 No compartas sus valores secretos.
