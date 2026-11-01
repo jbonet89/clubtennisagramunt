@@ -96,6 +96,7 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
   expect(error).toBeNull();
   expect(rows).toHaveLength(1);
   const saved = rows![0];
+  expect(saved.court_id).toBe(courts!.id);
   expect(saved.user_id).toBe(user.id);
   expect(saved.payment_status).toBe("free_member");
   expect(saved.source).toBe("web");

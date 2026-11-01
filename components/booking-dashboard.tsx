@@ -46,6 +46,8 @@ export function BookingDashboard({
 }) {
   const active =
     profile.member_active && ["member", "admin"].includes(profile.role);
+  const [ready, setReady] = useState(false);
+  useEffect(() => setReady(true), []);
   const [bookings, setBookings] = useState(initialBookings);
   const [members, setMembers] = useState(initialMembers);
   const [day, setDay] = useState(clubToday);
@@ -316,7 +318,7 @@ export function BookingDashboard({
             </p>
           </div>
           <form onSubmit={book} className="booking-form">
-            <fieldset disabled={Boolean(busy)}>
+            <fieldset disabled={!ready || Boolean(busy)}>
               <div className="booking-fields">
                 <label>
                   {copy.court}
