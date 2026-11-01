@@ -86,7 +86,8 @@ amb el MCP administratiu i desa les credencials aleatòries a `.env.e2e.local`
 `npx playwright test tests/e2e/member-booking.spec.ts` o tota la suite.
 Per repetir les proves de delegació, executar amb el MCP l'SQL de
 `node scripts/prepare-member-fixtures.mjs --reset-delegation-sql`: només
-restableix els quatre destinataris temporals de la mateixa tanda.
+restableix els quatre destinataris temporals i cancel·la les reserves de prova
+encara confirmades de la mateixa tanda.
 Les traces d'autenticació estan desactivades per evitar capturar contrasenyes.
 
 En acabar, executar amb el MCP l'SQL de

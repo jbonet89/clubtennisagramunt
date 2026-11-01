@@ -27,6 +27,9 @@ if (
     process.stdout.write(
       `update public.profiles p set role='guest',member_active=false from auth.users u where p.id=u.id and u.raw_app_meta_data->>'cta_e2e_run'='${saved.run}' and u.email like 'cta-e2e-%@example.test' and u.id in (${targets.join(",")});`,
     );
+    process.stdout.write(
+      `update public.bookings b set status='cancelled' from auth.users u where b.user_id=u.id and u.raw_app_meta_data->>'cta_e2e_run'='${saved.run}' and u.email like 'cta-e2e-%@example.test' and u.id in (${ids.join(",")}) and b.status='confirmed';`,
+    );
     process.exit(0);
   }
   process.stdout.write(

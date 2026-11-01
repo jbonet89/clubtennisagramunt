@@ -304,7 +304,11 @@ test("doble reserva simultània i privadesa a la base de dades", async ({}, info
     b.rpc("create_member_booking", args),
   ]);
   expect(responses.filter((r) => !r.error)).toHaveLength(1);
-  expect(responses.find((r) => r.error)?.error?.code).toBe("23P01");
+  // Concurrent exclusion checks can abort the loser with a deadlock instead.
+  // Both outcomes must leave exactly one committed booking.
+  expect(["23P01", "40P01"]).toContain(
+    responses.find((r) => r.error)?.error?.code,
+  );
   const winner = responses[0].error ? b : a;
   const loser = responses[0].error ? a : b;
   const id = responses.find((r) => !r.error)!.data;
