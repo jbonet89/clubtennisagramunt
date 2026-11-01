@@ -4,7 +4,10 @@ import { randomBytes, randomUUID } from "node:crypto";
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { hashSync } from "bcryptjs";
 
-if (process.argv.includes("--cleanup-sql")) {
+if (
+  process.argv.includes("--cleanup-sql") ||
+  process.argv.includes("--reset-delegation-sql")
+) {
   const raw = readFileSync(".env.e2e.local", "utf8").trim();
   const saved = JSON.parse(raw.slice("CTA_E2E_FIXTURE='".length, -1));
   if (!/^[0-9a-f-]{36}$/.test(saved.run))
@@ -14,6 +17,18 @@ if (process.argv.includes("--cleanup-sql")) {
       throw new Error("Invalid fixture user");
     return `'${user.id}'`;
   });
+  if (process.argv.includes("--reset-delegation-sql")) {
+    const targets = [
+      "approvalDesktop",
+      "approvalMobile",
+      "delegationDesktop",
+      "delegationMobile",
+    ].map((key) => `'${saved.users[key].id}'`);
+    process.stdout.write(
+      `update public.profiles p set role='guest',member_active=false from auth.users u where p.id=u.id and u.raw_app_meta_data->>'cta_e2e_run'='${saved.run}' and u.email like 'cta-e2e-%@example.test' and u.id in (${targets.join(",")});`,
+    );
+    process.exit(0);
+  }
   process.stdout.write(
     `with removed as (delete from auth.users where raw_app_meta_data->>'cta_e2e_run'='${saved.run}' and email like 'cta-e2e-%@example.test' and id in (${ids.join(",")}) returning id) select count(*)::int as removed_test_users from removed;`,
   );
@@ -34,6 +49,9 @@ for (const key of [
   "admin",
   "approvalDesktop",
   "approvalMobile",
+  "delegationDesktop",
+  "delegationMobile",
+  "unconfirmed",
 ]) {
   const id = randomUUID();
   const email = `cta-e2e-${run}-${key.toLowerCase()}@example.test`;
@@ -52,7 +70,7 @@ for (const key of [
     member_active: true,
   });
   sql.push(
-    `insert into auth.users(instance_id,id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at,confirmation_token,recovery_token,email_change_token_new,email_change,email_change_token_current,reauthentication_token,is_sso_user,is_anonymous) values ('00000000-0000-0000-0000-000000000000','${id}','authenticated','authenticated','${email}','${passwordHash}',now(),'${app}'::jsonb,'${metadata}'::jsonb,now(),now(),'','','','','','',false,false);`,
+    `insert into auth.users(instance_id,id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at,confirmation_token,recovery_token,email_change_token_new,email_change,email_change_token_current,reauthentication_token,is_sso_user,is_anonymous) values ('00000000-0000-0000-0000-000000000000','${id}','authenticated','authenticated','${email}','${passwordHash}',${key === "unconfirmed" ? "null" : "now()"},'${app}'::jsonb,'${metadata}'::jsonb,now(),now(),'','','','','','',false,false);`,
   );
   sql.push(
     `insert into auth.identities(id,user_id,provider_id,identity_data,provider,created_at,updated_at) values('${randomUUID()}','${id}','${id}',jsonb_build_object('sub','${id}','email','${email}','email_verified',true,'phone_verified',false),'email',now(),now());`,

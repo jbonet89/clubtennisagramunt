@@ -181,6 +181,9 @@ test("compte pendent: sense reserva ni escalada de permisos", async ({
     p_active: true,
   });
   expect(approval.error?.code).toBe("42501");
+  expect(
+    (await supabase.rpc("grant_admin", { p_user_id: pending.id })).error?.code,
+  ).toBe("42501");
   const { data: court } = await supabase
     .from("courts")
     .select("id")
@@ -200,7 +203,7 @@ test("compte pendent: sense reserva ni escalada de permisos", async ({
   expect(attempt.error?.code).toBe("42501");
 });
 
-test("la junta pot activar un soci i la validació persisteix", async ({
+test("la junta activa, revoca i delega administradors amb correu confirmat", async ({
   page,
 }, info) => {
   await login(page, fixture!.users.admin);
@@ -230,6 +233,49 @@ test("la junta pot activar un soci i la validació persisteix", async ({
       })
     ).error?.code,
   ).toBe("42501");
+  const ordinary = await client(fixture!.users.member);
+  expect(
+    (await ordinary.rpc("grant_admin", { p_user_id: target.id })).error?.code,
+  ).toBe("42501");
+  expect(
+    (
+      await admin.rpc("grant_admin", {
+        p_user_id: fixture!.users.unconfirmed.id,
+      })
+    ).error?.code,
+  ).toBe("22023");
+  page.once("dialog", (dialog) => dialog.accept());
+  await row
+    .getByRole("button", { name: "Fes administrador", exact: true })
+    .click();
+  await expect(row.getByText("Administrador", { exact: true })).toBeVisible();
+  await expect(row.getByRole("button")).toHaveCount(0);
+  const promoted = await client(target);
+  const next =
+    fixture!.users[
+      info.project.name === "desktop" ? "delegationDesktop" : "delegationMobile"
+    ];
+  expect(
+    (await promoted.rpc("grant_admin", { p_user_id: next.id })).error,
+  ).toBeNull();
+  expect(
+    (
+      await promoted
+        .from("profiles")
+        .select("role,member_active")
+        .eq("id", next.id)
+        .single()
+    ).data,
+  ).toEqual({ role: "admin", member_active: true });
+  expect(
+    await page.evaluate(
+      () => document.documentElement.scrollWidth <= window.innerWidth,
+    ),
+  ).toBe(true);
+  await page.screenshot({
+    path: `artifacts/admin-${info.project.name}.png`,
+    fullPage: true,
+  });
 });
 
 test("doble reserva simultània i privadesa a la base de dades", async ({}, info) => {

@@ -8,12 +8,19 @@ el perfil nou queda `guest`, amb `member_active=false`. No veu el formulari
 de reserva i la base de dades rebutja els intents de reservar directament.
 Les metadades enviades pel navegador no poden concedir permisos.
 
-Un administrador entra a l'àrea de socis i, a **Validació de socis**, comprova
+Un administrador entra a l'àrea de socis i, a **Socis i administradors**, comprova
 el cens i que la quota estigui al dia abans de prémer **Activa com a soci**.
 També pot desactivar les reserves. El servidor consulta l'estat actual del
 perfil en cada operació, encara que l'usuari conservi una sessió oberta.
 L'activació és manual: no cobra ni certifica un pagament. El registre de
 quotes, mandats i domiciliacions correspon a la fase 9A.
+
+Amb **Fes administrador**, un administrador actiu pot concedir el mateix rol
+a un altre compte amb correu confirmat, després d'una confirmació explícita.
+El nou administrador també pot nomenar-ne d'altres. L'operació s'autoritza a
+PostgreSQL; socis i comptes pendents no la poden executar directament.
+Els administradors existents es mostren identificats i els controls d'activació
+de socis no poden desactivar ni degradar un administrador.
 
 ## Primer administrador
 
@@ -22,6 +29,11 @@ el seu compte i confirmar-ne el correu. El trigger comprova el correu real
 confirmat a Supabase Auth i li assigna el rol inicial d'administrador.
 No es proporciona cap contrasenya predeterminada. La resta d'usuaris
 requereixen aprovació manual; cap formulari públic permet crear administradors.
+
+L'1 de novembre de 2026 s'ha aprovisionat manualment el compte **Admin**, amb
+identificador `clubtennisagramunt1974@gmail.com`, a petició del titular, i se n'ha
+comprovat l'inici de sessió. La contrasenya indicada pel titular no es desa al
+repositori ni en aquest document. Aquest compte ja pot entrar al panell.
 
 ## Correu pendent
 
@@ -72,7 +84,9 @@ autoritzat: `node scripts/prepare-member-fixtures.mjs` genera SQL per executar
 amb el MCP administratiu i desa les credencials aleatòries a `.env.e2e.local`
 (ignorat per Git). No imprimir aquest fitxer ni pujar-lo a CI. Executar després
 `npx playwright test tests/e2e/member-booking.spec.ts` o tota la suite.
-Les proves d'aprovació també desactiven els comptes per permetre repetir-les.
+Per repetir les proves de delegació, executar amb el MCP l'SQL de
+`node scripts/prepare-member-fixtures.mjs --reset-delegation-sql`: només
+restableix els quatre destinataris temporals de la mateixa tanda.
 Les traces d'autenticació estan desactivades per evitar capturar contrasenyes.
 
 En acabar, executar amb el MCP l'SQL de

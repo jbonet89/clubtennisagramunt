@@ -61,6 +61,8 @@ Registre de l'entrega: [web pública multilingüe](docs/releases/2026-11-01-publ
 - [ ] SMTP propi i prova real d'alta, confirmació i recuperació per correu.
 - [x] Altes de socis i rols aprovats pel club; un usuari no pot autoconcedir-se
       el rol de soci/admin ni activar la seva condicio de soci.
+- [x] Compte inicial Admin aprovisionat i inici de sessió comprovat; delegació
+      d'administradors només des d'un administrador actiu, amb correu confirmat.
 - [x] Proves amb usuaris soci/convidat/admin i auditories Supabase.
 
 Dependencia: accés administratiu al Supabase `qubhsueehwdngafjjmrm`.

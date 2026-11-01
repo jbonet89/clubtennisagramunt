@@ -33,6 +33,8 @@ export async function body(
   return data as Record<string, unknown>;
 }
 export function databaseError(error: { code?: string; message?: string }) {
+  if (error.message === "CONFIRMED_ACCOUNT_REQUIRED")
+    return json({ error: "confirmedAccount" }, 400);
   if (error.code === "23P01") return json({ error: "conflict" }, 409);
   if (error.code === "42501") return json({ error: "forbidden" }, 403);
   if (

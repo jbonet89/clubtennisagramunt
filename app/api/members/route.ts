@@ -8,8 +8,19 @@ export async function POST(request: NextRequest) {
     const { supabase, profile } = await getMemberSession();
     if (!profile || profile.role !== "admin" || !profile.member_active)
       return json({ error: "forbidden" }, 403);
-    const { userId, active } = await body(request);
-    if (typeof userId !== "string" || typeof active !== "boolean")
+    const { userId, active, action } = await body(request);
+    if (
+      typeof userId !== "string" ||
+      !/^[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/i.test(userId)
+    )
+      return json({ error: "invalidData" }, 400);
+    if (action === "grant_admin") {
+      const { error } = await supabase.rpc("grant_admin", {
+        p_user_id: userId,
+      });
+      return error ? databaseError(error) : json({ ok: true });
+    }
+    if (action !== undefined || typeof active !== "boolean")
       return json({ error: "invalidData" }, 400);
     const { error } = await supabase.rpc("set_member_active", {
       p_user_id: userId,

@@ -163,7 +163,12 @@ export function BookingDashboard({
       setBusy("");
     }
   }
-  async function changeMember(member: Profile) {
+  async function changeMember(member: Profile, makeAdmin = false) {
+    if (
+      makeAdmin &&
+      !window.confirm(copy.grantAdminConfirm.replace("{email}", member.email))
+    )
+      return;
     setBusy(member.id);
     setError("");
     try {
@@ -172,7 +177,9 @@ export function BookingDashboard({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: member.id,
-          active: !member.member_active,
+          ...(makeAdmin
+            ? { action: "grant_admin" }
+            : { active: !member.member_active }),
         }),
       });
       const data = await response.json();
@@ -183,7 +190,11 @@ export function BookingDashboard({
       setMembers((current) =>
         current.map((row) =>
           row.id === member.id
-            ? { ...row, role: "member", member_active: !member.member_active }
+            ? {
+                ...row,
+                role: makeAdmin ? "admin" : "member",
+                member_active: makeAdmin || !member.member_active,
+              }
             : row,
         ),
       );
@@ -512,20 +523,35 @@ export function BookingDashboard({
                     <strong>{member.full_name}</strong>
                     <p>{member.email}</p>
                     <span className="field-help">
-                      {member.member_active ? copy.active : copy.inactive}
+                      {member.role === "admin"
+                        ? copy.adminRole
+                        : member.member_active
+                          ? copy.active
+                          : copy.inactive}
                     </span>
                   </div>
-                  <Button
-                    variant="outline"
-                    disabled={Boolean(busy)}
-                    onClick={() => changeMember(member)}
-                  >
-                    {busy === member.id
-                      ? copy.loading
-                      : member.member_active
-                        ? copy.deactivate
-                        : copy.activate}
-                  </Button>
+                  {member.role !== "admin" ? (
+                    <div className="booking-card-actions">
+                      <Button
+                        variant="outline"
+                        disabled={!ready || Boolean(busy)}
+                        onClick={() => changeMember(member)}
+                      >
+                        {busy === member.id
+                          ? copy.loading
+                          : member.member_active
+                            ? copy.deactivate
+                            : copy.activate}
+                      </Button>
+                      <Button
+                        variant="outline"
+                        disabled={!ready || Boolean(busy)}
+                        onClick={() => changeMember(member, true)}
+                      >
+                        {copy.grantAdmin}
+                      </Button>
+                    </div>
+                  ) : null}
                 </li>
               ))}
             </ul>

@@ -74,7 +74,13 @@ const ca = {
   copy: "Copia el text",
   copied: "Text copiat",
   copyFailed: "Selecciona el text de la reserva i copia'l manualment.",
-  admin: "Validació de socis",
+  admin: "Socis i administradors",
+  grantAdmin: "Fes administrador",
+  adminRole: "Administrador",
+  grantAdminConfirm:
+    "Vols donar a {email} permisos per gestionar socis, reserves i nomenar altres administradors?",
+  confirmedAccount:
+    "Aquest usuari ha de confirmar el correu abans de poder ser administrador.",
   approvalHelp:
     "Abans d'activar un soci, comprova que consta al cens i que té la quota al dia. Crear o confirmar un compte no dona dret a reserves gratuïtes. L'activació és manual i no registra cap cobrament.",
   activate: "Activa com a soci",
@@ -164,7 +170,13 @@ const copies: Record<Locale, MemberCopy> = {
     copy: "Copiar texto",
     copied: "Texto copiado",
     copyFailed: "Selecciona el texto de la reserva y cópialo manualmente.",
-    admin: "Validación de socios",
+    admin: "Socios y administradores",
+    grantAdmin: "Hacer administrador",
+    adminRole: "Administrador",
+    grantAdminConfirm:
+      "¿Quieres dar a {email} permisos para gestionar socios, reservas y nombrar otros administradores?",
+    confirmedAccount:
+      "Este usuario debe confirmar su correo antes de poder ser administrador.",
     approvalHelp:
       "Antes de activar a un socio, comprueba que consta en el censo y tiene la cuota al día. Crear o confirmar una cuenta no da derecho a reservas gratuitas. La activación es manual y no registra ningún cobro.",
     activate: "Activar como socio",
@@ -250,7 +262,13 @@ const copies: Record<Locale, MemberCopy> = {
     copy: "Copy text",
     copied: "Text copied",
     copyFailed: "Select the booking text and copy it manually.",
-    admin: "Membership approval",
+    admin: "Members and administrators",
+    grantAdmin: "Make administrator",
+    adminRole: "Administrator",
+    grantAdminConfirm:
+      "Give {email} permission to manage members, bookings and appoint other administrators?",
+    confirmedAccount:
+      "This user must confirm their email before becoming an administrator.",
     approvalHelp:
       "Before activating a member, check the membership register and that their fees are up to date. Creating or confirming an account does not grant free bookings. Activation is manual and does not record a payment.",
     activate: "Activate membership",

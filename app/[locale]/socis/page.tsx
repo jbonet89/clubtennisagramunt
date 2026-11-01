@@ -38,7 +38,6 @@ export default async function MemberPage({
       ? supabase
           .from("profiles")
           .select("id,full_name,email,role,member_active")
-          .neq("role", "admin")
           .order("created_at", { ascending: false })
           .limit(200)
       : Promise.resolve({ data: [], error: null }),

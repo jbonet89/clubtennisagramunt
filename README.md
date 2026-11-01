@@ -68,6 +68,8 @@ aprovació i desactivació manual per administradors, disponibilitat de les dues
 pistes de 07:00 a 23:00, reserves gratuïtes de 60/90 minuts, cancel·lació,
 historial i text per WhatsApp. Supabase bloqueja reserves sense aprovació,
 solapaments i accés a reserves d'altres usuaris.
+Els administradors poden concedir el mateix rol a altres comptes amb correu
+confirmat des del panell **Socis i administradors**.
 
 SMTP pendent de configurar: les altes i recuperacions per correu per al públic
 general encara requereixen aquesta configuració i una prova d'entrega real.
