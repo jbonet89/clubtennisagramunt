@@ -1,6 +1,7 @@
 "use client";
+import { IconArrowUpRight } from "@tabler/icons-react";
 import { useEffect, useState, type FormEvent } from "react";
-import { Download, MessageCircle, ShieldCheck } from "lucide-react";
+import { IconDownload as Download, IconBrandWhatsapp as MessageCircle, IconShieldCheck as ShieldCheck } from "@tabler/icons-react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import { membershipMoney } from "@/lib/membership";
@@ -233,7 +234,7 @@ export function MembershipOnboarding({
         </form>
       )}
       {a?.status === "approved" && (
-        <Link href="/socis?section=reserve">{copy.approved} ↗</Link>
+        <Link href="/socis?section=reserve">{copy.approved} <IconArrowUpRight size={15} aria-hidden="true"/></Link>
       )}
     </section>
   );

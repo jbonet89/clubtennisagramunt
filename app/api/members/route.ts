@@ -31,3 +31,14 @@ export async function POST(request: NextRequest) {
     return json({ error: "invalidData" }, 400);
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    const {supabase,profile}=await getMemberSession();
+    if (!profile?.member_active || !["admin","member"].includes(profile.role)) return json({error:"forbidden"},403);
+    const query=(request.nextUrl.searchParams.get("q")??"").trim();
+    if(query.length<2 || query.length>100) return json({members:[]});
+    const {data,error}=await supabase.rpc("search_booking_members",{p_query:query});
+    return error ? databaseError(error) : json({members:data});
+  } catch {return json({error:"error"},503);}
+}

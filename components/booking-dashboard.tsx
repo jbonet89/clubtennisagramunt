@@ -1,18 +1,11 @@
 "use client";
 
+import { IconBallTennis as RacketIcon, IconClock, IconCalendarEvent, IconArrowUpRight } from "@tabler/icons-react";
+import { BookingParticipants, participantCopy } from "./booking-participants";
+import type { Participant } from "@/lib/bookings";
 import { useEffect, useState, type FormEvent } from "react";
 import { DateTime } from "luxon";
-import {
-  CalendarDays,
-  Check,
-  Copy,
-  LogOut,
-  MessageCircle,
-  Plus,
-  RefreshCw,
-  Users,
-  UserRound,
-} from "lucide-react";
+import { IconCalendar as CalendarDays, IconCheck as Check, IconCopy as Copy, IconLogout as LogOut, IconBrandWhatsapp as MessageCircle, IconPlus as Plus, IconRefresh as RefreshCw, IconUsers as Users, IconUser as UserRound } from "@tabler/icons-react";
 import { Link } from "@/i18n/navigation";
 import type { Locale } from "@/i18n/routing";
 import type { MemberCopy } from "@/messages/members";
@@ -43,23 +36,6 @@ const MembershipAdmin = dynamic(() =>
   import("./membership-admin").then((m) => m.MembershipAdmin),
 );
 import type { MembershipData } from "./membership-data";
-
-function RacketIcon({ size = 21 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      aria-hidden="true"
-    >
-      <ellipse cx="14" cy="8" rx="6" ry="7" transform="rotate(35 14 8)" />
-      <path d="m10 14-6 8-2-2 6-8M10 4l8 6M8 7l8 6M14 2l-5 10M18 4l-5 10" />
-    </svg>
-  );
-}
 
 export function BookingDashboard({
   section,
@@ -95,7 +71,13 @@ export function BookingDashboard({
   );
   const [duration, setDuration] = useState(60);
   const [startTime, setStartTime] = useState("");
-  const [players, setPlayers] = useState(profile.full_name);
+  const t = participantCopy[locale];
+  const [mode, setMode] = useState<"singles" | "doubles">("singles");
+  const [participants, setParticipants] = useState<Participant[]>([{kind:"member",name:""}]);
+  const [historySearch, setHistorySearch] = useState("");
+  const [historyFormat, setHistoryFormat] = useState("");
+  const players = [profile.full_name,...participants.map(p=>p.name)].join(" · ");
+  const validPlayers = participants.every(p=>p.kind==="guest" ? p.name.trim().length>=2 : Boolean(p.member_id));
   const [occupied, setOccupied] = useState<OccupiedSlot[] | null>(null);
   const [availabilityError, setAvailabilityError] = useState(false);
   const [refresh, setRefresh] = useState(0);
@@ -135,7 +117,7 @@ export function BookingDashboard({
     .plus({ days: settings.booking_horizon_days })
     .toISODate()!;
   const now = DateTime.now().toMillis();
-  const shown = bookings.filter((booking) =>
+  const shown = bookings.filter(b => (!historyFormat || b.match_format===historyFormat) && `${b.court_name} ${b.players}`.toLocaleLowerCase(locale).includes(historySearch.toLocaleLowerCase(locale))).filter((booking) =>
     tab === "upcoming"
       ? booking.status === "confirmed" &&
         DateTime.fromISO(booking.start_time).toMillis() > now
@@ -158,7 +140,7 @@ export function BookingDashboard({
       const response = await fetch("/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ courtId, startTime, duration, players, locale }),
+        body: JSON.stringify({ courtId, startTime, duration, players, locale, matchFormat: mode, participants }),
       });
       const data = await response.json();
       if (!response.ok) {
@@ -263,6 +245,7 @@ export function BookingDashboard({
 
   const navigation = [
     { id: "reserve", label: copy.reserveNav, icon: CalendarDays },
+    { id: "bookings", label: copy.bookingsNav, icon: IconCalendarEvent },
     {
       id: "matches",
       label:
@@ -281,7 +264,7 @@ export function BookingDashboard({
       <BookingReminders bookings={bookings} userId={profile.id} />
       {profile.role === "admin" && profile.member_active && (
         <Link href="/administracio" className="member-admin-shortcut">
-          Administració ↗
+          Administració <IconArrowUpRight size={16} aria-hidden="true"/>
         </Link>
       )}
       <nav className="member-navigation" aria-label={copy.navigation}>
@@ -300,10 +283,10 @@ export function BookingDashboard({
       </nav>
       <div className="member-content" key={section}>
         <h1 className="member-section-heading">
-          {navigation.find((item) => item.id === section)?.label}
+          {section === "matches" ? t.history : navigation.find((item) => item.id === section)?.label}
         </h1>
         {section === "matches" && active && (
-          <MemberActivity bookings={bookings} />
+          <MemberActivity bookings={bookings} locale={locale} />
         )}
         {section === "more" && (
           <section className="member-more">
@@ -344,7 +327,7 @@ export function BookingDashboard({
             <h2>{copy.pending}</h2>
             <p>{copy.pendingBody}</p>
             <a href="mailto:clubtennisagramunt1974@gmail.com">
-              clubtennisagramunt1974@gmail.com ↗
+              clubtennisagramunt1974@gmail.com <IconArrowUpRight size={15} aria-hidden="true"/>
             </a>
           </section>
         ) : null}
@@ -407,6 +390,7 @@ export function BookingDashboard({
             className="member-booking-section"
             aria-labelledby="new-booking-title"
           >
+            <p className="booking-greeting">{locale === "es" ? "Hola" : locale === "en" ? "Hello" : "Hola"}, {profile.full_name}</p>
             <div className="booking-section-title">
               <div>
                 <h2 id="new-booking-title">
@@ -428,6 +412,8 @@ export function BookingDashboard({
             </div>
             <form onSubmit={book} className="booking-form">
               <fieldset disabled={!ready || Boolean(busy)}>
+                <div className="court-options" role="group" aria-label={copy.court}>{courts.map((court,i)=><button key={court.id} type="button" disabled={court.status!=="active"} aria-pressed={courtId===court.id} onClick={()=>{setCourtId(court.id);setStartTime("");}}><span>{court.name}</span><strong>{court.surface==="clay"?"Terra batida":"Quick"}</strong><span className="court-lines" aria-hidden="true"/><small>{String(i+1).padStart(2,"0")}</small></button>)}</div>
+                <div className="quick-days" role="group" aria-label={`${copy.date} · 5`}>{Array.from({length:Math.min(5,settings.booking_horizon_days+1)},(_,i)=>DateTime.fromISO(clubToday(),{zone:CLUB_ZONE}).plus({days:i})).map(d=><button type="button" key={d.toISODate()} aria-pressed={day===d.toISODate()} onClick={()=>setDay(d.toISODate()!)}><span>{d.setLocale(locale).toFormat("ccc")}</span><strong>{d.day}</strong></button>)}</div>
                 <div className="booking-fields">
                   <label>
                     {copy.court}
@@ -493,17 +479,11 @@ export function BookingDashboard({
                       ))}
                     </select>
                   </label>
-                  <label className="players-field">
-                    {copy.players}
-                    <input
-                      value={players}
-                      onChange={(event) => setPlayers(event.target.value)}
-                      required
-                      minLength={2}
-                      maxLength={160}
-                    />
-                  </label>
+
                 </div>
+                {occupied && !availabilityError && <div className="slot-options" role="group" aria-label={copy.time}>{slots.map(slot=><button key={slot.value} type="button" aria-pressed={startTime===slot.value} onClick={()=>setStartTime(slot.value)}><IconClock size={16} aria-hidden="true"/>{slot.label.split(" (")[0]}</button>)}</div>}
+                <BookingParticipants locale={locale} mode={mode} setMode={setMode} participants={participants} onChange={setParticipants} name={profile.full_name} userId={profile.id}/>
+                <div className="booking-summary"><h3>{t.summary}</h3><p>{courts.find(c=>c.id===courtId)?.name} · {day} · {duration} min · {t[mode]}</p><p>{startTime ? slots.find(s=>s.value===startTime)?.label : copy.chooseTime}</p><p>{players}</p><strong>{copy.free}</strong></div>
                 {availabilityError ? (
                   <p role="alert" className="form-error">
                     {copy.availabilityError}
@@ -517,7 +497,7 @@ export function BookingDashboard({
                   <Button
                     type="submit"
                     disabled={
-                      !validSlot || availabilityError || !players.trim()
+                      !validSlot || availabilityError || !validPlayers
                     }
                   >
                     {busy === "booking" ? copy.loading : copy.confirm}
@@ -541,7 +521,7 @@ export function BookingDashboard({
           >
             <h2 id="reservations-title">
               <CalendarDays size={24} aria-hidden="true" />
-              {copy.upcoming}
+              {tab === "upcoming" ? copy.upcoming : copy.past}
             </h2>
             <div className="member-tabs" role="group" aria-label={copy.area}>
               <Button
@@ -559,6 +539,7 @@ export function BookingDashboard({
                 {copy.past}
               </Button>
             </div>
+            <div className="history-filters"><label>{t.filter}<input type="search" value={historySearch} onChange={e=>setHistorySearch(e.target.value)}/></label><label>{t.mode}<select value={historyFormat} onChange={e=>setHistoryFormat(e.target.value)}><option value="">{t.all}</option><option value="singles">{t.singles}</option><option value="doubles">{t.doubles}</option></select></label></div>
             {!shown.length ? (
               <p className="empty-bookings">{copy.empty}</p>
             ) : (
@@ -581,7 +562,7 @@ export function BookingDashboard({
                         <h3>{booking.court_name}</h3>
                         <p>{formatted.date}</p>
                         <strong>{formatted.time}</strong>
-                        <p>{booking.players}</p>
+                        <p>{booking.players}</p><p>{booking.match_format ? t[booking.match_format] : ""}{booking.participants?.some(p=>p.kind==="guest") ? ` · ${t.guest}` : ""}</p>
                         <span className="field-help">{copy.free}</span>
                       </div>
                       {tab === "upcoming" ? (

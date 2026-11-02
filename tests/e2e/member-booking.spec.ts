@@ -80,8 +80,10 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
   await expect(time.locator("option")).not.toHaveCount(1);
   const start = await time.locator("option").nth(1).getAttribute("value");
   await time.selectOption(start!);
-  const players = `CTA ${info.project.name} & Gener ${Date.now()}`;
-  await page.getByLabel("Jugadors", { exact: true }).fill(players);
+  const guest = `CTA ${info.project.name} & Gener ${Date.now()}`;
+  const players = `${user.name} · ${guest}`;
+  await page.locator(".participant-row select").selectOption("guest");
+  await page.getByLabel("Nom i cognoms del convidat", { exact: true }).fill(guest);
   await page
     .getByRole("button", { name: "Confirma la reserva gratuïta" })
     .click();

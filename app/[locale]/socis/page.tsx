@@ -55,7 +55,7 @@ export default async function MemberPage({
         .single(),
       supabase
         .from("bookings")
-        .select("id,court_id,players,start_time,end_time,status,payment_status")
+        .select("id,court_id,players,start_time,end_time,status,payment_status,match_format,participants")
         .eq("user_id", profile.id)
         .order("start_time", { ascending: false })
         .limit(100),

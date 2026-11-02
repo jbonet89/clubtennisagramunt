@@ -1,3 +1,4 @@
+import { IconArrowUpRight } from "@tabler/icons-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
@@ -28,7 +29,7 @@ export function MemberShell({
           </span>
         </Link>
         <div className="member-topbar-links">
-          <Link href="/">{copy.home} ↗</Link>
+          <Link href="/">{copy.home} <IconArrowUpRight size={15} aria-hidden="true"/></Link>
           <nav className="language-nav" aria-label="CA / ES / EN">
             {routing.locales.map((language) => (
               <Link

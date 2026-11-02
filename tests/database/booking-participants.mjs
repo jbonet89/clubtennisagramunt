@@ -1,0 +1,38 @@
+import {PGlite} from '@electric-sql/pglite';
+import {readFileSync} from 'node:fs';
+const db=new PGlite();
+await db.exec(`create role anon; create role authenticated; create schema auth; create schema private;
+create function auth.uid() returns uuid language sql as $$select current_setting('test.uid',true)::uuid$$;
+create table public.profiles(id uuid primary key,full_name text,member_active boolean,role text);
+create table public.bookings(id uuid primary key default gen_random_uuid(),user_id uuid,court_id uuid,players text constraint bookings_players_check check(length(players)<=160),start_time timestamptz,end_time timestamptz,status text default 'confirmed');
+create table public.admin_sections(id text primary key, enabled boolean default true);
+create function private.admin_section_enabled(s text) returns boolean language sql as $$select exists(select 1 from public.profiles where id=auth.uid() and role='admin' and member_active) and exists(select 1 from public.admin_sections where id=s and enabled)$$;
+create function private.make_booking(c uuid,t timestamptz,d integer,p text) returns uuid language plpgsql as $$declare i uuid; begin insert into public.bookings(user_id,court_id,players,start_time,end_time) values(auth.uid(),c,p,t,t+make_interval(mins=>d)) returning id into i;return i; end$$;
+insert into public.profiles values('10000000-0000-4000-8000-000000000001','Anna Soler',true,'admin'),('10000000-0000-4000-8000-000000000002','Joan Puig',true,'member'),('10000000-0000-4000-8000-000000000003','Inactive',false,'member');
+set test.uid='10000000-0000-4000-8000-000000000001';`);
+await db.exec(readFileSync('supabase/migrations/20261102140000_booking_participants.sql','utf8'));
+const court='20000000-0000-4000-8000-000000000001';
+const member={kind:'member',member_id:'10000000-0000-4000-8000-000000000002',name:'FORGED'};
+const create=(mode,people)=>db.query('select public.create_participant_booking($1,$2,60,$3,$4::jsonb) id',[court,'2025-01-01T08:00:00Z',mode,JSON.stringify(people)]);
+async function rejects(fn,label){try{await fn();throw Error('ACCEPTED '+label);}catch(e){if(e.message.startsWith('ACCEPTED'))throw e;}}
+await create('singles',[member]);
+await create('doubles',[member,{kind:'guest',name:'Marta Rius'},{kind:'guest',name:'Pau Vila'}]);
+let rows=await db.query('select players,participants from bookings');
+if(rows.rows.some(r=>r.players.includes('FORGED'))||rows.rows[1].participants.length!==4)throw Error('Canonical participants failed');
+await rejects(()=>create('doubles',[member]),'wrong player count');
+await rejects(()=>create('doubles',[member,member,{kind:'guest',name:'Test'}]),'duplicate member');
+await rejects(()=>create('singles',[{kind:'member',member_id:'10000000-0000-4000-8000-000000000003'}]),'inactive member');
+await rejects(()=>create('singles',[{kind:'guest',name:'A'}]),'short guest');
+let guests=(await db.query('select * from public.guest_participation_stats()')).rows;
+if(guests.length!==2||Number(guests[0].appearances)!==1)throw Error('Wrong stats');
+await db.exec("update bookings set status='cancelled' where match_format='doubles'");
+if((await db.query('select * from public.guest_participation_stats()')).rows.length)throw Error('Cancelled counted');
+const search=(await db.query("select * from public.search_booking_members('Joan')")).rows;
+if(search.length!==1||Object.keys(search[0]).length!==2)throw Error('Search leaks data');
+await db.exec("update bookings set status='confirmed',start_time=now()+interval '2 days',end_time=now()+interval '2 days 1 hour' where match_format='doubles'");
+if((await db.query('select * from public.guest_participation_stats()')).rows.length)throw Error('Future counted');
+if((await db.query("select * from public.search_booking_members('Inactive')")).rows.length)throw Error('Inactive member in search');
+await db.exec("set test.uid='10000000-0000-4000-8000-000000000002'");
+await rejects(()=>db.query('select * from public.guest_participation_stats()'),'non-admin stats');
+await db.close();console.log('SQL OK: migration, singles/doubles, canonical names, invalid counts, duplicate/inactive members, guests, cancelled exclusion, private search and admin-only stats. Existing availability RPC stubbed; live Supabase not tested.');
+

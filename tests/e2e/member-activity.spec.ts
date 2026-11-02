@@ -8,7 +8,7 @@ test("member navigation, profile, reminders and empty results",async({page},info
  const user=fixture.users.member;
  await page.goto("/ca/acces");await page.getByLabel("Correu electrònic",{exact:true}).fill(user.email);await page.getByLabel("Contrasenya",{exact:true}).fill(user.password);await page.getByRole("button",{name:"Entra",exact:true}).click();await expect(page).toHaveURL(/socis/);
  const nav=page.getByRole("navigation",{name:"Navegació de socis"});
- await expect(nav.getByRole("link")).toHaveCount(4);
+ await expect(nav.getByRole("link")).toHaveCount(5);
  await nav.getByRole("link",{name:"Partits"}).click();await expect(page.getByRole("heading",{name:"Partits i estadístiques"})).toBeVisible();await expect(page.locator("meter")).toHaveCount(3);
  await nav.getByRole("link",{name:"El meu compte"}).click();await expect(page.getByRole("heading",{name:"Notificacions",exact:true})).toBeVisible();await page.getByLabel("Recordatori de reserva").selectOption("60");await expect(page.getByLabel("Recordatori de reserva")).toHaveValue("60");
  await page.getByLabel("Telèfon",{exact:true}).fill("600000000");await page.getByRole("button",{name:"Desar perfil",exact:true}).click();await expect(page.getByRole("status")).toHaveText("Dades desades.");

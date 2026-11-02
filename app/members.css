@@ -480,4 +480,70 @@
 
 .member-admin-shortcut,.member-reminder{grid-column:1/-1}.member-statistics meter{appearance:auto}.member-content button:focus-visible{outline:3px solid #16449a;outline-offset:3px}
 
-.member-content>section{margin-bottom:32px}.member-content>section>form{display:grid;gap:18px;max-width:620px;margin:24px 0}.member-content>section>form label{display:grid;gap:8px}.member-content>section>form button,.member-content>section>button{display:inline-flex;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #315e98;border-radius:8px;background:#16449a;color:white;cursor:pointer}.member-content>section>h2{margin:28px 0 16px}.member-content>section>label{display:grid;gap:8px;margin:18px 0}.member-content>section>p{margin:16px 0;line-height:1.65}
+.member-content>section{margin-bottom:32px}.member-content>section>form{display:grid;gap:18px;max-width:620px;margin:24px 0}.member-content>section>form label{display:grid;gap:8px}.member-content>section>form>button,.member-content>section>button{display:inline-flex;justify-content:center;min-height:44px;padding:10px 18px;border:1px solid #315e98;border-radius:8px;background:#16449a;color:white;cursor:pointer}.member-content>section>h2{margin:28px 0 16px}.member-content>section>label{display:grid;gap:8px;margin:18px 0}.member-content>section>p{margin:16px 0;line-height:1.65}
+/* Member portal: the club’s sand, cobalt and clay palette. */
+.member-app { background: #fbf9f3; color:#1b1c18; }
+.member-app ::selection { background:#d0f038; color:#181e00; }
+.member-app input { caret-color:#1434cb; }
+.member-main { max-width:1440px; padding-top:36px; }
+.member-workspace { grid-template-columns:216px minmax(0,1fr); gap:38px; }
+.member-content h1,.member-content h2,.member-content h3 { font-family:var(--font-space),sans-serif; color:#1b1c18; }
+.member-navigation a {color:#444655;}
+.member-navigation a:hover {background:#eae8e2;color:#001f9d;}
+.member-navigation a[aria-current=page] {background:#001f9d;color:white;}
+.member-content .member-booking-section,.member-content .member-reservations {padding:28px;border:0;background:white;}
+.member-content>.member-booking-section>form {max-width:none;margin-bottom:0;}
+.booking-greeting {font-size:16px;color:#444655;}
+.court-options {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:24px;}
+.court-options button {position:relative;overflow:hidden;display:flex;flex-direction:column;align-items:flex-start;gap:9px;min-height:142px;padding:18px;background:#f0eee8;color:#1b1c18;border:1px solid transparent;border-radius:12px;text-align:left;cursor:pointer;}
+.court-options button[aria-pressed=true] {background:#a23e18;color:white;}
+.court-options button:disabled {opacity:.5;cursor:not-allowed;}
+.court-options strong {font-size:19px;z-index:1;}
+.court-options small {position:absolute;right:12px;bottom:4px;font-size:46px;opacity:.18;}
+.court-lines {position:absolute;width:65px;height:96px;border:1px solid currentColor;right:10px;top:38px;opacity:.15;transform:rotate(20deg);}
+.court-lines:before,.court-lines:after {content:"";position:absolute;inset:12px 8px;border:1px solid currentColor;}
+.court-lines:after {inset:46px 0 auto;border-width:1px 0 0;}
+.quick-days {display:flex;gap:8px;margin:0 0 24px;}
+.quick-days button {display:grid;gap:4px;flex:1;max-width:88px;min-height:70px;padding:10px;background:#f0eee8;border-radius:8px;cursor:pointer;}
+.quick-days strong {font-size:23px;}
+.quick-days button[aria-pressed=true],.format-control button[aria-pressed=true],.slot-options button[aria-pressed=true] {background:#001f9d;color:white;border-color:#001f9d;}
+.slot-options {display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin:24px 0;max-height:300px;overflow:auto;scrollbar-color:#757686 #f0eee8;}
+.slot-options button {display:flex;align-items:center;justify-content:center;gap:7px;min-height:48px;padding:10px;border:1px solid #c5c5d8;border-radius:8px;background:#fbf9f3;font-size:13px;cursor:pointer;font-variant-numeric:tabular-nums;}
+.booking-players {margin:30px 0;border-top:1px solid #e4e2dd;padding-top:24px;}
+.booking-players h3 {display:flex;align-items:center;gap:10px;font-size:21px;margin-bottom:18px;}
+.format-control {display:flex;gap:8px;}
+.format-control button {min-height:46px;padding:10px 20px;border:1px solid #757686;border-radius:8px;cursor:pointer;}
+.participant-self {display:flex;align-items:center;gap:10px;padding:18px 0;color:#444655;}
+.participant-row {display:grid;grid-template-columns:180px minmax(0,1fr);gap:16px;padding:16px 0;border-top:1px solid #e4e2dd;}
+.participant-row label {display:grid;gap:8px;font-size:13px;}
+.member-search label svg {display:none;}
+.member-search>button {display:flex;align-items:center;gap:8px;width:100%;min-height:44px;text-align:left;padding:10px;background:#f0eee8;border-bottom:1px solid #c5c5d8;cursor:pointer;}
+.booking-summary {background:#f5f3ed;padding:20px;border-radius:12px;line-height:1.8;overflow-wrap:anywhere;}
+.booking-summary h3 {font-size:19px;margin-bottom:8px;}
+.booking-summary p {font-size:14px;}
+.history-filters {display:grid;grid-template-columns:2fr 1fr;gap:16px;margin:24px 0;}
+.history-filters label {display:grid;gap:8px;font-size:13px;}
+.booking-card {border:0;border-radius:0;border-top:1px solid #e4e2dd;padding:24px 0;}
+.booking-list {gap:0;}
+.booking-card p,.booking-card strong {font-variant-numeric:tabular-nums;}
+.member-activity {background:white;padding:28px;border-radius:14px;}
+.member-activity .member-statistics {grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;padding:24px 0;border-block:1px solid #e4e2dd;}
+.member-statistics strong {font-size:14px;}
+.match-history {margin-top:24px;}
+.match-history article {display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;padding:20px 0;border-bottom:1px solid #e4e2dd;}
+.match-history p {font-size:14px;color:#444655;line-height:1.8;}
+.match-history strong {font-variant-numeric:tabular-nums;}
+.member-admin-shortcut {display:flex;align-items:center;justify-content:flex-end;gap:6px;}
+@media(max-width:900px){.member-workspace{grid-template-columns:180px minmax(0,1fr);gap:24px}.court-options{gap:8px}.court-options button{padding:12px}.participant-row{grid-template-columns:1fr}.member-activity .member-statistics{grid-template-columns:1fr;}}
+@media(max-width:760px){.member-workspace{display:block}.member-navigation{grid-template-columns:repeat(5,minmax(0,1fr));}.member-navigation a{font-size:10px;padding:6px 2px}.member-navigation a[aria-current=page]{background:#dee0ff;color:#001f9d}.member-content .member-booking-section,.member-content .member-reservations,.member-activity{padding:20px 16px}.court-options{grid-template-columns:repeat(3,minmax(0,1fr))}.court-options button{min-height:116px;padding:12px 8px;gap:8px;font-size:11px}.court-options strong{font-size:14px}.court-options small{font-size:32px}.history-filters{grid-template-columns:1fr}.booking-fields{grid-template-columns:1fr 1fr}.match-history article{grid-template-columns:1fr}.member-main{padding-inline:16px}.member-topbar-links{gap:10px}}
+@media(prefers-reduced-motion:reduce){.member-app *{scroll-behavior:auto;transition:none;animation:none}}
+@font-face {font-family:'Space Grotesk';src:url('/fonts/space-grotesk.ttf') format('truetype');font-weight:300 700;font-display:swap;}
+@font-face {font-family:'Plus Jakarta Sans';src:url('/fonts/plus-jakarta-sans.ttf') format('truetype');font-weight:200 800;font-display:swap;}
+.member-app {--font-space:'Space Grotesk';font-family:'Plus Jakarta Sans',sans-serif;--primary:#001f9d;--primary-foreground:#fff;--border:#e4e2dd;}
+.member-app input:hover,.member-app select:hover{border-color:#757686;}
+.quick-days button:hover,.format-control button:hover,.slot-options button:hover{outline:1px solid #001f9d;outline-offset:2px;}
+
+
+.booking-form fieldset{min-inline-size:0;min-width:0;width:100%}.booking-form fieldset>div{min-width:0}.court-options button,.quick-days button{min-width:0}.member-navigation{align-self:start}.member-content>section>form{min-width:0}.member-app .booking-form-actions button{white-space:normal}
+
+.member-topbar-links>a{display:inline-flex;align-items:center;gap:5px;white-space:nowrap}.match-history h4 svg,.match-history p svg,.match-history strong svg{display:inline-block;vertical-align:middle;margin-right:5px}.member-activity h3{font-size:20px;margin-top:28px}.member-activity meter::-webkit-meter-optimum-value{background:#001f9d}.member-activity meter::-moz-meter-bar{background:#001f9d}

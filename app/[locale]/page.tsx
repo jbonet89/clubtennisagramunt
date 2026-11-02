@@ -3,7 +3,7 @@ import Image from "next/image";
 import { hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { notFound } from "next/navigation";
-import { ArrowDown, ArrowUpRight, MapPin, MoveUpRight } from "lucide-react";
+import { IconArrowUp, IconArrowDown as ArrowDown, IconArrowUpRight as ArrowUpRight, IconMapPin as MapPin, IconArrowUpRight as MoveUpRight } from "@tabler/icons-react";
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/components/site-header";
 import { CourtPhoto } from "@/components/court-photo";
@@ -186,7 +186,7 @@ export default async function Home({ params }: Props) {
             </div>
             <figcaption>
               {t("club.photo")}
-              <span>CTA ↗</span>
+              <span>CTA <ArrowUpRight size={16} aria-hidden="true"/></span>
             </figcaption>
           </figure>
         </section>
@@ -296,7 +296,7 @@ export default async function Home({ params }: Props) {
         <span>
           © {new Date().getUTCFullYear()} {t("footer.copyright")}
         </span>
-        <a href="#main">{t("footer.back")} ↑</a>
+        <a href="#main">{t("footer.back")} <IconArrowUp size={16} aria-hidden="true"/></a>
       </footer>
     </>
   );

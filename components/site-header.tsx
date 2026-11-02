@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { ArrowUpRight, Menu, X } from "lucide-react";
+import { IconArrowUpRight as ArrowUpRight, IconMenu2 as Menu, IconX as X } from "@tabler/icons-react";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
 import { Button, buttonVariants } from "@/components/ui/button";

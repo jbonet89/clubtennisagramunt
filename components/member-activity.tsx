@@ -1,15 +1,53 @@
 "use client";
 import {useEffect,useState,type FormEvent} from "react";
+import { IconTrophy, IconBallTennis, IconCalendar } from "@tabler/icons-react";
+import { activityCopy } from "@/messages/activity";
+import type { Locale } from "@/i18n/routing";
 import type {Booking,Profile} from "@/lib/bookings";
 type Result={booking_id:string;sets:number[][]};
 async function post(value:unknown){const r=await fetch("/api/activity",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(value)});const d=await r.json();if(!r.ok)throw Error(d.error);}
-export function MemberActivity({bookings}:{bookings:Booking[]}){
- const [results,setResults]=useState<Result[]>([]);const [message,setMessage]=useState("");const [busy,setBusy]=useState(false);
- useEffect(()=>{fetch("/api/activity",{cache:"no-store"}).then(async r=>{const d=await r.json();if(!r.ok)throw Error(d.error);setResults(d.results);}).catch(e=>setMessage(e.message));},[]);
+export function MemberActivity({bookings,locale="ca"}:{bookings:Booking[];locale?:Locale}) {
+ const t=activityCopy[locale];
+ const [search,setSearch]=useState("");
+ const [format,setFormat]=useState("");
+ const [results,setResults]=useState<Result[]>([]);
+ const [message,setMessage]=useState("");
+ const [loading,setLoading]=useState(true);
+ const [busy,setBusy]=useState(false);
+ useEffect(()=>{
+   const controller=new AbortController();
+   setLoading(true);
+   fetch("/api/activity",{cache:"no-store",signal:controller.signal})
+     .then(async r=>{if(!r.ok)throw Error();const d=await r.json();setResults(d.results);})
+     .catch(()=>{if(!controller.signal.aborted)setMessage(t.error);})
+     .finally(()=>{if(!controller.signal.aborted)setLoading(false);});
+   return ()=>controller.abort();
+ },[t]);
  const eligible=bookings.filter(b=>b.status==="confirmed"&&new Date(b.end_time).getTime()<=Date.now());
+ const shown=eligible.filter(b=>(!format||b.match_format===format)&&`${b.players} ${b.court_name}`.toLocaleLowerCase(locale).includes(search.toLocaleLowerCase(locale)));
  const totals=results.reduce((a,r)=>{let own=0,other=0;r.sets.forEach(([x,y])=>{a.games+=x;a.totalGames+=x+y;if(x>y){own++;a.sets++;}else other++;a.totalSets++;});if(own>other)a.wins++;if(own!==other)a.matches++;return a;},{wins:0,matches:0,games:0,totalGames:0,sets:0,totalSets:0});
- async function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();setBusy(true);setMessage("");const fd=new FormData(e.currentTarget);const booking_id=String(fd.get("booking_id"));const sets=String(fd.get("score")).trim().split(/\s+/).map(s=>s.split("-").map(Number));try{await post({booking_id,sets});setResults(rs=>[...rs.filter(r=>r.booking_id!==booking_id),{booking_id,sets}]);setMessage("Resultat desat.");}catch(e){setMessage((e as Error).message);}finally{setBusy(false);}}
- return <section className="member-activity"><h2>Partits i estadístiques</h2><p>Resultats personals de les teves reserves finalitzades. Introdueix primer els teus jocs i després els del rival.</p>{message&&<p role="status">{message}</p>}<div className="member-statistics">{[["Partits guanyats",totals.wins,totals.matches],["Jocs guanyats",totals.games,totals.totalGames],["Sets guanyats",totals.sets,totals.totalSets]].map(([label,value,total])=><div key={label}><strong>{label}: {value} / {total}</strong><meter aria-label={String(label)} min={0} max={Number(total)||1} value={Number(value)}/></div>)}</div><p>Els partits amb empat de sets no compten com a victòria o derrota.</p>{!eligible.length?<p>Encara no tens reserves finalitzades per introduir resultats.</p>:<form onSubmit={submit} className="booking-form"><label>Partit<select name="booking_id" required>{eligible.map(b=><option key={b.id} value={b.id}>{new Date(b.start_time).toLocaleDateString("ca-ES",{timeZone:"Europe/Madrid"})} · {b.players}</option>)}</select></label><label>Resultat per sets<input name="score" required placeholder="6-4 3-6 7-5" pattern="[0-7]-[0-7]( [0-7]-[0-7]){0,4}"/></label><p>Sets acabats, màxim cinc. Torna a desar el mateix partit per corregir-lo.</p><button disabled={busy}>{busy?"Desant…":"Desar resultat"}</button></form>}<h3>Historial de resultats</h3>{results.map(r=><p key={r.booking_id}>{bookings.find(b=>b.id===r.booking_id)?.players??"Partit"}: {r.sets.map(s=>s.join("–")).join(" · ")}</p>)}</section>;
+ async function submit(e:FormEvent<HTMLFormElement>) {
+   e.preventDefault();setBusy(true);setMessage("");
+   const fd=new FormData(e.currentTarget);
+   const booking_id=String(fd.get("booking_id"));
+   const sets=String(fd.get("score")).trim().split(/\s+/).map(s=>s.split("-").map(Number));
+   try {await post({booking_id,sets});setResults(rs=>[...rs.filter(r=>r.booking_id!==booking_id),{booking_id,sets}]);setMessage(t.saved);}
+   catch {setMessage(t.saveError);} finally {setBusy(false);}
+ }
+ return <section className="member-activity">
+   <h2>{t.title}</h2><p>{t.intro}</p>
+   {message&&<p role="status">{message}</p>}
+   {loading?<p role="status">{t.loading}</p>:<div className="member-statistics">{[[t.wonMatches,totals.wins,totals.matches],[t.wonGames,totals.games,totals.totalGames],[t.wonSets,totals.sets,totals.totalSets]].map(([label,value,total])=><div key={label}><strong>{label}: {value} / {total}</strong><meter aria-label={String(label)} min={0} max={Number(total)||1} value={Number(value)}/></div>)}</div>}
+   <p>{t.draws}</p>
+   {!eligible.length?<p>{t.noMatches}</p>:<form onSubmit={submit} className="booking-form">
+     <label>{t.match}<select name="booking_id" required>{eligible.map(b=><option key={b.id} value={b.id}>{new Date(b.start_time).toLocaleDateString(locale,{timeZone:"Europe/Madrid"})} · {b.players}</option>)}</select></label>
+     <label>{t.score}<input name="score" required placeholder="6-4 3-6 7-5" pattern="[0-7]-[0-7]( [0-7]-[0-7]){0,4}"/></label>
+     <p>{t.help}</p><button disabled={busy||loading}>{busy?t.saving:t.save}</button>
+   </form>}
+   <h3>{t.history}</h3>
+   <div className="history-filters"><label>{t.search}<input type="search" value={search} onChange={e=>setSearch(e.target.value)}/></label><label>{t.mode}<select value={format} onChange={e=>setFormat(e.target.value)}><option value="">{t.all}</option><option value="singles">{t.singles}</option><option value="doubles">{t.doubles}</option></select></label></div>
+   <div className="match-history">{shown.map(b=>{const r=results.find(r=>r.booking_id===b.id);return <article key={b.id}><div><h4><IconBallTennis size={18} aria-hidden="true"/> {b.players}</h4><p><IconCalendar size={16} aria-hidden="true"/> {new Date(b.start_time).toLocaleDateString(locale,{timeZone:"Europe/Madrid"})} · {b.court_name}{b.match_format?` · ${t[b.match_format]}`:""}</p></div><strong>{loading?t.loading:r?<><IconTrophy size={17} aria-hidden="true"/> {r.sets.map(s=>s.join("–")).join(" · ")}</>:t.pending}</strong></article>})}{!shown.length&&<p>{t.noResults}</p>}</div>
+ </section>;
 }
 export function MemberProfile({profile}:{profile:Profile}){
  const [name,setName]=useState(profile.full_name);const [phone,setPhone]=useState("");const [message,setMessage]=useState("");const [busy,setBusy]=useState(false);const [minutes,setMinutes]=useState("30");

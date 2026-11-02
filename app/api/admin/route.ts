@@ -15,6 +15,7 @@ export async function GET(){
  if(enabled(section)){const r=await supabase.from(table).select("*").order(section==="families"?"name":"created_at",{ascending:false}).limit(500);if(r.error)return reply({error:"No s’han pogut carregar les dades."},500);data[section]=r.data;}}
  if(enabled("permisos")){const r=await supabase.from("profiles").select("id,full_name,email,role,member_active").limit(500);if(r.error)return reply({error:"No s’han pogut carregar els permisos."},500);data.profiles=r.data;}
  if(enabled("documents")){const r=await supabase.storage.from("club-documents").list("mandats",{limit:500});if(r.error)return reply({error:"No s’han pogut carregar els documents."},500);data.documents=r.data;}
+ if(enabled("convidats")){const r=await supabase.rpc("guest_participation_stats");if(r.error)return reply({error:"No s’han pogut carregar els convidats."},503);data.convidats=r.data;}
  return reply(data);
 }
 export async function POST(request:NextRequest){

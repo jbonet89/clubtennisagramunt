@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowUpRight, Clock3, KeyRound } from "lucide-react";
+import { IconArrowUpRight as ArrowUpRight, IconClock as Clock3, IconKey as KeyRound } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
 import { CourtPhoto } from "./court-photo";
 import { Link } from "@/i18n/navigation";

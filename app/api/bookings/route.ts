@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
     if (!profile.member_active || !["member", "admin"].includes(profile.role))
       return json({ error: "forbidden" }, 403);
     const input = await body(request);
-    const { courtId, startTime, duration, players } = input;
+    const { courtId, startTime, duration, players, matchFormat, participants } = input;
     if (
       typeof courtId !== "string" ||
       !/^[\da-f]{8}(-[\da-f]{4}){3}-[\da-f]{12}$/i.test(courtId) ||
@@ -41,21 +41,23 @@ export async function POST(request: NextRequest) {
       ![60, 90].includes(Number(duration)) ||
       typeof players !== "string" ||
       players.trim().length < 2 ||
-      players.length > 160 ||
+      players.length > 410 ||
       /[\x00-\x1f\x7f]/.test(players)
     )
       return json({ error: "invalidData" }, 400);
-    const { data: id, error } = await supabase.rpc("create_member_booking", {
+    if (!["singles","doubles"].includes(String(matchFormat)) || !Array.isArray(participants) || participants.length !== (matchFormat === "singles" ? 1 : 3)) return json({error:"invalidData"},400);
+    const { data: id, error } = await supabase.rpc("create_participant_booking", {
       p_court_id: courtId,
       p_start_time: startTime,
       p_duration: Number(duration),
-      p_players: players.trim(),
+      p_match_format: matchFormat,
+      p_participants: participants,
     });
     if (error) return databaseError(error);
     const [saved, court] = await Promise.all([
       supabase
         .from("bookings")
-        .select("id,court_id,players,start_time,end_time,status,payment_status")
+        .select("id,court_id,players,start_time,end_time,status,payment_status,match_format,participants")
         .eq("id", id)
         .single(),
       supabase.from("courts").select("name").eq("id", courtId).single(),

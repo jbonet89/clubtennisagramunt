@@ -18,7 +18,10 @@ export type OccupiedSlot = {
   start_time: string;
   end_time: string;
 };
+export type Participant = { kind: "member" | "guest"; member_id?: string; name: string };
 export type Booking = {
+  match_format?: "singles" | "doubles" | null;
+  participants?: Participant[];
   id: string;
   court_id: string;
   players: string;
