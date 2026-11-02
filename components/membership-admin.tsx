@@ -1,12 +1,37 @@
 "use client";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
+import {
+  IconFileText,
+  IconCheck,
+  IconArrowUpRight,
+  IconClock,
+} from "@tabler/icons-react";
+import { administrationCopy } from "@/messages/administration";
+import type { MembershipData } from "./membership-data";
 import type { Locale } from "@/i18n/routing";
 import { membershipCopy } from "@/messages/membership";
 import { membershipMoney, type MembershipApplication } from "@/lib/membership";
 import { membershipAction, useMembershipData } from "./membership-data";
-export function MembershipAdmin({ locale }: { locale: Locale }) {
+export function MembershipAdmin({
+  locale,
+  compact = false,
+  onDataChange,
+}: {
+  locale: Locale;
+  compact?: boolean;
+  onDataChange?: (data: MembershipData | undefined) => void;
+}) {
+  const t = administrationCopy[locale];
+  const [allApplications, setAllApplications] = useState(false);
   const copy = membershipCopy(locale),
     { data, error, setError, refresh } = useMembershipData();
+  useEffect(() => {
+    onDataChange?.(data);
+  }, [data, onDataChange]);
+  const shownApplications =
+    data?.applications?.filter(
+      (a) => !compact || allApplications || a.status !== "approved",
+    ) ?? [];
   const [busy, setBusy] = useState(false),
     [saved, setSaved] = useState(false);
   async function action(payload: Record<string, unknown>) {
@@ -43,10 +68,20 @@ export function MembershipAdmin({ locale }: { locale: Locale }) {
   }
   return (
     <section
-      className="membership-admin"
+      className={`membership-admin ${compact ? "membership-admin-queue" : ""}`}
       aria-labelledby="membership-admin-title"
     >
-      <h2 id="membership-admin-title">{copy.admin}</h2>
+      <div className="membership-queue-heading">
+        <h2 id="membership-admin-title">
+          {compact ? t.reviewQueue : copy.admin}
+        </h2>
+        {compact && (
+          <span>
+            {data?.applications?.filter((a) => a.status !== "approved")
+              .length ?? "…"}
+          </span>
+        )}
+      </div>
       {error && (
         <p className="form-error" role="alert">
           {copy[error as keyof typeof copy] || copy.error}
@@ -137,96 +172,138 @@ export function MembershipAdmin({ locale }: { locale: Locale }) {
             </form>
           </details>
           {saved && <p role="status">{copy.saved}</p>}
-          <h3>{copy.applications}</h3>
-          <p>{copy.reviewHelp}</p>
-          {!data.applications?.length ? (
+          {!compact && <h3>{copy.applications}</h3>}
+          <p className="membership-review-help">{copy.reviewHelp}</p>
+          {compact && (
+            <div
+              className="membership-queue-filters"
+              role="group"
+              aria-label={copy.applications}
+            >
+              <button
+                type="button"
+                aria-pressed={!allApplications}
+                onClick={() => setAllApplications(false)}
+              >
+                {t.pendingApplications}
+              </button>
+              <button
+                type="button"
+                aria-pressed={allApplications}
+                onClick={() => setAllApplications(true)}
+              >
+                {t.allApplications}
+              </button>
+            </div>
+          )}
+          {!shownApplications.length ? (
             <p>{copy.empty}</p>
           ) : (
-            data.applications.map((a) => (
-              <article
-                className="membership-review"
-                key={a.id}
-                data-testid={`application-${a.id}`}
-              >
-                <h3>{a.applicant?.full_name}</h3>
-                <p>
-                  {a.applicant?.email} · {a.phone}
-                </p>
-                <p>
-                  {a.category === "adult" ? copy.adult : copy.junior} ·{" "}
-                  {membershipMoney(a.fee_cents, locale)} · {a.season} ·{" "}
-                  {a.payment_method === "transfer" ? copy.transfer : copy.debit}
-                </p>
-                <strong>
-                  {a.status === "approved"
-                    ? copy.approved
-                    : a.status === "changes_requested"
-                      ? copy.changes
-                      : copy.sent}
-                </strong>
-                <div className="membership-review-actions">
-                  <button
-                    type="button"
-                    disabled={busy}
-                    onClick={() => download(a, "document")}
-                  >
-                    {copy.downloadDocument}
-                  </button>
-                  {a.receipt_path && (
+            <div className="membership-review-grid">
+              {shownApplications.map((a) => (
+                <article
+                  className="membership-review"
+                  key={a.id}
+                  data-testid={`application-${a.id}`}
+                >
+                  <div className="membership-review-identity">
+                    <span>
+                      {a.category === "adult" ? copy.adult : copy.junior}
+                    </span>
+                    <h3>{a.applicant?.full_name}</h3>
+                    <small>
+                      {new Date(a.submitted_at).toLocaleDateString(locale, {
+                        timeZone: "Europe/Madrid",
+                      })}
+                    </small>
+                  </div>
+                  <p>
+                    {a.applicant?.email} · {a.phone}
+                  </p>
+                  <p>
+                    {a.category === "adult" ? copy.adult : copy.junior} ·{" "}
+                    {membershipMoney(a.fee_cents, locale)} · {a.season} ·{" "}
+                    {a.payment_method === "transfer"
+                      ? copy.transfer
+                      : copy.debit}
+                  </p>
+                  <strong>
+                    {a.status === "approved"
+                      ? copy.approved
+                      : a.status === "changes_requested"
+                        ? copy.changes
+                        : copy.sent}
+                  </strong>
+                  <div className="membership-review-actions">
                     <button
                       type="button"
                       disabled={busy}
-                      onClick={() => download(a, "receipt")}
+                      onClick={() => download(a, "document")}
                     >
-                      {copy.downloadReceipt}
+                      <IconFileText size={15} aria-hidden="true" />
+                      {copy.downloadDocument}
+                      <IconArrowUpRight size={14} aria-hidden="true" />
                     </button>
-                  )}
-                </div>
-                {a.status !== "approved" && (
-                  <form
-                    onSubmit={(event) => {
-                      event.preventDefault();
-                      const native = event.nativeEvent as SubmitEvent;
-                      const status = (native.submitter as HTMLButtonElement)
-                        ?.value;
-                      if (
-                        status === "approved" &&
-                        !window.confirm(copy.approveConfirm)
-                      )
-                        return;
-                      const fd = new FormData(event.currentTarget);
-                      void action({
-                        action: "review",
-                        id: a.id,
-                        status,
-                        note: fd.get("note") || "",
-                      });
-                    }}
-                  >
-                    <label>
-                      {copy.reviewNote}
-                      <textarea
-                        name="note"
-                        maxLength={1000}
-                        defaultValue={a.review_note}
-                      />
-                    </label>
-                    <div className="membership-review-actions">
+                    {a.receipt_path && (
                       <button
-                        className="membership-primary"
-                        value="approved"
+                        type="button"
                         disabled={busy}
+                        onClick={() => download(a, "receipt")}
                       >
-                        {copy.approve}
+                        <IconFileText size={15} aria-hidden="true" />
+                        {copy.downloadReceipt}
+                        <IconArrowUpRight size={14} aria-hidden="true" />
                       </button>
-                      <button value="changes_requested" disabled={busy}>
-                        {copy.askChanges}
-                      </button>
-                    </div>
-                  </form>
-                )}
-              </article>
-            ))
+                    )}
+                  </div>
+                  {a.status !== "approved" && (
+                    <form
+                      onSubmit={(event) => {
+                        event.preventDefault();
+                        const native = event.nativeEvent as SubmitEvent;
+                        const status = (native.submitter as HTMLButtonElement)
+                          ?.value;
+                        if (
+                          status === "approved" &&
+                          !window.confirm(copy.approveConfirm)
+                        )
+                          return;
+                        const fd = new FormData(event.currentTarget);
+                        void action({
+                          action: "review",
+                          id: a.id,
+                          status,
+                          note: fd.get("note") || "",
+                        });
+                      }}
+                    >
+                      <label>
+                        {copy.reviewNote}
+                        <textarea
+                          name="note"
+                          maxLength={1000}
+                          defaultValue={a.review_note}
+                        />
+                      </label>
+                      <div className="membership-review-actions">
+                        <button
+                          className="membership-primary"
+                          value="approved"
+                          disabled={busy}
+                        >
+                          <IconCheck size={15} aria-hidden="true" />
+                          {copy.approve}
+                        </button>
+                        <button value="changes_requested" disabled={busy}>
+                          <IconClock size={15} aria-hidden="true" />
+                          {copy.askChanges}
+                        </button>
+                      </div>
+                    </form>
+                  )}
+                </article>
+              ))}
+            </div>
           )}
         </>
       )}

@@ -1,11 +1,14 @@
-import {getMemberSession} from "@/lib/member-server";
-import {redirect} from "next/navigation";
-import {AdminPanel} from "@/components/admin-panel";
-export const metadata={title:"CTA · Administració",robots:{index:false,follow:false}};
+import { redirect, notFound } from "next/navigation";
+import { hasLocale } from "next-intl";
+import { routing } from "@/i18n/routing";
+import { getMemberSession } from "@/lib/member-server";
 export const dynamic="force-dynamic";
-export default async function Administration(){
+export const metadata={title:"CTA · Administració",robots:{index:false,follow:false}};
+export default async function Page({params}:{params:Promise<{locale:string}>}) {
+ const {locale}=await params;
+ if(!hasLocale(routing.locales,locale))notFound();
  const {profile}=await getMemberSession();
- if(!profile) redirect("/acces");
- if(profile.role!=="admin" || !profile.member_active) return <main><h1>AccÃ©s restringit</h1><a href="/socis">Tornar a socis</a></main>;
- return <AdminPanel/>;
+ if(!profile)redirect(`/${locale}/acces`);
+ if(profile.role!=="admin"||!profile.member_active)redirect(`/${locale}/socis`);
+ redirect(`/${locale}/socis?section=administration`);
 }

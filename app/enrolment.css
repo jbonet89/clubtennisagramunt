@@ -1,0 +1,1031 @@
+.member-app .membership-onboarding.enrolment {
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  padding: 0;
+  margin: 0;
+  line-height: 1.7;
+}
+.enrolment-progress {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 0 0 24px;
+  margin: 0 0 26px;
+  list-style: none;
+  border-bottom: 1px solid #e4e2dd;
+}
+.enrolment-progress li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  color: #444655;
+}
+.enrolment-progress li > span {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 28px;
+  height: 28px;
+  background: #eae8e2;
+  border-radius: 50%;
+  font-size: 11px;
+  font-weight: 600;
+}
+.enrolment-progress strong {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.enrolment-progress small {
+  display: block;
+  font-size: 9px;
+  margin-top: 3px;
+  min-height: 13px;
+}
+.enrolment-progress [data-state="current"] > span {
+  background: #001f9d;
+  color: #fff;
+}
+.enrolment-progress [data-state="complete"] > span {
+  background: #d0f038;
+  color: #181e00;
+}
+.enrolment-progress [data-state="current"] strong {
+  color: #001f9d;
+}
+.enrolment-access-notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #fff;
+  padding: 17px 18px;
+  border-radius: 9px;
+  margin-bottom: 26px;
+}
+.enrolment-access-notice > svg {
+  color: #001f9d;
+  flex: none;
+}
+.enrolment-access-notice strong {
+  font-size: 12px;
+  color: #001f9d;
+}
+.enrolment-access-notice p {
+  font-size: 11px;
+  line-height: 1.7;
+  color: #444655;
+  margin: 3px 0 0;
+}
+.enrolment-access-notice > span {
+  font-size: 10px;
+  background: #f0eee8;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-left: auto;
+  white-space: nowrap;
+  color: #444655;
+}
+.enrolment-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 260px;
+  gap: 24px;
+  align-items: start;
+  min-width: 0;
+}
+.enrolment-main {
+  min-width: 0;
+  display: grid;
+  gap: 24px;
+}
+.member-app .enrolment .enrolment-application {
+  margin: 0;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  max-width: none;
+  display: block;
+}
+.enrolment-application fieldset {
+  min-inline-size: 0;
+  display: grid;
+  gap: 24px;
+}
+.member-app .enrolment h1 {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 30px;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin: 0 0 12px;
+  color: #001f9d;
+}
+.enrolment-application header > p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #444655;
+  margin: 0;
+  max-width: 65ch;
+}
+.enrolment-fee-choices {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+.enrolment-fee-choices > button {
+  display: grid;
+  gap: 14px;
+  padding: 18px 16px;
+  text-align: left;
+  border: 1px solid #e4e2dd;
+  border-radius: 8px;
+  background: #fff;
+  cursor: pointer;
+  color: #1b1c18;
+}
+.enrolment-fee-choices > button[aria-pressed="true"] {
+  border-color: #001f9d;
+  background: #f5f6ff;
+  box-shadow: inset 0 0 0 1px #001f9d;
+}
+.enrolment-fee-choices > button > span {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.4;
+  min-height: 30px;
+}
+.enrolment-fee-choices svg {
+  opacity: 0;
+  flex: none;
+  color: #001f9d;
+}
+.enrolment-fee-choices [aria-pressed="true"] svg {
+  opacity: 1;
+}
+.enrolment-fee-choices strong {
+  font-family: "Space Grotesk", sans-serif;
+  font-size: 27px;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: #001f9d;
+}
+.enrolment-fee-choices strong small {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 10px;
+  font-weight: 400;
+  margin-left: 4px;
+  color: #444655;
+  letter-spacing: 0;
+}
+.enrolment-fee-choices > button > small {
+  font-size: 10px;
+  color: #444655;
+}
+.member-app .enrolment h2 {
+  font-family: "Space Grotesk", sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  margin: 0 0 16px;
+}
+.enrolment h2 > svg {
+  flex: none;
+  color: #001f9d;
+}
+.enrolment .membership-bank {
+  border: 0;
+  background: #f5f3ed;
+  border-radius: 7px;
+  padding: 16px;
+}
+.enrolment .membership-bank > strong {
+  font-size: 12px;
+}
+.enrolment .membership-bank > div {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 10px 0;
+}
+.enrolment .membership-bank code {
+  font-family: inherit;
+  font-size: 13px;
+  word-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+  color: #001f9d;
+}
+.enrolment .membership-bank button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #001f9d;
+  padding: 5px;
+  font-size: 10px;
+  min-height: 32px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.enrolment .membership-bank p {
+  font-size: 10px;
+  color: #444655;
+  margin: 0;
+  line-height: 1.7;
+}
+.enrolment .enrolment-download {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  background: #f4f7ff;
+  color: #001f9d;
+  padding: 14px;
+  border: 1px solid #dee0ff;
+  border-radius: 7px;
+  margin-bottom: 18px;
+}
+.enrolment-download > svg {
+  flex: none;
+}
+.enrolment-download > svg:last-child {
+  margin-left: auto;
+}
+.enrolment-download strong {
+  font-size: 11px;
+  display: block;
+}
+.enrolment-download small {
+  font-size: 10px;
+  line-height: 1.6;
+  display: block;
+  margin-top: 4px;
+  color: #444655;
+}
+.enrolment .membership-form-grid {
+  gap: 16px;
+}
+.enrolment .membership-form-grid label,
+.enrolment .enrolment-upload {
+  font-size: 11px;
+  font-weight: 600;
+  margin: 0;
+  gap: 7px;
+}
+.member-app .enrolment input,
+.member-app .enrolment select {
+  font-size: 12px;
+  border-color: #c5c5d8;
+  border-radius: 6px;
+  padding: 11px;
+  min-height: 43px;
+  background: #fff;
+  color: #1b1c18;
+}
+.enrolment-method {
+  grid-column: 1/-1;
+}
+.enrolment .enrolment-method-help {
+  font-size: 10px;
+  color: #444655;
+  line-height: 1.7;
+  margin: 12px 0 18px;
+}
+.enrolment .membership-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  background: #f4f7ff;
+  border-radius: 6px;
+  padding: 13px;
+  font-family: inherit;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  margin: 0 0 20px;
+}
+.enrolment .membership-total strong {
+  font-size: 14px;
+  color: #001f9d;
+  font-variant-numeric: tabular-nums;
+}
+.enrolment .enrolment-upload {
+  margin: 18px 0;
+}
+.member-app .enrolment input[type="file"] {
+  padding: 10px;
+  border-style: dashed;
+  background: #fbf9f3;
+  cursor: pointer;
+  font-size: 11px;
+}
+.enrolment input::file-selector-button {
+  font-family: inherit;
+  padding: 7px 9px;
+  margin-right: 10px;
+  border: 0;
+  background: #dee0ff;
+  color: #001f9d;
+  border-radius: 4px;
+  font-size: 10px;
+  cursor: pointer;
+}
+.enrolment .field-help {
+  font-size: 10px;
+  line-height: 1.7;
+  margin: 16px 0 0;
+  color: #444655;
+  display: flex;
+  gap: 7px;
+  align-items: start;
+}
+.enrolment .field-help svg {
+  flex: none;
+  margin-top: 2px;
+  color: #001f9d;
+}
+.member-app .enrolment .membership-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  justify-self: start;
+  border-radius: 6px;
+  min-height: 45px;
+  padding: 12px 17px;
+  background: #001f9d !important;
+  border-color: #001f9d !important;
+  font-size: 12px;
+  white-space: normal;
+}
+.enrolment-account {
+  border-top: 1px solid #e4e2dd;
+  padding-top: 22px;
+}
+.member-app .enrolment .enrolment-account h2 {
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.enrolment-account dl,
+.enrolment-summary dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px 18px;
+  margin: 0;
+}
+.enrolment dt {
+  font-size: 9px;
+  color: #444655;
+  line-height: 1.5;
+  margin: 0 0 7px;
+}
+.enrolment dd {
+  font-size: 12px;
+  color: #1b1c18;
+  line-height: 1.7;
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.enrolment-account dd {
+  padding: 10px;
+  background: #f5f3ed;
+  border-radius: 5px;
+  font-size: 11px;
+}
+.enrolment-aside {
+  display: grid;
+  gap: 20px;
+  min-width: 0;
+}
+.enrolment-aside > section {
+  padding: 20px;
+  background: #fff;
+  border-radius: 10px;
+}
+.member-app .enrolment-aside h2 {
+  font-size: 16px;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+.enrolment-aside ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 14px;
+}
+.enrolment-aside ul li {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #444655;
+}
+.enrolment-aside ul svg {
+  flex: none;
+  margin-top: 3px;
+  color: #001f9d;
+}
+.enrolment-aside ol {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 16px;
+}
+.enrolment-aside ol li {
+  display: flex;
+  align-items: start;
+  gap: 9px;
+  font-size: 11px;
+  line-height: 1.7;
+  color: #444655;
+}
+.enrolment-aside ol li > span {
+  display: grid;
+  place-items: center;
+  width: 21px;
+  height: 21px;
+  background: #dee0ff;
+  color: #001f9d;
+  flex: none;
+  border-radius: 50%;
+  font-size: 10px;
+  margin-top: 1px;
+}
+.enrolment .enrolment-light-notice {
+  display: flex;
+  align-items: start;
+  gap: 12px;
+  background: #f0eee8;
+  border-radius: 9px;
+  padding: 18px;
+}
+.enrolment-light-notice > svg {
+  flex: none;
+  color: #a23e18;
+}
+.member-app .enrolment-light-notice h2 {
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0 0 7px;
+}
+.enrolment-light-notice p {
+  font-size: 11px;
+  line-height: 1.7;
+  margin: 0;
+  color: #444655;
+}
+.enrolment-whatsapp {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: #155a3b;
+  line-height: 1.7;
+}
+.enrolment-whatsapp > svg {
+  flex: none;
+}
+.enrolment-whatsapp > svg:last-child {
+  margin-left: auto;
+}
+.enrolment .membership-extra {
+  font-size: 11px;
+  color: #444655;
+  line-height: 1.8;
+  margin: 0;
+}
+.enrolment-received {
+  display: flex;
+  align-items: start;
+  gap: 16px;
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  margin-bottom: 26px;
+}
+.enrolment-received > svg {
+  color: #001f9d;
+  flex: none;
+}
+.member-app .enrolment-received h1 {
+  font-size: 26px;
+  line-height: 1.2;
+  max-width: 28ch;
+}
+.enrolment-received p {
+  font-size: 12px;
+  color: #444655;
+  line-height: 1.8;
+  margin: 0;
+  max-width: 68ch;
+}
+.enrolment-season {
+  margin-left: auto;
+  font-size: 10px;
+  color: #444655;
+  white-space: nowrap;
+}
+.enrolment-summary {
+  padding: 24px;
+  background: #fff;
+  border-radius: 12px;
+  min-width: 0;
+}
+.member-app .enrolment-summary > h2 {
+  font-size: 20px;
+  margin-bottom: 24px;
+}
+.enrolment-status-tag {
+  display: inline-block;
+  padding: 4px 7px;
+  background: #ffdbcf;
+  color: #822801;
+  border-radius: 4px;
+  font-size: 10px;
+  line-height: 1.5;
+}
+.enrolment-reference-note {
+  font-size: 10px;
+  color: #444655;
+  margin: 20px 0 0;
+  line-height: 1.7;
+}
+.enrolment-documents {
+  padding-top: 22px;
+  border-top: 1px solid #e4e2dd;
+  margin-top: 22px;
+}
+.member-app .enrolment-documents h3 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 12px;
+  margin: 0 0 13px;
+}
+.enrolment-documents h3 > span {
+  margin-left: auto;
+  font-size: 9px;
+  color: #444655;
+  font-weight: 400;
+}
+.enrolment-documents > button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 52px;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-bottom: 1px solid #e4e2dd;
+  padding: 12px 0;
+  cursor: pointer;
+  color: #001f9d;
+}
+.enrolment-documents > button > svg {
+  flex: none;
+}
+.enrolment-documents > button > svg:last-child {
+  margin-left: auto;
+}
+.enrolment-documents > button > span {
+  font-size: 11px;
+}
+.enrolment-documents small {
+  display: block;
+  font-size: 9px;
+  color: #444655;
+  margin-top: 3px;
+}
+.enrolment-documents > p {
+  font-size: 10px;
+  color: #444655;
+  margin: 14px 0 0;
+  line-height: 1.7;
+}
+.enrolment-refresh {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  min-height: 38px;
+  margin-top: 18px;
+  padding: 9px 11px;
+  background: #dee0ff;
+  color: #001f9d;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.enrolment-review-note {
+  display: flex;
+  align-items: start;
+  gap: 8px;
+  background: #ffdbcf;
+  color: #822801;
+  padding: 14px;
+  border-radius: 7px;
+  margin-top: 16px;
+}
+.enrolment-review-note > svg {
+  flex: none;
+  margin-top: 2px;
+}
+.enrolment-review-note p {
+  font-size: 12px;
+  line-height: 1.7;
+  margin: 0;
+}
+.enrolment-waiting {
+  padding: 22px;
+  background: #fff;
+  border-radius: 12px;
+}
+.enrolment-waiting > p {
+  font-size: 12px;
+  line-height: 1.8;
+  color: #444655;
+  margin: 0 0 16px;
+}
+.enrolment-next {
+  padding: 24px;
+  background: #f5f3ed;
+  border-radius: 12px;
+}
+.enrolment-next ol {
+  gap: 24px;
+}
+.member-app .enrolment-next h3 {
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  margin: 0 0 8px;
+  line-height: 1.5;
+}
+.enrolment-next li p {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #444655;
+  margin: 0;
+}
+.enrolment-next .enrolment-support {
+  padding: 20px 0 0;
+  background: transparent;
+  border-top: 1px solid #e4e2dd;
+  border-radius: 0;
+}
+.enrolment-change-notice {
+  padding: 18px;
+  background: #ffdbcf;
+  color: #822801;
+  border-radius: 9px;
+  margin-bottom: 24px;
+}
+.enrolment-change-notice p {
+  margin: 0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.member-app .enrolment-change-notice h2 {
+  font-size: 18px;
+  color: #822801;
+  margin: 0 0 9px;
+}
+@media (max-width: 1100px) {
+  .enrolment-layout {
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 20px;
+  }
+  .enrolment-progress {
+    gap: 12px;
+  }
+  .enrolment-progress strong {
+    font-size: 10px;
+  }
+  .enrolment-progress li {
+    gap: 8px;
+  }
+  .enrolment-fee-choices > button {
+    padding: 14px 12px;
+  }
+  .enrolment-fee-choices strong {
+    font-size: 24px;
+  }
+  .member-app .enrolment .enrolment-application {
+    padding: 22px;
+  }
+  .enrolment-aside > section {
+    padding: 18px;
+  }
+  .enrolment-received {
+    flex-wrap: wrap;
+  }
+  .enrolment-season {
+    margin-left: 48px;
+  }
+}
+@media (max-width: 950px) {
+  .enrolment-layout {
+    grid-template-columns: 1fr;
+  }
+  .enrolment-aside {
+    grid-template-columns: 1fr 1fr;
+  }
+  .enrolment-aside.enrolment-next {
+    display: block;
+  }
+  .enrolment-next ol {
+    margin-bottom: 24px;
+  }
+  .enrolment-access-notice {
+    flex-wrap: wrap;
+  }
+  .enrolment-access-notice > span {
+    margin-left: 33px;
+  }
+}
+@media (max-width: 760px) {
+  .enrolment-progress {
+    gap: 8px;
+    margin-bottom: 20px;
+    padding-bottom: 18px;
+  }
+  .enrolment-progress li {
+    gap: 6px;
+    align-items: start;
+  }
+  .enrolment-progress li > span {
+    width: 23px;
+    height: 23px;
+    font-size: 10px;
+  }
+  .enrolment-progress strong {
+    font-size: 9px;
+  }
+  .enrolment-progress small {
+    font-size: 8px;
+  }
+  .enrolment-access-notice {
+    padding: 15px;
+    margin-bottom: 20px;
+    gap: 9px;
+  }
+  .enrolment-access-notice > div {
+    flex: 1;
+  }
+  .enrolment-access-notice strong {
+    font-size: 12px;
+  }
+  .enrolment-access-notice p {
+    font-size: 11px;
+  }
+  .member-app .enrolment .enrolment-application {
+    padding: 20px 16px;
+  }
+  .enrolment-application fieldset {
+    gap: 22px;
+  }
+  .member-app .enrolment h1 {
+    font-size: 28px;
+  }
+  .enrolment-fee-choices {
+    gap: 10px;
+  }
+  .enrolment-fee-choices > button {
+    padding: 14px 12px;
+    gap: 12px;
+  }
+  .enrolment-fee-choices strong {
+    font-size: 24px;
+  }
+  .enrolment-fee-choices strong small {
+    display: block;
+    margin: 6px 0 0;
+  }
+  .enrolment-fee-choices > button > span {
+    font-size: 11px;
+    min-height: 32px;
+  }
+  .enrolment .membership-form-grid {
+    grid-template-columns: 1fr;
+    gap: 17px;
+  }
+  .enrolment-method {
+    grid-column: auto;
+  }
+  .member-app .enrolment input,
+  .member-app .enrolment select {
+    font-size: 16px;
+  }
+  .enrolment .membership-form-grid label,
+  .enrolment .enrolment-upload {
+    font-size: 12px;
+  }
+  .member-app .enrolment input[type="file"] {
+    font-size: 11px;
+  }
+  .enrolment .membership-bank code {
+    font-size: 12px;
+    word-spacing: 1px;
+  }
+  .enrolment .membership-bank > div {
+    gap: 8px;
+  }
+  .enrolment .membership-bank button {
+    padding: 8px;
+    min-height: 36px;
+  }
+  .enrolment .membership-total {
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .member-app .enrolment .membership-primary {
+    width: 100%;
+    justify-self: stretch;
+    font-size: 12px;
+    min-height: 47px;
+  }
+  .enrolment-account dl {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  .enrolment-aside {
+    grid-template-columns: 1fr;
+  }
+  .enrolment-aside ul li,
+  .enrolment-aside ol li {
+    font-size: 12px;
+  }
+  .enrolment-aside > section {
+    padding: 18px;
+  }
+  .enrolment-whatsapp {
+    font-size: 12px;
+    min-height: 44px;
+  }
+  .enrolment-received {
+    padding: 20px 16px;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .enrolment-received > svg {
+    width: 26px;
+    height: 26px;
+  }
+  .enrolment-received > div {
+    flex: 1;
+  }
+  .member-app .enrolment-received h1 {
+    font-size: 24px;
+  }
+  .enrolment-received p {
+    font-size: 12px;
+  }
+  .enrolment-season {
+    margin-left: 38px;
+  }
+  .enrolment-summary {
+    padding: 22px 18px;
+  }
+  .enrolment-summary dl {
+    gap: 20px 14px;
+  }
+  .enrolment dt {
+    font-size: 10px;
+  }
+  .enrolment dd {
+    font-size: 12px;
+  }
+  .enrolment-documents h3 > span {
+    font-size: 8px;
+    max-width: 12ch;
+    text-align: right;
+  }
+  .enrolment-documents > button > span {
+    font-size: 12px;
+  }
+  .enrolment-next {
+    padding: 22px 18px;
+  }
+  .enrolment-next li p {
+    font-size: 12px;
+  }
+  .member-app .enrolment-next h3 {
+    font-size: 13px;
+  }
+  .enrolment-waiting {
+    padding: 20px 18px;
+  }
+  .enrolment .enrolment-light-notice {
+    padding: 15px;
+  }
+  .enrolment-light-notice p {
+    font-size: 12px;
+  }
+}
+.member-workspace[data-member-active="false"] {
+  grid-template-columns: 1fr;
+  max-width: 1080px;
+  margin-inline: auto;
+}
+.member-workspace[data-member-active="false"] > .member-navigation {
+  display: none;
+}
+.enrolment-account-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24px;
+}
+.enrolment-account-actions button {
+  font-size: 11px;
+  border-radius: 6px;
+  min-height: 38px;
+  height: auto;
+  padding: 10px 15px;
+}
+@media (max-width: 760px) {
+  .member-workspace[data-member-active="false"] {
+    padding-bottom: 0;
+  }
+  .member-app .member-workspace[data-admin="true"] .member-navigation {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+  .member-workspace[data-admin="true"] .member-navigation [data-nav="more"] {
+    display: none;
+  }
+  .member-app .member-workspace[data-admin="true"] .member-navigation a,
+  .member-workspace[data-admin="true"]
+    .member-navigation
+    [data-nav="administration"]
+    span {
+    font-size: 10px;
+  }
+}
+@media (max-width: 760px) {
+  .enrolment-progress strong {
+    font-size: 10px;
+  }
+  .enrolment-progress small {
+    font-size: 9px;
+  }
+  .enrolment-access-notice {
+    display: grid;
+    grid-template-columns: 21px minmax(0, 1fr);
+    align-items: start;
+  }
+  .enrolment-access-notice > div {
+    grid-column: 2;
+  }
+  .enrolment-access-notice > span {
+    grid-column: 2;
+    margin-left: 0;
+    justify-self: start;
+  }
+  .enrolment-received {
+    display: grid;
+    grid-template-columns: 26px minmax(0, 1fr);
+    align-items: start;
+  }
+  .enrolment-received > div {
+    grid-column: 2;
+    min-width: 0;
+  }
+  .enrolment-received .enrolment-season {
+    grid-column: 2;
+    margin-left: 0;
+    white-space: normal;
+  }
+  .member-app .enrolment-received h1 {
+    max-width: none;
+  }
+  .enrolment-form-state .enrolment-aside > section:nth-child(-n + 2) {
+    display: none;
+  }
+  .enrolment-submitted .enrolment-layout {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .enrolment-submitted .enrolment-main {
+    display: contents;
+  }
+  .enrolment-submitted .enrolment-summary {
+    order: 0;
+  }
+  .enrolment-submitted .enrolment-next {
+    order: 1;
+  }
+  .enrolment-submitted .enrolment-waiting {
+    order: 2;
+  }
+}

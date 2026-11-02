@@ -215,17 +215,17 @@ test("la junta activa, revoca i delega administradors amb correu confirmat", asy
   page,
 }, info) => {
   await login(page, fixture!.users.admin);
-  await page.getByRole("link", { name: "Més", exact: true }).click();
-  await page.getByRole("link", { name: "Socis", exact: true }).click();
+  await page.getByRole("navigation",{name:"Navegació de socis"}).getByRole("link",{name:"Administració",exact:true}).click();
+  await page.getByRole("button",{name:"Permisos",exact:true}).click();
   const target =
     fixture!.users[
       info.project.name === "desktop" ? "approvalDesktop" : "approvalMobile"
     ];
   const row = page
-    .locator(".member-approval li")
+    .locator(".admin-list article")
     .filter({ hasText: target.email });
-  await row.getByRole("button", { name: "Activa com a soci" }).click();
-  await expect(row).toContainText("Soci actiu");
+  await row.getByRole("button", { name: "Activar compte web" }).click();
+  await expect(row).toContainText("Compte web actiu");
   const admin = await client(fixture!.users.admin);
   const saved = await admin
     .from("profiles")
@@ -233,8 +233,8 @@ test("la junta activa, revoca i delega administradors amb correu confirmat", asy
     .eq("id", target.id)
     .single();
   expect(saved.data).toEqual({ role: "member", member_active: true });
-  await row.getByRole("button", { name: "Desactiva les reserves" }).click();
-  await expect(row).toContainText("Pendent o inactiu");
+  await row.getByRole("button", { name: "Desactivar compte web" }).click();
+  await expect(row).toContainText("Compte web pendent o desactivat");
   const deactivated = await client(target);
   expect(
     (
@@ -256,9 +256,9 @@ test("la junta activa, revoca i delega administradors amb correu confirmat", asy
   ).toBe("22023");
   page.once("dialog", (dialog) => dialog.accept());
   await row
-    .getByRole("button", { name: "Fes administrador", exact: true })
+    .getByRole("button", { name: "Fer administrador", exact: true })
     .click();
-  await expect(row.getByText("Administrador", { exact: true })).toBeVisible();
+  await expect(row.getByText("admin", { exact: true })).toBeVisible();
   await expect(row.getByRole("button")).toHaveCount(0);
   const promoted = await client(target);
   const next =

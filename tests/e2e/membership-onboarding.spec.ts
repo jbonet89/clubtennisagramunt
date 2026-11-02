@@ -51,7 +51,7 @@ test("alta privada: quotes en viu, documents, correcció i validació abans de r
     page.getByRole("heading", { name: "Fes-te soci del CTA", exact: true }),
   ).toBeVisible();
   await expect(
-    page.getByRole("link", { name: "Reserva pista", exact: true }),
+    page.getByRole("link", { name: "Reservar pista", exact: true }),
   ).toHaveCount(0);
   expect(
     (await page.request.get("/api/bookings?day=2026-11-03")).status(),
@@ -241,10 +241,11 @@ test("alta privada: quotes en viu, documents, correcció i validació abans de r
       exact: true,
     })
     .click();
+  await admin.getByRole("button",{name:"Totes les altes",exact:true}).click();
   await expect(row).toContainText("Alta aprovada");
   await page.bringToFront();
   await expect(
-    page.getByRole("heading", { name: "Reserva pista", exact: true }),
+    page.getByRole("heading", { name: "Reservar pista", exact: true }),
   ).toBeVisible({ timeout: 20000 });
   expect(
     (

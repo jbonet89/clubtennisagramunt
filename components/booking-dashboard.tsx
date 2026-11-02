@@ -1,6 +1,6 @@
 "use client";
 
-import { IconBallTennis as RacketIcon, IconClock, IconCalendarEvent, IconArrowUpRight } from "@tabler/icons-react";
+import { IconBallTennis as RacketIcon, IconClock, IconCalendarEvent, IconArrowUpRight, IconSettings } from "@tabler/icons-react";
 import { BookingTimePicker } from "./booking-time-picker";
 import { MemberBookingAside, CourtCare } from "./member-booking-aside";
 import { activityCopy } from "@/messages/activity";
@@ -36,6 +36,7 @@ import dynamic from "next/dynamic";
 const MembershipOnboarding = dynamic(() =>
   import("./membership-onboarding").then((m) => m.MembershipOnboarding),
 );
+const AdminPanel = dynamic(() => import("./admin-panel").then(m=>m.AdminPanel));
 const MembershipAdmin = dynamic(() =>
   import("./membership-admin").then((m) => m.MembershipAdmin),
 );
@@ -52,7 +53,7 @@ export function BookingDashboard({
   initialMembers,
   membership,
 }: {
-  section: "reserve" | "bookings" | "members" | "account" | "matches" | "more";
+  section: "reserve" | "bookings" | "members" | "account" | "matches" | "more" | "administration";
   locale: Locale;
   copy: MemberCopy;
   profile: Profile;
@@ -263,21 +264,18 @@ export function BookingDashboard({
       icon: Plus,
     },
     { id: "account", label: copy.accountNav, icon: UserRound },
+    ...(profile.role === "admin" && active ? [{id:"administration",label:locale==="es"?"Administración":locale==="en"?"Administration":"Administració",icon:IconSettings}]:[]),
   ];
   return (
-    <div className="member-workspace" data-section={section}>
+    <div className="member-workspace" data-section={section} data-member-active={active?"true":"false"} data-admin={profile.role==="admin"&&active?"true":undefined}>
       <BookingReminders bookings={bookings} userId={profile.id} />
-      {profile.role === "admin" && profile.member_active && (
-        <Link href="/administracio" className="member-admin-shortcut">
-          Administració <IconArrowUpRight size={16} aria-hidden="true"/>
-        </Link>
-      )}
       <nav className="member-navigation" aria-label={copy.navigation}>
         {navigation
           .filter((item) => active || item.id === "account")
           .map(({ id, label, icon: Icon }) => (
             <Link
               key={id}
+              data-nav={id}
               href={`/socis?section=${id}`}
               aria-current={section === id ? "page" : undefined}
             >
@@ -287,9 +285,10 @@ export function BookingDashboard({
           ))}
       </nav>
       <div className="member-content" key={section}>
-        <h1 className="member-section-heading">
+        {!(section==="account"&&!active&&membership)&&section!=="administration" && <h1 className="member-section-heading">
           {section === "matches" ? activityCopy[locale].title : section === "reserve" ? portal.reserve : navigation.find((item) => item.id === section)?.label}
-        </h1>
+        </h1>}
+        {section === "administration" && profile.role === "admin" && active && <AdminPanel locale={locale}/>}
         {section === "reserve" && <p className="portal-intro">{portal.hello}, {profile.full_name}</p>}
         {section === "matches" && active && (
           <MemberActivity bookings={bookings} locale={locale} />
@@ -298,19 +297,14 @@ export function BookingDashboard({
           <section className="member-more">
             <h2>{locale === "es" ? "Más opciones" : "Més opcions"}</h2>
             <Link href="/socis?section=bookings">{copy.bookingsNav}</Link>
-            {profile.role === "admin" && profile.member_active && (
-              <>
-                <Link href="/administracio">Administració</Link>
-                <Link href="/socis?section=members">{copy.membersNav}</Link>
-              </>
-            )}
+
           </section>
         )}
         {section === "account" && !active && membership && (
-          <MembershipOnboarding locale={locale} initial={membership} />
+          <><MembershipOnboarding locale={locale} initial={membership} profile={profile}/><div className="enrolment-account-actions"><Button variant="outline" onClick={logout} disabled={Boolean(busy)}><LogOut size={15} aria-hidden="true"/>{copy.logout}</Button></div></>
         )}
-        {section === "account" && <MemberProfile profile={profile} />}
-        {section === "account" ? (
+        {section === "account" && active && <MemberProfile profile={profile} />}
+        {section === "account" && active ? (
           <div className="member-welcome">
             <div>
               <h2>{profile.full_name}</h2>
@@ -327,15 +321,6 @@ export function BookingDashboard({
           <p className="form-error" role="alert">
             {error}
           </p>
-        ) : null}
-        {!active && section === "account" ? (
-          <section className="member-notice">
-            <h2>{copy.pending}</h2>
-            <p>{copy.pendingBody}</p>
-            <a href="mailto:clubtennisagramunt1974@gmail.com">
-              clubtennisagramunt1974@gmail.com <IconArrowUpRight size={15} aria-hidden="true"/>
-            </a>
-          </section>
         ) : null}
         {section === "reserve" && confirmation && whatsapp ? (
           <section

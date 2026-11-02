@@ -2,6 +2,7 @@
 @import "./members.css";
 @import "./membership.css";
 @import "./portal.css";
+@import "./enrolment.css";
 
 :root {
   --background: #f8f9fb;

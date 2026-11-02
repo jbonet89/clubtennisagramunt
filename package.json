@@ -9,7 +9,8 @@
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
     "test:participants": "node tests/database/booking-participants.mjs",
-    "test:portal": "node scripts/verify-member-portal.mjs"
+    "test:portal": "node scripts/verify-member-portal.mjs",
+    "test:membership-ui": "node scripts/verify-membership-design.mjs"
   },
   "engines": {
     "node": "22.x"

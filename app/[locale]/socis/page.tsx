@@ -32,6 +32,7 @@ export default async function MemberPage({
   const active =
     profile.member_active && ["member", "admin"].includes(profile.role);
   const isAdmin = profile.role === "admin" && profile.member_active;
+  if(requested === "members" && isAdmin) redirect(`/${locale}/socis?section=administration`);
   const section = !active
     ? "account"
     : requested === "matches" ||
@@ -39,8 +40,8 @@ export default async function MemberPage({
         requested === "account" ||
         requested === "bookings"
       ? requested
-      : requested === "members" && isAdmin
-        ? "members"
+      : (requested === "members" || requested === "administration") && isAdmin
+        ? requested
         : active
           ? "reserve"
           : "account";

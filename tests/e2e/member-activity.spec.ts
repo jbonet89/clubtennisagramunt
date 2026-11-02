@@ -17,9 +17,9 @@ test("member navigation, profile, reminders and empty results",async({page},info
  const response=await page.request.post("/api/activity",{headers:{Origin:new URL(page.url()).origin},data:{booking_id:"00000000-0000-0000-0000-000000000000",sets:[[9,1]]}});expect(response.status()).toBe(400);
 });
 
-test("administrator has a direct administration link",async({page})=>{
+test("administrator has administration in the member navigation",async({page})=>{
  test.skip(!fixture,"Requires isolated member fixtures");
  const user=fixture.users.admin;
  await page.goto("/ca/acces");await page.getByLabel("Correu electrònic",{exact:true}).fill(user.email);await page.getByLabel("Contrasenya",{exact:true}).fill(user.password);await page.getByRole("button",{name:"Entra",exact:true}).click();
- await page.locator(".member-admin-shortcut").click();await expect(page).toHaveURL(/administracio/);await expect(page.getByRole("heading",{name:"Resum",exact:true})).toBeVisible();
+ await page.getByRole("navigation",{name:"Navegació de socis"}).getByRole("link",{name:"Administració",exact:true}).click();await expect(page).toHaveURL(/section=administration/);await expect(page.getByRole("heading",{name:"Administració de Socis i Quotes",exact:true})).toBeVisible();
 });
