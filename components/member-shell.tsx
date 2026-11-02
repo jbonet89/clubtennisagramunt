@@ -7,11 +7,13 @@ export function MemberShell({
   children,
   locale,
   section,
+  memberSection,
   copy,
 }: {
   children: React.ReactNode;
   locale: Locale;
   section: "acces" | "socis";
+  memberSection?: string;
   copy: MemberCopy;
 }) {
   return (
@@ -32,7 +34,7 @@ export function MemberShell({
               <Link
                 key={language}
                 locale={language}
-                href={`/${section}`}
+                href={`/${section}${memberSection ? `?section=${memberSection}` : ""}`}
                 lang={language}
                 aria-current={locale === language ? "page" : undefined}
               >

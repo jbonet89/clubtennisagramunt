@@ -8,6 +8,14 @@ el perfil nou queda `guest`, amb `member_active=false`. No veu el formulari
 de reserva i la base de dades rebutja els intents de reservar directament.
 Les metadades enviades pel navegador no poden concedir permisos.
 
+L'àrea es divideix amb `?section=reserve|bookings|members|account`.
+El menú és lateral a l'escriptori i fix a la part inferior al mòbil.
+Els socis actius veuen Reservar, Les meves reserves i El meu compte;
+els administradors actius també veuen Socis. Els comptes pendents o inactius
+veuen les seves reserves i el compte, amb l'avís de validació. El servidor
+redirigeix qualsevol secció no autoritzada i només consulta el cens a la
+secció de gestió per a administradors actius.
+
 Un administrador entra a l'àrea de socis i, a **Socis i administradors**, comprova
 el cens i que la quota estigui al dia abans de prémer **Activa com a soci**.
 També pot desactivar les reserves. El servidor consulta l'estat actual del
@@ -95,3 +103,16 @@ En acabar, executar amb el MCP l'SQL de
 UUID de la tanda amb el marcador `cta_e2e_run` i correu `@example.test`.
 Les dades de prova associades s'eliminen en cascada. Eliminar llavors el
 fitxer local de credencials. No deixar comptes administradors de prova.
+
+## Navegació i activitat (2 de novembre de 2026)
+
+Barra mòbil amb reserves, partits, més opcions i perfil. L'administrador actiu
+veu un accés directe a administració. Resultats personals vinculats a reserves
+pròpies finalitzades; estadístiques de victòries, jocs i sets. Es poden editar
+nom i telèfon; el correu i el rol no es modifiquen en aquest formulari.
+
+Recordatoris de 30/60 minuts: preferència local al navegador, avisos amb la web
+oberta i exportació ICS amb VALARM per al calendari. L'alarma depèn de la
+importació i configuració del calendari; canvis/cancel·lacions de reserva no
+actualitzen automàticament l'esdeveniment importat. Web Push amb l'app tancada
+pendent d'implementar. Resultats personals, sense validació del rival.

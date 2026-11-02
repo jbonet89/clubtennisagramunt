@@ -15,13 +15,24 @@ export const metadata: Metadata = {
 };
 export default async function MemberPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ section?: string }>;
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   const { supabase, profile } = await getMemberSession();
   if (!profile) redirect(`/${locale}/acces`);
+  const requested = (await searchParams).section;
+  const active = profile.member_active && ["member", "admin"].includes(profile.role);
+  const isAdmin = profile.role === "admin" && profile.member_active;
+  const section = requested === "matches" || requested === "more" || requested === "account" || requested === "bookings"
+    ? requested
+    : requested === "members" && isAdmin
+      ? "members"
+      : active ? "reserve" : "account";
+  if (requested && requested !== section) redirect(`/${locale}/socis?section=${section}`);
   const [courts, settings, saved, members] = await Promise.all([
     supabase.from("courts").select("id,name,surface,status").order("name"),
     supabase
@@ -34,7 +45,7 @@ export default async function MemberPage({
       .eq("user_id", profile.id)
       .order("start_time", { ascending: false })
       .limit(100),
-    profile.role === "admin" && profile.member_active
+    isAdmin && section === "members"
       ? supabase
           .from("profiles")
           .select("id,full_name,email,role,member_active")
@@ -54,8 +65,9 @@ export default async function MemberPage({
   );
   const copy = getMemberCopy(locale);
   return (
-    <MemberShell locale={locale} section="socis" copy={copy}>
+    <MemberShell locale={locale} section="socis" memberSection={section} copy={copy}>
       <BookingDashboard
+        section={section}
         locale={locale}
         copy={copy}
         profile={profile}

@@ -60,6 +60,7 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
     .single();
   expect(courts).toBeTruthy();
   await login(page, user);
+  await expect(page.getByRole("link", { name: "Socis", exact: true })).toHaveCount(0);
   const day = DateTime.now()
     .setZone(CLUB_ZONE)
     .plus({ days: info.project.name === "desktop" ? 1 : 2 })
@@ -114,6 +115,7 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
   );
   expect(expected.text).toContain("Claus de soci");
   expect(expected.text).toContain(players);
+  await page.getByRole("link", { name: "Les meves reserves", exact: true }).click();
   await page.reload();
   const card = page.getByTestId(`booking-${saved.id}`);
   await expect(card).toBeVisible();
@@ -140,6 +142,7 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
     .eq("id", saved.id)
     .single();
   expect(cancelled.data?.status).toBe("cancelled");
+  await page.getByRole("link", { name: "El meu compte", exact: true }).click();
   await page.getByRole("button", { name: "Tanca la sessió" }).click();
   await expect(page).toHaveURL(/\/ca\/acces$/);
   await page.goto("/ca/socis");
@@ -151,6 +154,10 @@ test("compte pendent: sense reserva ni escalada de permisos", async ({
 }) => {
   const pending = fixture!.users.pending;
   await login(page, pending);
+  await expect(page.getByRole("link", { name: "Reserva pista", exact: true })).toHaveCount(0);
+  await page.goto("/ca/socis?section=members");
+  await expect(page).toHaveURL(/section=account$/);
+  await expect(page.locator(".member-approval")).toHaveCount(0);
   await expect(
     page.getByRole("heading", { name: "Compte pendent de validació" }),
   ).toBeVisible();
@@ -207,6 +214,7 @@ test("la junta activa, revoca i delega administradors amb correu confirmat", asy
   page,
 }, info) => {
   await login(page, fixture!.users.admin);
+  await page.getByRole("link", { name: "Socis", exact: true }).click();
   const target =
     fixture!.users[
       info.project.name === "desktop" ? "approvalDesktop" : "approvalMobile"

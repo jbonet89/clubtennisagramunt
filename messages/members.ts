@@ -1,6 +1,11 @@
 import type { Locale } from "@/i18n/routing";
 
 const ca = {
+  navigation: "Navegació de socis",
+  reserveNav: "Reservar",
+  bookingsNav: "Les meves reserves",
+  membersNav: "Socis",
+  accountNav: "El meu compte",
   area: "Àrea de socis",
   home: "Web del club",
   login: "Inicia sessió",
@@ -97,6 +102,11 @@ export type MemberCopy = { [K in keyof typeof ca]: string };
 const copies: Record<Locale, MemberCopy> = {
   ca,
   es: {
+    navigation: "Navegación de socios",
+    reserveNav: "Reservar",
+    bookingsNav: "Mis reservas",
+    membersNav: "Socios",
+    accountNav: "Mi cuenta",
     area: "Área de socios",
     home: "Web del club",
     login: "Inicia sesión",
@@ -190,6 +200,11 @@ const copies: Record<Locale, MemberCopy> = {
     backLogin: "Volver al inicio de sesión",
   },
   en: {
+    navigation: "Member navigation",
+    reserveNav: "Book",
+    bookingsNav: "My bookings",
+    membersNav: "Members",
+    accountNav: "My account",
     area: "Members' area",
     home: "Club website",
     login: "Sign in",
