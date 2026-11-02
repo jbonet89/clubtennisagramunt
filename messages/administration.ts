@@ -27,7 +27,7 @@ export const administrationCopy = {
     saving: "Desant…",
     cancel: "Cancel·lar edició",
     loaded:
-      "Les xifres corresponen als registres carregats: fins a 500 per secció.",
+      "El total de socis es calcula sobre tot el cens unificat. El llistat permet cercar, filtrar i paginar.",
     viewAll: "Veure tot el cens",
     export: "Exportar CSV",
     name: "Nom i cognoms",
@@ -109,7 +109,7 @@ export const administrationCopy = {
     saving: "Guardando…",
     cancel: "Cancelar edición",
     loaded:
-      "Las cifras corresponden a los registros cargados: hasta 500 por sección.",
+      "El total de socios se calcula sobre todo el censo unificado. El listado permite buscar, filtrar y paginar.",
     viewAll: "Ver todo el censo",
     export: "Exportar CSV",
     name: "Nombre y apellidos",
@@ -190,7 +190,7 @@ export const administrationCopy = {
     save: "Save",
     saving: "Saving…",
     cancel: "Cancel editing",
-    loaded: "Figures cover loaded records: up to 500 per section.",
+    loaded: "Member totals cover the full unified register. Search, filter and paginate the directory.",
     viewAll: "View full register",
     export: "Export CSV",
     name: "Full name",

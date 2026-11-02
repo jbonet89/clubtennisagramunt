@@ -10,12 +10,21 @@ export async function GET(){
  const settings=await supabase.from("admin_sections").select("*");
  if(settings.error)return reply({error:"Cal aplicar la migració d’administració."},503);
  const enabled=(id:string)=>settings.data.some(s=>s.id===id&&s.enabled);
- const data:Record<string,unknown>={sections:settings.data};
- for(const [section,table] of Object.entries(adminTables)){
- if(enabled(section)){const r=await supabase.from(table).select("*").order(section==="families"?"name":"created_at",{ascending:false}).limit(500);if(r.error)return reply({error:"No s’han pogut carregar les dades."},500);data[section]=r.data;}}
+ const data:Record<string,unknown>={sections:settings.data,invitations_enabled:process.env.MEMBER_INVITATIONS_ENABLED === "true"};
+ if(enabled("socis")){
+ const [members,active,total,dues,paid]=await Promise.all([
+ supabase.from("admin_member_directory").select("*").order("full_name").limit(8),
+ supabase.from("club_members").select("id",{count:"exact",head:true}).eq("status","active"),
+ supabase.from("club_members").select("id",{count:"exact",head:true}),
+ supabase.from("club_dues").select("id",{count:"exact",head:true}),
+ supabase.from("club_dues").select("id",{count:"exact",head:true}).eq("status","paid")]);
+ if([members,active,total,dues,paid].some(r=>r.error))return reply({error:"No s’han pogut carregar els socis."},503);
+ data.socis=members.data;data.stats={active_members:active.count??0,total_members:total.count??0,total_dues:dues.count??0,paid_dues:paid.count??0};
+ }
+ if(enabled("families")){const r=await supabase.from("club_families").select("*",{count:"exact"}).order("name").limit(500);if(r.error)return reply({error:"No s’han pogut carregar les famílies."},503);data.families=r.data;data.stats={...(data.stats as object??{}),total_families:r.count??0};}
  if(enabled("permisos")){const r=await supabase.from("profiles").select("id,full_name,email,role,member_active").limit(500);if(r.error)return reply({error:"No s’han pogut carregar els permisos."},500);data.profiles=r.data;}
- if(enabled("documents")){const r=await supabase.storage.from("club-documents").list("mandats",{limit:500});if(r.error)return reply({error:"No s’han pogut carregar els documents."},500);data.documents=r.data;}
  if(enabled("convidats")){const r=await supabase.rpc("guest_participation_stats");if(r.error)return reply({error:"No s’han pogut carregar els convidats."},503);data.convidats=r.data;}
+ data.sections=settings.data.filter(s=>!["documents","quotes"].includes(s.id));
  return reply(data);
 }
 export async function POST(request:NextRequest){

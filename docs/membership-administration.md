@@ -2,9 +2,13 @@
 
 La administración se abre desde una opción de la navegación de socios, visible únicamente para administradores activos. La pantalla y las API mantienen sus controles de autorización. Las direcciones antiguas `/administracio` y `/administracio/adhesions` conducen a `/socis?section=administration`, conservando el idioma. El acceso antiguo `section=members` también redirige a esa sección.
 
-El resumen reúne las solicitudes de alta, el censo, las cuotas y las familias. Las cifras proceden de los registros cargados, con los límites actuales de 500 registros por sección y 200 solicitudes. La cola permite revisar los documentos, pedir correcciones, aprobar y consultar las solicitudes ya aprobadas. La configuración de cuotas e instrucciones sigue siendo editable.
+El resumen utiliza el censo unificado y conteos completos, sin depender de los ocho registros de muestra. La migración recupera las cuentas existentes y enlaza su perfil con el socio. Los cambios de estado se sincronizan con el acceso web; un socio histórico solo puede recuperar acceso tras verificar su correo. Las cuentas de administrador quedan protegidas frente a desactivaciones desde el censo.
 
-El censo administrativo puede contener personas sin cuenta web: su estado no sustituye a la activación del acceso web. Los controles de activar/desactivar cuentas y delegar el rol de administrador están en **Permisos**, usando las mismas API existentes. Aprobar una solicitud desde la cola sigue siendo el proceso normal del alta.
+**Socios** permite buscar y filtrar por estado, documentos y cuotas. Cada ficha reúne datos personales, documentos privados del alta y adjuntos manuales (PDF/JPG/PNG, hasta 3 MB), cuotas e invitación. Documentos y Cuotas dejan de ser secciones independientes. El importe pendiente distingue una cuota cobrada de un mandato SEPA recibido: aprobar un mandato no registra un cobro.
+
+**Nuevo socio** permite guardar una invitación pendiente o incorporar un socio existente. La importación CSV incluye plantilla, vista previa y confirmación; admite hasta 500 filas con correo o referencia histórica, conserva campos vacíos y evita duplicados. No envía correos automáticamente. La exportación respeta los filtros y pagina para superar el límite de respuesta de la API.
+
+El SMTP sigue pendiente. El envío queda desactivado por defecto: configurar SMTP en Supabase y después establecer `MEMBER_INVITATIONS_ENABLED=true` en el entorno del servidor para habilitarlo. No hacen falta claves de servicio. El enlace de correo verifica la cuenta y lleva a completar nombre, teléfono y contraseña; los datos históricos se recuperan por correo verificado. Los errores conservan el socio y no se anuncian como envío realizado.
 
 ## Alta y seguimiento
 
@@ -20,4 +24,4 @@ Las referencias visuales se adaptan al funcionamiento real: no hay QR, carnet, a
 
 `npm run test:membership-ui` ejecuta Chromium a 1440 y 390 px con API simuladas. Comprueba visibilidad del menú, alta por transferencia y SEPA, resumen, documentos, correcciones, aprobación, edición y búsqueda del censo, activación/desactivación web e idiomas CA/ES/EN. Guarda capturas en `artifacts/membership-design/` y elimina la ruta temporal al terminar.
 
-Esta actualización no cambia el esquema ni las API de base de datos y no necesita una migración. Las pruebas visuales no crean cuentas, documentos, socios ni pagos en el servicio real. Las pruebas anteriores con cuentas reales siguen requiriendo fixtures aisladas.
+La migracion `20261102155717_unify_member_register.sql` enlaza perfiles y socios, sincroniza estados, incorpora documentos por socio y cuotas por temporada. `npm run test:member-register` verifica recuperacion, duplicados, permisos, importacion y activacion tras verificar correo en una base aislada. Las pruebas visuales usan API simuladas y no crean cuentas ni envian correos reales.

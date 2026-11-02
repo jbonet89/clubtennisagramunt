@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+import ts from 'typescript';
+const source=await readFile(new URL('../../lib/member-import.ts',import.meta.url),'utf8');
+const js=ts.transpileModule(source,{compilerOptions:{module:ts.ModuleKind.ESNext,target:ts.ScriptTarget.ES2022}}).outputText;
+const {parseMemberCsv}=await import('data:text/javascript;base64,'+Buffer.from(js).toString('base64'));
+const parsed=parseMemberCsv('\uFEFFnombre;email;telefono;referencia;cuota;temporada;estado_cuota\r\n"Maria, Soler";maria@example.test;600000000;OLD-1;65,50;2026;paid');
+assert.equal(parsed.rows[0].full_name,'Maria, Soler');
+assert.equal(parsed.rows[0].email,'maria@example.test');
+assert.equal(parsed.rows[0].annual_fee_cents,6550);
+assert.equal(parsed.rows[0].dues_status,'paid');
+assert.throws(()=>parseMemberCsv('full_name,email\nPerson,a@example.test\nPerson,a@example.test'));
+assert.throws(()=>parseMemberCsv('full_name,email\nPerson,'));
+assert.throws(()=>parseMemberCsv('full_name,email\n"Unclosed,a@example.test'));
+const blanks=parseMemberCsv('full_name,email,phone,status\nPerson,a@example.test,,');
+assert.equal(Object.hasOwn(blanks.rows[0],'phone'),false);
+assert.equal(Object.hasOwn(blanks.rows[0],'status'),false);
+console.log('CSV parser OK: quoting, delimiter, BOM, duplicate rejection and empty field preservation.');

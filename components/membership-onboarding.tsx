@@ -35,7 +35,7 @@ export function MembershipOnboarding({
 }: {
   locale: Locale;
   initial: MembershipData;
-  profile?: { full_name: string; email: string };
+  profile?: { full_name: string; email: string; phone?:string|null };
 }) {
   const copy = membershipCopy(locale);
   const t = enrolmentCopy[locale];
@@ -465,7 +465,7 @@ export function MembershipOnboarding({
                           minLength={6}
                           maxLength={30}
                           autoComplete="tel"
-                          defaultValue={a?.phone}
+                          defaultValue={a?.phone || profile?.phone || ""}
                         />
                       </label>
                       <label className="enrolment-method">

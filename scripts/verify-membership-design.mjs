@@ -7,6 +7,9 @@ const settings={id:true,adult_fee_cents:6500,junior_fee_cents:4000,season:"2026"
 const application={id:"10000000-0000-4000-8000-000000000002",user_id:"10000000-0000-4000-8000-000000000001",category:"adult",phone:"600000000",payment_method:"transfer",fee_cents:6500,season:"2026",document_path:"test/form.pdf",receipt_path:"test/receipt.pdf",status:"submitted",review_note:"",submitted_at:"2026-11-02T10:00:00Z",applicant:{full_name:"Marta Solanes Puig",email:"marta@example.test"}};
 const applications=[application,{...application,id:"10000000-0000-4000-8000-000000000003",payment_method:"direct_debit",receipt_path:null,applicant:{full_name:"Ferran Balcells Grau",email:"ferran@example.test"}},{...application,id:"10000000-0000-4000-8000-000000000004",category:"junior",fee_cents:4000,status:"changes_requested",review_note:"Cal una còpia llegible del formulari.",applicant:{full_name:"Pol Vilardell Pons",email:"pol@example.test"}}];
 const adminData={sections:["resum","socis","families","documents","quotes","permisos","convidats"].map(id=>({id,enabled:true})),socis:[{id:"m1",full_name:"Jordi Coll Ramon",email:"jordi@example.test",phone:"600000001",family_id:"f1",status:"active"},{id:"m2",full_name:"Carme Balcells Puig",email:"carme@example.test",phone:"600000002",family_id:"f1",status:"active"},{id:"m3",full_name:"Pau Serra Font",email:"pau@example.test",phone:"600000003",family_id:"",status:"pending"}],families:[{id:"f1",name:"Família Coll Balcells"}],quotes:[{id:"q1",member_id:"m1",description:"Quota anual 2026",amount:"65",due_date:"2026-11-02",status:"paid"},{id:"q2",member_id:"m2",description:"Quota anual 2026",amount:"65",due_date:"2026-11-02",status:"paid"},{id:"q3",member_id:"m3",description:"Quota anual 2026",amount:"65",due_date:"2026-11-02",status:"pending"}],documents:[],profiles:[{id:"p1",full_name:"Compte pendent",email:"pending@example.test",role:"guest",member_active:false}],convidats:[]};
+adminData.sections=adminData.sections.filter(s=>!["documents","quotes"].includes(s.id));
+adminData.stats={active_members:2,total_members:3,total_dues:3,paid_dues:2,total_families:1};
+adminData.socis=adminData.socis.map((m,i)=>({...m,document_count:i===1?2:0,quota_status:i===2?'pending':'paid',annual_fee_cents:6500,season:'2026',legacy_reference:'',profile_id:'p'+i,updated_at:'2026-11-02',invitation_status:'not_sent',outstanding_amount:i===2?65:0}));
 let server,browser;
 try{
  await mkdir(preview,{recursive:true});await mkdir("artifacts/membership-design",{recursive:true});
@@ -18,12 +21,18 @@ export default async function Page({searchParams}:{searchParams:Promise<{view?:s
  for(let i=0;i<90;i++){try{if((await fetch(url)).ok)break;}catch{}await new Promise(r=>setTimeout(r,1000));}
  browser=await chromium.launch();
  for(const [size,width,height] of [["desktop",1440,1000],["mobile",390,844]]){
-  for(const view of ["application","submitted","changes","admin","member"]){
+  for(const view of (process.env.MEMBER_DIRECTORY_ONLY ? ["admin"] : ["application","submitted","changes","admin","member"])){
    const page=await browser.newPage({viewport:{width,height}});const errors=[];page.on('pageerror',e=>errors.push(e.message));
    let current=view==='submitted'?{...application}:view==='changes'?{...application,status:'changes_requested',review_note:'Aporta una còpia llegible.'}:null;
    let adminApplications=structuredClone(applications);let directory=structuredClone(adminData);let savedSubmission;
    await page.route('**/api/bookings?**',r=>r.fulfill({json:{occupied:[]}}));
    await page.route('**/api/admin',async route=>{if(route.request().method()==='GET')return route.fulfill({json:directory});const b=route.request().postDataJSON();if(b.section==='socis')directory.socis=directory.socis.map(r=>r.id===b.id?{...r,...b}:r);return route.fulfill({json:{ok:true}});});
+   await page.route('**/api/admin/members**',async route=>{
+    const u=new URL(route.request().url()),parts=u.pathname.split('/');const id=parts[4];
+    if(!id){const q=(u.searchParams.get('q')||'').toLowerCase();const rows=directory.socis.filter(m=>(m.full_name+' '+m.email).toLowerCase().includes(q)&&(!u.searchParams.get('documents')||(u.searchParams.get('documents')==='yes'?m.document_count>0:m.document_count===0))&&(!u.searchParams.get('quota')||m.quota_status===u.searchParams.get('quota'))&&(!u.searchParams.get('status')||m.status===u.searchParams.get('status')));return route.fulfill({json:{members:rows,total:rows.length}});}
+    if(route.request().method()==='PATCH'){const b=route.request().postDataJSON();directory.socis=directory.socis.map(m=>m.id===id?{...m,...b,updated_at:new Date().toISOString()}:m);return route.fulfill({json:{ok:true}});}
+    const member=directory.socis.find(m=>m.id===id);return route.fulfill({json:{member,documents:[{id:'application-document',filename:'Formulari.pdf',kind:'form',source:'application',created_at:'2026-11-02'},{id:'manual-document',filename:'Mandat SEPA signat.pdf',kind:'mandate',source:'manual',created_at:'2026-11-02'}],dues:[{id:'due-1',member_id:id,description:'Quota anual 2026',amount:65,due_date:'2026-11-02',status:'paid',season:'2026'}]}});
+   });
    await page.route('**/api/members',route=>{const b=route.request().postDataJSON();directory.profiles=directory.profiles.map(p=>p.id===b.userId?{...p,role:'member',member_active:b.active}:p);return route.fulfill({json:{ok:true}});});
    await page.route('**/api/membership/document',route=>route.fulfill({json:{path:'test/upload-'+Date.now()+'.pdf'}}));
    await page.route('**/api/membership',async route=>{
@@ -53,11 +62,19 @@ export default async function Page({searchParams}:{searchParams:Promise<{view?:s
     await page.getByTestId('application-'+application.id).getByText('Alta aprovada',{exact:true}).waitFor();
     await page.getByRole('button',{name:'Socis',exact:true}).click();
     await page.getByRole('searchbox').fill('Carme');
-    if(await page.locator('.admin-register tbody tr').count()!==1)throw Error('Member search failed');
-    await page.getByRole('button',{name:'Editar · Carme Balcells Puig',exact:true}).click();
+    await page.waitForFunction(()=>document.querySelectorAll('.directory-table tbody tr').length===1);
+    await page.getByRole('button',{name:'Obrir fitxa · Carme Balcells Puig',exact:true}).click();
     await page.getByLabel('Telèfon',{exact:true}).fill('600123456');
     await page.getByRole('button',{name:'Desar',exact:true}).click();
-    await page.getByText('600123456',{exact:true}).waitFor();
+    if(await page.getByLabel('Telèfon',{exact:true}).inputValue()!=='600123456')throw Error('Member edit failed');
+    await page.locator('.member-document-upload').waitFor();
+    await page.waitForFunction(()=>document.querySelector('.member-directory')?.getAttribute('aria-busy')==='false');
+    await page.screenshot({path:`artifacts/membership-design/member-detail-${size}.png`,fullPage:true});
+    await page.getByRole('button',{name:'Tornar al llistat',exact:true}).click();
+    await page.getByRole('searchbox').fill('');
+    await page.locator('.directory-filters select').nth(1).selectOption('yes');
+    await page.waitForFunction(()=>document.querySelectorAll('.directory-table tbody tr').length===1);
+    await page.screenshot({path:`artifacts/membership-design/member-directory-${size}.png`,fullPage:true});
     await page.getByRole('button',{name:'Permisos',exact:true}).click();
     await page.getByRole('button',{name:'Activar compte web',exact:true}).click();
     await page.getByText('Compte web actiu',{exact:true}).waitFor();

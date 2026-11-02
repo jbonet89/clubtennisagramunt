@@ -18,13 +18,17 @@ import { adminSections, type AdminSection } from "@/lib/admin";
 import type { Locale } from "@/i18n/routing";
 import { membershipCopy } from "@/messages/membership";
 import { administrationCopy } from "@/messages/administration";
+import { MemberDirectory } from "./member-directory";
+import type { DirectoryStats } from "@/lib/member-directory";
 import { MembershipAdmin } from "./membership-admin";
 import type { MembershipData } from "./membership-data";
 import "@/app/admin.css";
 
 type Row = Record<string, string>;
 type Data = {
+  invitations_enabled?: boolean;
   sections: { id: AdminSection; enabled: boolean }[];
+  stats?: DirectoryStats;
   socis?: Row[];
   families?: Row[];
   quotes?: Row[];
@@ -70,6 +74,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
   const [statusFilter, setStatusFilter] = useState("");
   const [edit, setEdit] = useState<Row | null>(null);
   const [composer, setComposer] = useState(false);
+  const [directorySelection, setDirectorySelection] = useState("");
   const labels: Record<AdminSection, string> = {
     resum: t.summary,
     socis: t.members,
@@ -153,6 +158,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
   }
   function navigate(value: AdminSection) {
     setSection(value);
+    if (value === "socis") setDirectorySelection("");
     setEdit(null);
     setComposer(false);
     setSearch("");
@@ -192,7 +198,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
   const stats = [
     {
       label: t.active,
-      value: data?.socis?.filter((m) => m.status === "active").length ?? "—",
+      value: data?.stats?.active_members ?? "—",
       icon: IconUsers,
     },
     {
@@ -204,14 +210,14 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
     },
     {
       label: t.paid,
-      value: data?.quotes?.length
-        ? `${Math.round((data.quotes.filter((q) => q.status === "paid").length / data.quotes.length) * 100)}%`
+      value: data?.stats?.total_dues
+        ? `${Math.round((data.stats.paid_dues / data.stats.total_dues) * 100)}%`
         : "—",
       icon: IconCash,
     },
     {
       label: t.familyCount,
-      value: data?.families?.length ?? "—",
+      value: data?.stats?.total_families ?? data?.families?.length ?? "—",
       icon: IconHome,
     },
   ];
@@ -268,8 +274,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                     aria-label={`${t.edit} · ${row.full_name}`}
                     onClick={() => {
                       setSection("socis");
-                      setEdit(row);
-                      setComposer(true);
+                      setDirectorySelection(row.id);
                     }}
                   >
                     <IconPencil size={17} aria-hidden="true" />
@@ -290,28 +295,6 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
           <h1>{t.title}</h1>
           <p>{t.intro}</p>
         </div>
-        {data?.socis && (
-          <button
-            type="button"
-            onClick={() =>
-              exportCsv(
-                [
-                  [t.name, t.email, t.phone, t.status],
-                  ...data.socis!.map((r) => [
-                    r.full_name,
-                    r.email,
-                    r.phone,
-                    statusName(r.status),
-                  ]),
-                ],
-                "socis-cta.csv",
-              )
-            }
-          >
-            <IconDownload size={16} aria-hidden="true" />
-            {t.export}
-          </button>
-        )}
       </header>
       <nav className="admin-section-navigation" aria-label={t.title}>
         {Object.keys(adminSections).map((key) => {
@@ -369,6 +352,18 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                 </section>
               )}
             </>
+          ) : section === "socis" ? (
+            <MemberDirectory
+              invitationsEnabled={data.invitations_enabled === true}
+              key={directorySelection || "directory"}
+              locale={locale}
+              initialMemberId={directorySelection}
+              families={(data.families ?? []).map((f) => ({
+                id: f.id,
+                name: f.name,
+              }))}
+              onChanged={refresh}
+            />
           ) : section === "convidats" ? (
             <section className="admin-register-section">
               <header>
@@ -466,62 +461,6 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                           defaultValue={edit?.name}
                         />
                       </label>
-                    ) : section === "socis" ? (
-                      <>
-                        <label>
-                          {t.name}
-                          <input
-                            name="full_name"
-                            required
-                            maxLength={100}
-                            defaultValue={edit?.full_name}
-                          />
-                        </label>
-                        <label>
-                          {t.email}
-                          <input
-                            name="email"
-                            type="email"
-                            maxLength={254}
-                            defaultValue={edit?.email}
-                          />
-                        </label>
-                        <label>
-                          {t.phone}
-                          <input
-                            name="phone"
-                            maxLength={40}
-                            defaultValue={edit?.phone}
-                          />
-                        </label>
-                        <label>
-                          {t.family}
-                          <select
-                            name="family_id"
-                            defaultValue={edit?.family_id ?? ""}
-                          >
-                            <option value="">{t.noFamily}</option>
-                            {data.families?.map((f) => (
-                              <option value={f.id} key={f.id}>
-                                {f.name}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                        <label>
-                          {t.status}
-                          <select
-                            name="status"
-                            defaultValue={edit?.status ?? "pending"}
-                          >
-                            {["pending", "active", "inactive"].map((status) => (
-                              <option value={status} key={status}>
-                                {statusName(status)}
-                              </option>
-                            ))}
-                          </select>
-                        </label>
-                      </>
                     ) : (
                       <>
                         <label>
@@ -661,7 +600,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                       placeholder={t.searchHelp}
                     />
                   </label>
-                  {["socis", "quotes"].includes(section) && (
+                  {section === "quotes" && (
                     <label>
                       {t.status}
                       <select
@@ -669,10 +608,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                         onChange={(e) => setStatusFilter(e.target.value)}
                       >
                         <option value="">{t.all}</option>
-                        {(section === "socis"
-                          ? ["active", "pending", "inactive"]
-                          : ["pending", "paid", "returned"]
-                        ).map((status) => (
+                        {["pending", "paid", "returned"].map((status) => (
                           <option value={status} key={status}>
                             {statusName(status)}
                           </option>
@@ -681,9 +617,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                     </label>
                   )}
                 </div>
-                {section === "socis" ? (
-                  register(memberRows)
-                ) : (
+                {
                   <div className="admin-list">
                     {sectionRows.filter(filter).map((row) => (
                       <article key={row.id ?? row.name}>
@@ -783,7 +717,7 @@ export function AdminPanel({ locale = "ca" }: { locale?: Locale }) {
                     ))}
                     {!sectionRows.filter(filter).length && <p>{t.noRows}</p>}
                   </div>
-                )}
+                }
               </section>
             </>
           )}

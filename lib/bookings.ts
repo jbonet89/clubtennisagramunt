@@ -32,6 +32,7 @@ export type Booking = {
   court_name: string;
 };
 export type Profile = {
+  phone?: string | null;
   id: string;
   full_name: string;
   email: string;

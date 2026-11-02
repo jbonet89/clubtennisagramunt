@@ -22,14 +22,16 @@ export default async function AccessPage({
   const [{ locale }, query] = await Promise.all([params, searchParams]);
   if (!hasLocale(routing.locales, locale)) notFound();
   const { profile } = await getMemberSession();
-  if (profile && query.mode !== "reset") redirect(`/${locale}/socis`);
+  if (profile && query.mode !== "reset" && query.mode !== "setup") redirect(`/${locale}/socis`);
   const copy = getMemberCopy(locale);
   return (
     <MemberShell locale={locale} section="acces" copy={copy}>
       <AuthForm
         locale={locale}
         copy={copy}
+        initialProfile={profile ?? undefined}
         initialMode={
+          query.mode === "setup" && profile ? "setup" :
           query.mode === "reset" && profile
             ? "reset"
             : query.mode === "signup"

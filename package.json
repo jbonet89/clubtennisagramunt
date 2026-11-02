@@ -8,6 +8,7 @@
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "test:e2e": "playwright test",
+    "test:member-register": "node tests/database/member-register.mjs",
     "test:participants": "node tests/database/booking-participants.mjs",
     "test:portal": "node scripts/verify-member-portal.mjs",
     "test:membership-ui": "node scripts/verify-membership-design.mjs"
