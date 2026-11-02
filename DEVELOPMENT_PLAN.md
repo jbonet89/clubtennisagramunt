@@ -67,6 +67,7 @@ Registre de l'entrega: [web pública multilingüe](docs/releases/2026-11-01-publ
 - [x] Alta guiada privada: quotes i dades de pagament des de BBDD, WhatsApp,
       formulari i justificant privats, correccions i validació administrativa.
       [Circuit i permisos](docs/membership-onboarding.md).
+      [Entrega publicada i comprovacions](docs/releases/2026-11-02-membership-onboarding.md).
 
 Dependencia: accés administratiu al Supabase `qubhsueehwdngafjjmrm`.
 Acceptacio: identitat i permisos comprovats al servidor i a la base de dades.
