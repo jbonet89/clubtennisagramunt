@@ -1,6 +1,7 @@
 @import "tailwindcss";
 @import "./members.css";
 @import "./membership.css";
+@import "./portal.css";
 
 :root {
   --background: #f8f9fb;

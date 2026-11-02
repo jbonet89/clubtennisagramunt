@@ -100,6 +100,7 @@ export default async function MemberPage({
       locale={locale}
       section="socis"
       memberSection={section}
+      memberName={profile.full_name}
       copy={copy}
     >
       <BookingDashboard

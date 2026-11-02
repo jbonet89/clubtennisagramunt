@@ -1,6 +1,10 @@
 "use client";
 
 import { IconBallTennis as RacketIcon, IconClock, IconCalendarEvent, IconArrowUpRight } from "@tabler/icons-react";
+import { BookingTimePicker } from "./booking-time-picker";
+import { MemberBookingAside, CourtCare } from "./member-booking-aside";
+import { activityCopy } from "@/messages/activity";
+import { portalCopy } from "@/messages/portal";
 import { BookingParticipants, participantCopy } from "./booking-participants";
 import type { Participant } from "@/lib/bookings";
 import { useEffect, useState, type FormEvent } from "react";
@@ -72,6 +76,7 @@ export function BookingDashboard({
   const [duration, setDuration] = useState(60);
   const [startTime, setStartTime] = useState("");
   const t = participantCopy[locale];
+  const portal = portalCopy[locale];
   const [mode, setMode] = useState<"singles" | "doubles">("singles");
   const [participants, setParticipants] = useState<Participant[]>([{kind:"member",name:""}]);
   const [historySearch, setHistorySearch] = useState("");
@@ -260,7 +265,7 @@ export function BookingDashboard({
     { id: "account", label: copy.accountNav, icon: UserRound },
   ];
   return (
-    <div className="member-workspace">
+    <div className="member-workspace" data-section={section}>
       <BookingReminders bookings={bookings} userId={profile.id} />
       {profile.role === "admin" && profile.member_active && (
         <Link href="/administracio" className="member-admin-shortcut">
@@ -283,8 +288,9 @@ export function BookingDashboard({
       </nav>
       <div className="member-content" key={section}>
         <h1 className="member-section-heading">
-          {section === "matches" ? t.history : navigation.find((item) => item.id === section)?.label}
+          {section === "matches" ? activityCopy[locale].title : section === "reserve" ? portal.reserve : navigation.find((item) => item.id === section)?.label}
         </h1>
+        {section === "reserve" && <p className="portal-intro">{portal.hello}, {profile.full_name}</p>}
         {section === "matches" && active && (
           <MemberActivity bookings={bookings} locale={locale} />
         )}
@@ -386,16 +392,15 @@ export function BookingDashboard({
           </section>
         ) : null}
         {active && section === "reserve" ? (
-          <section
+          <div className="reserve-layout"><div className="reserve-primary"><section
             className="member-booking-section"
             aria-labelledby="new-booking-title"
           >
-            <p className="booking-greeting">{locale === "es" ? "Hola" : locale === "en" ? "Hello" : "Hola"}, {profile.full_name}</p>
             <div className="booking-section-title">
               <div>
                 <h2 id="new-booking-title">
                   <Plus size={24} aria-hidden="true" />
-                  {copy.newBooking}
+                  {portal.newBooking}
                 </h2>
               </div>
               <p>
@@ -406,84 +411,19 @@ export function BookingDashboard({
                   "{days}",
                   String(settings.booking_horizon_days),
                 )}
-                <br />
-                {copy.zone}
+                <span className="booking-zone">{copy.zone}</span>
               </p>
             </div>
             <form onSubmit={book} className="booking-form">
               <fieldset disabled={!ready || Boolean(busy)}>
-                <div className="court-options" role="group" aria-label={copy.court}>{courts.map((court,i)=><button key={court.id} type="button" disabled={court.status!=="active"} aria-pressed={courtId===court.id} onClick={()=>{setCourtId(court.id);setStartTime("");}}><span>{court.name}</span><strong>{court.surface==="clay"?"Terra batida":"Quick"}</strong><span className="court-lines" aria-hidden="true"/><small>{String(i+1).padStart(2,"0")}</small></button>)}</div>
-                <div className="quick-days" role="group" aria-label={`${copy.date} · 5`}>{Array.from({length:Math.min(5,settings.booking_horizon_days+1)},(_,i)=>DateTime.fromISO(clubToday(),{zone:CLUB_ZONE}).plus({days:i})).map(d=><button type="button" key={d.toISODate()} aria-pressed={day===d.toISODate()} onClick={()=>setDay(d.toISODate()!)}><span>{d.setLocale(locale).toFormat("ccc")}</span><strong>{d.day}</strong></button>)}</div>
-                <div className="booking-fields">
-                  <label>
-                    {copy.court}
-                    <select
-                      value={courtId}
-                      onChange={(event) => {
-                        setCourtId(event.target.value);
-                        setStartTime("");
-                      }}
-                    >
-                      {courts.map((court) => (
-                        <option
-                          key={court.id}
-                          value={court.id}
-                          disabled={court.status !== "active"}
-                        >
-                          {court.name}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  <label>
-                    {copy.date}
-                    <input
-                      type="date"
-                      required
-                      value={day}
-                      min={clubToday()}
-                      max={maxDay}
-                      onChange={(event) => {
-                        if (event.target.value) setDay(event.target.value);
-                      }}
-                    />
-                  </label>
-                  <label>
-                    {copy.duration}
-                    <select
-                      value={duration}
-                      onChange={(event) => {
-                        setDuration(Number(event.target.value));
-                        setStartTime("");
-                      }}
-                    >
-                      <option value={60}>60 min</option>
-                      <option value={90}>90 min</option>
-                    </select>
-                  </label>
-                  <label>
-                    {copy.time}
-                    <select
-                      required
-                      value={startTime}
-                      disabled={occupied === null || availabilityError}
-                      onChange={(event) => setStartTime(event.target.value)}
-                    >
-                      <option value="">
-                        {occupied === null ? copy.loading : copy.chooseTime}
-                      </option>
-                      {slots.map((slot) => (
-                        <option key={slot.value} value={slot.value}>
-                          {slot.label}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-
+                <div className="booking-step"><h3>{portal.court}</h3><div className="court-options" role="group" aria-label={copy.court}>{courts.map((court,i)=><button key={court.id} type="button" data-surface={court.surface} disabled={court.status!=="active"} aria-pressed={courtId===court.id} onClick={()=>{setCourtId(court.id);setStartTime("");}}><span>{court.name}</span><strong>{court.surface==="clay"?"Terra batida":"Quick"}</strong><span className="court-lines" aria-hidden="true"/><small>{String(i+1).padStart(2,"0")}</small></button>)}</div></div>
+                <div className="booking-date-duration">
+                  <div className="booking-step"><label htmlFor="booking-date">{portal.date}</label><div className="quick-days" role="group" aria-label={`${copy.date} · 5`}>{Array.from({length:Math.min(5,settings.booking_horizon_days+1)},(_,i)=>DateTime.fromISO(clubToday(),{zone:CLUB_ZONE}).plus({days:i})).map(d=><button type="button" key={d.toISODate()} aria-pressed={day===d.toISODate()} onClick={()=>setDay(d.toISODate()!)}><span>{d.setLocale(locale).toFormat("ccc")}</span><strong>{d.day}</strong></button>)}</div><input id="booking-date" type="date" required value={day} min={clubToday()} max={maxDay} onChange={e=>{if(e.target.value)setDay(e.target.value);}}/></div>
+                  <label className="booking-step">{portal.duration}<select aria-label={copy.duration} value={duration} onChange={e=>{setDuration(Number(e.target.value));setStartTime("");}}><option value={60}>60 min</option><option value={90}>90 min</option></select><small>{duration / 30} × 30 min</small></label>
                 </div>
-                {occupied && !availabilityError && <div className="slot-options" role="group" aria-label={copy.time}>{slots.map(slot=><button key={slot.value} type="button" aria-pressed={startTime===slot.value} onClick={()=>setStartTime(slot.value)}><IconClock size={16} aria-hidden="true"/>{slot.label.split(" (")[0]}</button>)}</div>}
+                <div className="booking-step time-step"><h3>{portal.time}</h3><BookingTimePicker day={day} duration={duration} settings={settings} occupied={occupied} courtId={courtId} value={startTime} onChange={setStartTime} locale={locale} disabled={availabilityError}/></div>
                 <BookingParticipants locale={locale} mode={mode} setMode={setMode} participants={participants} onChange={setParticipants} name={profile.full_name} userId={profile.id}/>
-                <div className="booking-summary"><h3>{t.summary}</h3><p>{courts.find(c=>c.id===courtId)?.name} · {day} · {duration} min · {t[mode]}</p><p>{startTime ? slots.find(s=>s.value===startTime)?.label : copy.chooseTime}</p><p>{players}</p><strong>{copy.free}</strong></div>
+                <div className="booking-summary"><div><strong>{courts.find(c=>c.id===courtId)?.name} · {duration} min · {t[mode]}</strong><p>{startTime ? slots.find(s=>s.value===startTime)?.label.split(" (")[0] : copy.chooseTime}</p></div><span>{copy.free}</span></div>
                 {availabilityError ? (
                   <p role="alert" className="form-error">
                     {copy.availabilityError}
@@ -512,7 +452,7 @@ export function BookingDashboard({
                 </div>
               </fieldset>
             </form>
-          </section>
+          </section><CourtCare locale={locale}/></div><MemberBookingAside bookings={bookings} locale={locale} userId={profile.id} copy={copy} onCancel={cancel} busy={Boolean(busy)}/></div>
         ) : null}
         {section === "bookings" ? (
           <section

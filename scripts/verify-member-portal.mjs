@@ -14,7 +14,7 @@ try {
 import {MemberShell} from '@/components/member-shell';
 import {getMemberCopy} from '@/messages/members';
 import {AdminPanel} from '@/components/admin-panel';
-export default async function Preview({searchParams}:{searchParams:Promise<{section?:string;lang?:string}>}){const p=await searchParams;if(p.section==='admin')return <AdminPanel/>;const locale=(p.lang??'ca') as 'ca'|'es'|'en';const copy=getMemberCopy(locale);const profile={id:'10000000-0000-4000-8000-000000000001',full_name:'Anna Soler',email:'preview@example.test',role:'member',member_active:true};return <MemberShell locale={locale} section="socis" copy={copy}><BookingDashboard section={(p.section??'reserve') as 'reserve'} locale={locale} copy={copy} profile={profile} courts={[{id:'20000000-0000-4000-8000-000000000001',name:'Pista 1',surface:'clay',status:'active'},{id:'20000000-0000-4000-8000-000000000002',name:'Pista 2',surface:'clay',status:'active'},{id:'20000000-0000-4000-8000-000000000003',name:'Pista 3',surface:'hardcourt',status:'active'}]} settings={{opening_minute:480,closing_minute:1380,booking_horizon_days:14}} initialMembers={[]} initialBookings={[{id:'historical',court_id:'court',court_name:'Pista 1',players:'Anna Soler · Marta Rius',start_time:'2025-10-03T08:00:00Z',end_time:'2025-10-03T09:00:00Z',status:'confirmed',payment_status:'free_member',match_format:'singles',participants:[{kind:'member',member_id:profile.id,name:profile.full_name},{kind:'guest',name:'Marta Rius'}]}]}/></MemberShell>;}`);
+export default async function Preview({searchParams}:{searchParams:Promise<{section?:string;lang?:string}>}){const p=await searchParams;if(p.section==='admin')return <AdminPanel/>;const locale=(p.lang??'ca') as 'ca'|'es'|'en';const copy=getMemberCopy(locale);const profile={id:'10000000-0000-4000-8000-000000000001',full_name:'Anna Soler',email:'preview@example.test',role:'member',member_active:true};return <MemberShell locale={locale} section="socis" copy={copy} memberName={profile.full_name}><BookingDashboard section={(p.section??'reserve') as 'reserve'} locale={locale} copy={copy} profile={profile} courts={[{id:'20000000-0000-4000-8000-000000000001',name:'Pista 1',surface:'clay',status:'active'},{id:'20000000-0000-4000-8000-000000000002',name:'Pista 2',surface:'clay',status:'active'},{id:'20000000-0000-4000-8000-000000000003',name:'Pista 3',surface:'hardcourt',status:'active'}]} settings={{opening_minute:480,closing_minute:1380,booking_horizon_days:14}} initialMembers={[]} initialBookings={[{id:"future",court_id:"20000000-0000-4000-8000-000000000001",court_name:"Pista 1",players:"Anna Soler · Joan Puig",start_time:'${DateTime.now().setZone("Europe/Madrid").plus({days:1}).set({hour:18,minute:30,second:0,millisecond:0}).toISO()}',end_time:'${DateTime.now().setZone("Europe/Madrid").plus({days:1}).set({hour:19,minute:30,second:0,millisecond:0}).toISO()}' ,status:"confirmed",payment_status:"free_member",match_format:"singles"},{id:'historical',court_id:'court',court_name:'Pista 1',players:'Anna Soler · Marta Rius',start_time:'2025-10-03T08:00:00Z',end_time:'2025-10-03T09:00:00Z',status:'confirmed',payment_status:'free_member',match_format:'singles',participants:[{kind:'member',member_id:profile.id,name:profile.full_name},{kind:'guest',name:'Marta Rius'}]}]}/></MemberShell>;}`);
   server = spawn(process.execPath, ["node_modules/next/dist/bin/next", "dev", "--hostname", "127.0.0.1", "--port", String(port)], { stdio: "ignore", windowsHide: true });
   const url=`http://127.0.0.1:${port}/ca/portal-verification`;
   for(let i=0;i<90;i++) { try { if((await fetch(url)).ok) break; } catch {} await new Promise(r=>setTimeout(r,1000)); }
@@ -24,7 +24,7 @@ export default async function Preview({searchParams}:{searchParams:Promise<{sect
     const errors=[]; page.on("pageerror",e=>errors.push(e.message)); page.on("console",m=>{if(m.type()==="error") console.log("Browser console:",m.text());});
     let submitted;
     await page.route("**/api/bookings**",async route=>{
-      if(route.request().method()==="GET") return route.fulfill({json:{occupied:[]}});
+      if(route.request().method()==="GET") return route.fulfill({json:{occupied:[{court_id:"20000000-0000-4000-8000-000000000001",start_time:DateTime.now().setZone("Europe/Madrid").plus({days:1}).set({hour:12,minute:0,second:0,millisecond:0}).toISO(),end_time:DateTime.now().setZone("Europe/Madrid").plus({days:1}).set({hour:13,minute:0,second:0,millisecond:0}).toISO()}]}});
       submitted=route.request().postDataJSON();
       return route.fulfill({status:201,json:{booking:{id:"new-booking",court_id:submitted.courtId,court_name:"Pista 1",players:"Anna Soler · Joan Puig · Marta Rius · Pau Vila",start_time:submitted.startTime,end_time:DateTime.fromISO(submitted.startTime).plus({minutes:submitted.duration}).toISO(),status:"confirmed",payment_status:"free_member",match_format:submitted.matchFormat,participants:submitted.participants}}});
     });
@@ -42,7 +42,32 @@ export default async function Preview({searchParams}:{searchParams:Promise<{sect
       await row.locator('select').selectOption('guest');
       await row.locator('input').fill(guest);
     }
-    await page.locator('.slot-options button').first().click();
+    const trigger=page.locator('.time-picker-trigger');
+    await trigger.click();
+    await page.getByRole('dialog').waitFor();
+    await page.locator('.time-picker-blocks button').filter({has:page.locator('strong',{hasText:'08:00'})}).click();
+    if(await page.locator('.time-picker-blocks button[aria-pressed=true]').count()!==2)throw Error('60 minutes must select two blocks');
+    if(!await page.locator('.time-picker-blocks button').filter({has:page.locator('strong',{hasText:'11:30'})}).isDisabled())throw Error('Must not cross an occupied block');
+    if(!await page.locator('.time-picker-blocks button').filter({has:page.locator('strong',{hasText:'22:30'})}).isDisabled())throw Error('Must not cross closing time');
+    await page.getByRole('button',{name:'Confirmar hora',exact:true}).click();
+    if(await page.getByRole('dialog').isVisible())throw Error('Time dialog must collapse');
+    if(!(await trigger.textContent()).includes('08:00 – 09:00'))throw Error('Committed interval missing');
+    await page.getByRole('combobox',{name:'Durada',exact:true}).selectOption('90');
+    await trigger.click();
+    await page.locator('.time-picker-blocks button').filter({has:page.locator('strong',{hasText:'08:30'})}).click();
+    if(await page.locator('.time-picker-blocks button[aria-pressed=true]').count()!==3)throw Error('90 minutes must select three blocks');
+    await page.addStyleTag({content:"nextjs-portal{display:none!important}"});
+    await page.screenshot({path:`artifacts/portal/time-picker-${name}.png`});
+    await page.getByRole('button',{name:'Confirmar hora',exact:true}).click();
+    await trigger.click();
+    await page.keyboard.press('Escape');
+    if(!(await trigger.textContent()).includes('08:30 – 10:00'))throw Error('Escape must preserve confirmed time');
+    const quick=page.locator('.court-options button[data-surface=hardcourt]');
+    await quick.click();
+    if(await quick.evaluate(el=>getComputedStyle(el).backgroundColor)!=='rgb(0, 31, 157)')throw Error('Quick must select blue');
+    await trigger.click();
+    await page.locator('.time-picker-blocks button').filter({has:page.locator('strong',{hasText:'08:30'})}).click();
+    await page.getByRole('button',{name:'Confirmar hora',exact:true}).click();
     await page.evaluate(()=>document.fonts.ready);
     await page.addStyleTag({content:"nextjs-portal{display:none!important}"}); await page.evaluate(()=>window.scrollTo(0,0)); await page.screenshot({path:`artifacts/portal/reserve-${name}.png`,fullPage:true});
     if(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw Error(`Overflow ${name}`);
@@ -54,7 +79,7 @@ export default async function Preview({searchParams}:{searchParams:Promise<{sect
     await page.getByTestId('booking-historical').waitFor();
     await page.addStyleTag({content:"nextjs-portal{display:none!important}"}); await page.evaluate(()=>window.scrollTo(0,0)); await page.screenshot({path:`artifacts/portal/bookings-${name}.png`,fullPage:true});
     await page.goto(url+'?section=matches');
-    await page.getByText('6–4 · 6–3',{exact:false}).waitFor();
+    await page.locator('.match-result [data-outcome=win]').waitFor();
     await page.addStyleTag({content:"nextjs-portal{display:none!important}"}); await page.evaluate(()=>window.scrollTo(0,0)); await page.screenshot({path:`artifacts/portal/matches-${name}.png`,fullPage:true});
     for(const [lang,title] of [["es","Partidos y estadísticas"],["en","Matches and statistics"]]) {
       await page.goto(url+'?section=matches&lang='+lang);
@@ -71,7 +96,7 @@ export default async function Preview({searchParams}:{searchParams:Promise<{sect
     await page.evaluate(()=>window.scrollTo(0,0));
     await page.screenshot({path:`artifacts/portal/guests-${name}.png`,fullPage:true});
     if(errors.length) throw Error(errors.join('\n'));
-    console.log(`${name}: doubles, member search, guests, confirmation, booking history, results, overflow OK`);
+    console.log(`${name}: 30-minute timeline, 60/90-minute selection, conflicts/closing, collapse/Escape, blue Quick, participants, history and results OK`);
     await page.close();
   }
 } finally {

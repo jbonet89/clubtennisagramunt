@@ -1,4 +1,4 @@
-import { IconArrowUpRight } from "@tabler/icons-react";
+import { IconArrowUpRight, IconUser } from "@tabler/icons-react";
 import Image from "next/image";
 import { Link } from "@/i18n/navigation";
 import { routing, type Locale } from "@/i18n/routing";
@@ -10,12 +10,14 @@ export function MemberShell({
   section,
   memberSection,
   copy,
+  memberName,
 }: {
   children: React.ReactNode;
   locale: Locale;
   section: "acces" | "socis";
   memberSection?: string;
   copy: MemberCopy;
+  memberName?: string;
 }) {
   return (
     <div className="member-app">
@@ -29,6 +31,7 @@ export function MemberShell({
           </span>
         </Link>
         <div className="member-topbar-links">
+          {memberName && <Link className="portal-member-name" href="/socis?section=account"><span>{memberName}</span><IconUser size={18} aria-hidden="true"/></Link>}
           <Link href="/">{copy.home} <IconArrowUpRight size={15} aria-hidden="true"/></Link>
           <nav className="language-nav" aria-label="CA / ES / EN">
             {routing.locales.map((language) => (

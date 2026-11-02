@@ -22,3 +22,11 @@ La instantánea antigua `supabase/schema.sql` no sustituye al historial de migra
 
 Los tests existentes de reservas con cuentas reales requieren preparar las fixtures aisladas y aplicar primero la migración.
 
+
+## Selector de horas
+
+El formulario combina tarjetas de pista con un selector de duración y fecha. La pista Quick seleccionada se muestra en azul; las pistas de tierra batida, en marrón.
+
+La disponibilidad se consulta en un diálogo con tramos de 30 minutos desde la primera hora futura hasta el cierre. Elegir un inicio marca automáticamente dos tramos para una reserva de 60 minutos o tres para 90. No se puede iniciar un intervalo que cruce una ocupación o la hora de cierre. Confirmar la hora cierra el diálogo y conserva el intervalo en el formulario; cerrar o pulsar Escape descarta la selección provisional.
+
+La presentación de reservas, resultados por set y estadísticas personales sigue las referencias de Stitch aportadas por el usuario. Esta actualización no requiere migraciones nuevas.

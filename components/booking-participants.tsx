@@ -30,7 +30,7 @@ function Player({ value, onChange, excluded, locale, index }: { value: Participa
     return () => { clearTimeout(timer); controller.abort(); };
   }, [query, value.kind, value.member_id, t]);
   return <div className="participant-row">
-    <label>{t.player} {index + 2}<select aria-label={`${t.player} ${index + 2} · ${t.mode}`} value={value.kind} onChange={e => { setQuery(""); onChange({kind: e.target.value as Participant["kind"], name: ""}); }}><option value="member">{t.member}</option><option value="guest">{t.guest}</option></select></label>
+    <label>{t.player} {index + 2}<select aria-label={`${t.player} ${index + 2} · ${t.mode}`} value={value.kind} onChange={e => { setQuery(""); onChange({kind: e.target.value as Participant["kind"], name: ""}); }}><option value="member">{t.member}</option><option value="guest">{locale==="ca"?"No soci":locale==="es"?"No socio":"Non-member"}</option></select></label>
     {value.kind === "guest" ? <label>{t.name}<input required maxLength={100} minLength={2} value={value.name} onChange={e => onChange({kind: "guest", name: e.target.value})}/></label> : <div className="member-search"><label><IconSearch size={16} aria-hidden="true"/>{t.search}<input type="search" autoComplete="off" value={value.member_id ? value.name : query} onChange={e => {setQuery(e.target.value); onChange({kind:"member",name:""});}}/></label>{!value.member_id && <><p className="field-help">{t.choose}</p>{results.filter(r => !excluded.includes(r.id)).map(r => <button type="button" key={r.id} onClick={() => onChange({kind:"member", member_id:r.id, name:r.full_name})}><IconUser size={16} aria-hidden="true"/>{r.full_name}</button>)}</>}<p role="status" className="field-help">{status}</p></div>}
   </div>;
 }

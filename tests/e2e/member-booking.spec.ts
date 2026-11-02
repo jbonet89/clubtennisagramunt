@@ -65,21 +65,18 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
     .setZone(CLUB_ZONE)
     .plus({ days: info.project.name === "desktop" ? 1 : 2 })
     .toISODate()!;
-  await page
-    .getByRole("combobox", { name: "Pista", exact: true })
-    .selectOption(courts!.id);
-  await page.getByLabel("Data", { exact: true }).fill(day);
-  await page
-    .getByRole("combobox", { name: "Durada", exact: true })
-    .selectOption("90");
-  const time = page.getByRole("combobox", {
-    name: "Horari disponible",
-    exact: true,
-  });
+  await page.locator('.court-options button').filter({hasText:courts!.name}).click();
+  await page.getByLabel("Data de joc", { exact: true }).fill(day);
+  await page.getByRole("combobox", { name: "Durada", exact: true }).selectOption("90");
+  const time = page.locator('.time-picker-trigger');
   await expect(time).toBeEnabled();
-  await expect(time.locator("option")).not.toHaveCount(1);
-  const start = await time.locator("option").nth(1).getAttribute("value");
-  await time.selectOption(start!);
+  await time.click();
+  const first = page.locator('.time-picker-blocks button:not(:disabled)').first();
+  await expect(first).toBeVisible();
+  const start = await first.getAttribute('data-start');
+  await first.click();
+  await expect(page.locator('.time-picker-blocks button[aria-pressed=true]')).toHaveCount(3);
+  await page.getByRole('button',{name:'Confirmar hora',exact:true}).click();
   const guest = `CTA ${info.project.name} & Gener ${Date.now()}`;
   const players = `${user.name} · ${guest}`;
   await page.locator(".participant-row select").selectOption("guest");
