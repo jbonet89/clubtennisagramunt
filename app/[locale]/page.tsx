@@ -6,7 +6,8 @@ import { notFound } from "next/navigation";
 import { ArrowDown, ArrowUpRight, MapPin, MoveUpRight } from "lucide-react";
 import { routing } from "@/i18n/routing";
 import { SiteHeader } from "@/components/site-header";
-import { CourtDrawing } from "@/components/court-drawing";
+import { CourtPhoto } from "@/components/court-photo";
+import { Link } from "@/i18n/navigation";
 import { CourtSelector } from "@/components/court-selector";
 import { buttonVariants } from "@/components/ui/button";
 
@@ -89,7 +90,6 @@ export default async function Home({ params }: Props) {
     notice: t("courts.notice"),
     illustration: t("courts.illustration"),
   };
-  const joinMail = `mailto:clubtennisagramunt1974@gmail.com?subject=${encodeURIComponent(t("contact.subject"))}`;
   const guestMail = `mailto:clubtennisagramunt1974@gmail.com?subject=${encodeURIComponent(t("contact.guestSubject"))}`;
   return (
     <>
@@ -112,10 +112,10 @@ export default async function Home({ params }: Props) {
                 {t("hero.primary")}
                 <ArrowDown size={17} aria-hidden="true" />
               </a>
-              <a className="hero-secondary" href="#contact">
+              <Link className="hero-secondary" href="/acces?mode=signup">
                 {t("hero.secondary")}
                 <ArrowUpRight size={18} aria-hidden="true" />
-              </a>
+              </Link>
             </div>
             <div className="hero-footnote">
               <span className="ball-mark" aria-hidden="true" />
@@ -126,7 +126,7 @@ export default async function Home({ params }: Props) {
             <span className="hero-year" aria-hidden="true">
               1974
             </span>
-            <CourtDrawing decorative label={t("hero.diagram")} />
+            <CourtPhoto surface="quick" alt={t("courts.quickTag")} priority />
             <div className="hero-visual-caption">
               <span>CTA</span>
               <span>
@@ -254,7 +254,7 @@ export default async function Home({ params }: Props) {
             <p>{t("contact.body")}</p>
             <a
               className={buttonVariants({ variant: "secondary" })}
-              href={joinMail}
+              href={`/${locale}/acces?mode=signup`}
             >
               {t("contact.join")}
               <ArrowUpRight size={18} aria-hidden="true" />

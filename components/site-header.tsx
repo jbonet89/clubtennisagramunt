@@ -82,16 +82,16 @@ export function SiteHeader({
                 </Link>
               ))}
             </nav>
-            <a
+            <Link
               className={buttonVariants({
                 size: "sm",
                 className: "header-join",
               })}
-              href="#contact"
+              href="/acces?mode=signup"
             >
               {labels.join}
               <ArrowUpRight size={15} aria-hidden="true" />
-            </a>
+            </Link>
             <Button
               variant="outline"
               size="icon"

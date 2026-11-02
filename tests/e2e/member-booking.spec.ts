@@ -115,7 +115,9 @@ test("soci: reserva real, persistència, text WhatsApp, cancel·lació i sortida
   );
   expect(expected.text).toContain("Claus de soci");
   expect(expected.text).toContain(players);
+  await page.getByRole("link", { name: "Més", exact: true }).click();
   await page.getByRole("link", { name: "Les meves reserves", exact: true }).click();
+  await expect(page).toHaveURL(/section=bookings$/);
   await page.reload();
   const card = page.getByTestId(`booking-${saved.id}`);
   await expect(card).toBeVisible();
@@ -214,6 +216,7 @@ test("la junta activa, revoca i delega administradors amb correu confirmat", asy
   page,
 }, info) => {
   await login(page, fixture!.users.admin);
+  await page.getByRole("link", { name: "Més", exact: true }).click();
   await page.getByRole("link", { name: "Socis", exact: true }).click();
   const target =
     fixture!.users[

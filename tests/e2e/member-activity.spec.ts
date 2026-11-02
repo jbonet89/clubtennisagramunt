@@ -14,7 +14,7 @@ test("member navigation, profile, reminders and empty results",async({page},info
  await page.getByLabel("Telèfon",{exact:true}).fill("600000000");await page.getByRole("button",{name:"Desar perfil",exact:true}).click();await expect(page.getByRole("status")).toHaveText("Dades desades.");
  if(info.project.name==="mobile"){const box=await nav.boundingBox();expect(box!.y+box!.height).toBeGreaterThan(page.viewportSize()!.height-2);}
  await page.screenshot({path:`test-results/member-profile-${info.project.name}.png`,fullPage:true});
- const response=await page.request.post("/api/activity",{headers:{Origin:"http://127.0.0.1:3000"},data:{booking_id:"00000000-0000-0000-0000-000000000000",sets:[[9,1]]}});expect(response.status()).toBe(400);
+ const response=await page.request.post("/api/activity",{headers:{Origin:new URL(page.url()).origin},data:{booking_id:"00000000-0000-0000-0000-000000000000",sets:[[9,1]]}});expect(response.status()).toBe(400);
 });
 
 test("administrator has a direct administration link",async({page})=>{

@@ -55,6 +55,8 @@ for (const key of [
   "delegationDesktop",
   "delegationMobile",
   "unconfirmed",
+  "onboardingDesktop",
+  "onboardingMobile",
 ]) {
   const id = randomUUID();
   const email = `cta-e2e-${run}-${key.toLowerCase()}@example.test`;

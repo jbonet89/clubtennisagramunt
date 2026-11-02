@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { ArrowUpRight, Clock3, KeyRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { CourtDrawing } from "./court-drawing";
+import { CourtPhoto } from "./court-photo";
 import { Link } from "@/i18n/navigation";
 
 type Labels = {
@@ -34,7 +34,10 @@ export function CourtSelector({ labels }: { labels: Labels }) {
         <span className="surface-number" aria-hidden="true">
           {clay ? "03" : "04"}
         </span>
-        <CourtDrawing surface={surface} label={labels.illustration} />
+        <CourtPhoto
+          surface={surface}
+          alt={clay ? labels.clayTag : labels.quickTag}
+        />
         <span className="diagram-label">
           {clay ? labels.clayTag : labels.quickTag}
         </span>

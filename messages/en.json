@@ -24,7 +24,7 @@
     "primary": "Explore the courts",
     "secondary": "Become a member",
     "caption": "Two surfaces. One shared passion.",
-    "diagram": "Illustration of the courts",
+    "diagram": "Real photographs of the courts",
     "bottom": "TIMELESS TENNIS. NEW STORIES."
   },
   "courts": {
@@ -44,7 +44,7 @@
     "member": "Free bookings for members",
     "ask": "Book a court as a member",
     "notice": "Online bookings are free for active members. Sign in to check availability and confirm your court.",
-    "illustration": "Illustrative court diagram; it does not show real-time availability."
+    "illustration": "Photographs of the club courts."
   },
   "club": {
     "eyebrow": "BEYOND THE BASELINE",
@@ -74,7 +74,7 @@
   "contact": {
     "eyebrow": "YOUR NEXT MATCH STARTS HERE",
     "title": "There's a place\nfor you.",
-    "body": "Want to become a member, get back on court or discover the club? Write to us for membership information and how to get started.",
+    "body": "Create your account and find the membership application steps in your private area.",
     "join": "I'd like to join",
     "subject": "Membership information for Club Tennis Agramunt",
     "guest": "Book a court as a guest",

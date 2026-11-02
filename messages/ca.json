@@ -24,7 +24,7 @@
     "primary": "Descobreix les pistes",
     "secondary": "Fes-te soci",
     "caption": "Dues superfícies. Una mateixa passió.",
-    "diagram": "Il·lustració de les pistes",
+    "diagram": "Fotografia real de les pistes",
     "bottom": "TENNIS DE SEMPRE. NOVES HISTÒRIES."
   },
   "courts": {
@@ -44,7 +44,7 @@
     "member": "Reserva gratuïta per a socis",
     "ask": "Reserva pista com a soci",
     "notice": "Les reserves en línia són gratuïtes per als socis actius. Inicia sessió per consultar els horaris i confirmar la teva pista.",
-    "illustration": "Esquema il·lustratiu de la pista; no representa la disponibilitat en temps real."
+    "illustration": "Fotografies de les pistes del club."
   },
   "club": {
     "eyebrow": "MÉS ENLLÀ DE LA LÍNIA DE FONS",
@@ -74,7 +74,7 @@
   "contact": {
     "eyebrow": "EL PROPER PARTIT COMENÇA AQUÍ",
     "title": "Hi ha lloc\nper a tu.",
-    "body": "Vols fer-te soci, tornar a jugar o conèixer el club? Escriu-nos. T'informarem de les quotes i de com començar.",
+    "body": "Crea el teu compte i consulta els passos per fer-te soci dins de la teva àrea privada.",
     "join": "Vull fer-me soci",
     "subject": "Informació per fer-me soci del Club Tennis Agramunt",
     "guest": "Reserva pista com a no soci",

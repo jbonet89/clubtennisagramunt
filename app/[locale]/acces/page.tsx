@@ -29,7 +29,13 @@ export default async function AccessPage({
       <AuthForm
         locale={locale}
         copy={copy}
-        initialMode={query.mode === "reset" && profile ? "reset" : "login"}
+        initialMode={
+          query.mode === "reset" && profile
+            ? "reset"
+            : query.mode === "signup"
+              ? "signup"
+              : "login"
+        }
         initialError={query.error === "expired"}
       />
     </MemberShell>

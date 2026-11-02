@@ -1,6 +1,6 @@
 # Pla de desenvolupament CTA
 
-Actualitzat: 1 de novembre de 2026. Cada fase acaba amb una entrega provada
+Actualitzat: 2 de novembre de 2026. Cada fase acaba amb una entrega provada
 i desplegada; aquest document registra el que està fet i el que encara falta.
 
 Decisió de direcció (1 de novembre de 2026): els punts **4, 5 i 8 queden
@@ -64,6 +64,9 @@ Registre de l'entrega: [web pública multilingüe](docs/releases/2026-11-01-publ
 - [x] Compte inicial Admin aprovisionat i inici de sessió comprovat; delegació
       d'administradors només des d'un administrador actiu, amb correu confirmat.
 - [x] Proves amb usuaris soci/convidat/admin i auditories Supabase.
+- [x] Alta guiada privada: quotes i dades de pagament des de BBDD, WhatsApp,
+      formulari i justificant privats, correccions i validació administrativa.
+      [Circuit i permisos](docs/membership-onboarding.md).
 
 Dependencia: accés administratiu al Supabase `qubhsueehwdngafjjmrm`.
 Acceptacio: identitat i permisos comprovats al servidor i a la base de dades.

@@ -75,9 +75,13 @@ test("el selector canvia Quick i terra batuda amb teclat", async ({ page }) => {
   await expect(
     page.getByRole("heading", { name: "Deixa que el joc agafi ritme." }),
   ).toBeVisible();
-  await expect(page.locator(".explorer-visual .court-quick")).toBeVisible();
+  await expect(
+    page.locator(".explorer-visual .court-photo-quick img"),
+  ).toBeVisible();
   await clay.click();
-  await expect(page.locator(".explorer-visual .court-clay")).toBeVisible();
+  await expect(
+    page.locator(".explorer-visual .court-photo-clay img"),
+  ).toBeVisible();
 });
 
 test("navegació, consulta per correu i contingut d'arxiu", async ({
@@ -112,7 +116,7 @@ test("navegació, consulta per correu i contingut d'arxiu", async ({
   );
   await expect(
     page.getByRole("link", { name: "Vull fer-me soci", exact: true }),
-  ).toHaveAttribute("href", /subject=/);
+  ).toHaveAttribute("href", /\/ca\/acces\?mode=signup$/);
   await expect(page.locator(".archive-note")).toContainText("2018");
   await expect(page.locator('meta[name="viewport"]')).not.toHaveAttribute(
     "content",
@@ -149,7 +153,7 @@ test("respecta el moviment reduït i el contingut continua accessible", async ({
       () => getComputedStyle(document.documentElement).scrollBehavior,
     ),
   ).toBe("auto");
-  await expect(page.locator(".court-stage").first()).toHaveCSS(
+  await expect(page.locator(".court-photo img").first()).toHaveCSS(
     "transform",
     "none",
   );

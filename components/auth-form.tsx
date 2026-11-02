@@ -13,7 +13,7 @@ export function AuthForm({
 }: {
   locale: Locale;
   copy: MemberCopy;
-  initialMode?: "login" | "reset";
+  initialMode?: "login" | "reset" | "signup";
   initialError?: boolean;
 }) {
   const [mode, setMode] = useState<"login" | "signup" | "forgot" | "reset">(
